@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>de.telran</groupId>
-    <artifactId>pizzaProject</artifactId>
+    <artifactId>TOLMACHEVA-JAVA-PIZZAPROJECT</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pizzaProject</name>
+    <name>TOLMACHEVA-JAVA-PIZZAPROJECT</name>
     <description>pizzaProject</description>
     <properties>
         <java.version>17</java.version>
