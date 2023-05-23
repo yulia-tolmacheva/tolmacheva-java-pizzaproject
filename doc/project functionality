@@ -1,5 +1,5 @@
 Pizza Project Functionality
-The pizza project functionality would include the ability to create, read, update, and delete (CRUD) records for both pizzas, cafes, users. The functionality would be secured by requiring a username of "admin" to access all features and restricted for others.
+The pizza project functionality would include the ability to create, read, update, and delete (CRUD) records for both pizzas, restaurants, users. The functionality would be secured by requiring a username of "admin" to access all features and restricted for others.
 Pizza CRUD: Users with the "admin" username would be able to create new pizza records by providing information such as the pizza's name, size, key_ingredients, cafe_id. They would also be able to view, update, and delete existing pizza records.
 Users with another username would be able to create new pizza records by providing information such as the pizza's name, size, key_ingredients, cafe_id. They would also be able to view, update, and delete existing pizza records.
 Cafe CRUD: Users with the "admin" username would be able to create new cafe records by providing information such as the cafe's name, location, and phone. They would also be able to view, update, and delete existing cafe records.
@@ -10,6 +10,6 @@ POST requests: Users would be able to create new resources, delete existing reso
 GET is working for all. Only users with “admin” username would be able to see all users.
 Security: The application would be secured by requiring a username of "admin" to access the cafe and users CRUD functionality.
 The application would be secured by requiring a username to access the pizza functionality.
-The application would also have the ability to retrieve all pizzas, retrieve a specific pizza, retrieve all cafes, retrieve a specific cafe, retrieve all pizzas and cafes, retrieve all users (only for admin)
+The application would also have the ability to retrieve all pizzas, retrieve a specific pizza, retrieve all restaurants, retrieve a specific cafe, retrieve all pizzas and restaurants, retrieve all users (only for admin)
 (all of the functions you can find here->https://docs.google.com/document/d/1d634J1H5YcM2TPcX8iCWfT5-SL1RmdlUt3hV3Xrp-F4/edit?usp=sharing)
 Cafe to Pizza has bidirectional @OneToMany relationship. This means that one cafe can have multiple pizzas, but each pizza can only belong to one cafe.
