@@ -1,6 +1,8 @@
 package de.telran.pizzaproject.controller;
 
+import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.model.entity.Restaurant;
+import de.telran.pizzaproject.service.PizzaService;
 import de.telran.pizzaproject.service.RestaurantService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,20 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/restaurants")
-public class RestaurantController {
+@RequestMapping("/pizzas")
+public class PizzaController {
 
-    private final RestaurantService service;
+    private final PizzaService service;
 
-    public RestaurantController(RestaurantService service) {
+    public PizzaController(PizzaService service) {
         this.service = service;
     }
 
     @GetMapping
     public String getAll(Model model) {
-        List<Restaurant> restaurants = service.getAllRestaurants();
-        model.addAttribute("restaurants", restaurants);
-        model.addAttribute("restaurantToAdd", new Restaurant());
-        return "restaurant/restaurants";
+        List<Pizza> pizzas = service.getAllPizzas();
+        model.addAttribute("pizzas", pizzas);
+        model.addAttribute("pizzaToAdd", new Pizza());
+        return "pizza/pizzas";
     }
 }

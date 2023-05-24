@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All restaurants</title>
+</head>
+<body>
+
+<h1>All users</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Access rights</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user, iter : ${users}">
+        <td th:text="${iter.index}+1"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.password}"></td>
+        <td th:text="${user.accessRights}"></td>
+        <td>
+            <form th:action="@{/user/edit}" th:method="post">
+                <div>
+                    <input type="hidden" th:value="${user.id}" name="userId">
+                </div>
+                <div>
+                    <button type="submit">Edit</button>
+                </div>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/user/delete}" th:method="post">
+                <div>
+                    <input type="hidden" th:value="${user.id}" name="userId">
+                </div>
+                <div>
+                    <button type="submit">Delete</button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
