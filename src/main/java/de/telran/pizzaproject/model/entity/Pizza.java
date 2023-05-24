@@ -20,5 +20,5 @@ public class Pizza {
     private int size;
     private BigDecimal price;
     private String keyIngredients;
-    private Long cafeId;
+    private Long restaurantId;
 }

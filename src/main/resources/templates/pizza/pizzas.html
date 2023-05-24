@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All restaurants</title>
+</head>
+<body>
+
+<h1>All pizzas</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Price</th>
+        <th>Key Ingredients</th>
+        <th>Restaurant</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pizza, iter : ${pizzas}">
+        <td th:text="${iter.index}+1"></td>
+        <td th:text="${pizza.name}"></td>
+        <td th:text="${pizza.size}"></td>
+        <td th:text="${pizza.price}"></td>
+        <td th:text="${pizza.keyIngredients}"></td>
+        <td th:text="${pizza.restaurantId}"></td>
+        <td>
+            <form th:action="@{/pizza/edit}" th:method="post">
+                <div>
+                    <input type="hidden" th:value="${pizza.id}" name="pizzaId">
+                </div>
+                <div>
+                    <button type="submit">Edit</button>
+                </div>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/pizza/delete}" th:method="post">
+                <div>
+                    <input type="hidden" th:value="${pizza.id}" name="pizzaId">
+                </div>
+                <div>
+                    <button type="submit">Delete</button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
