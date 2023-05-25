@@ -21,4 +21,11 @@ public class Pizza {
     private BigDecimal price;
     private String keyIngredients;
     private Long restaurantId;
+
+    public Pizza(Long id) {
+        this.id = id;
+    }
+
+    public Pizza() {
+    }
 }
