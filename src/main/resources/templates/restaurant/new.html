@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add New Pizza</title>
+    <title>Add New Restaurant</title>
 </head>
 <body>
 
-<h2>Add new Pizza:</h2>
+<h2>Add new Restaurant:</h2>
 
-<form th:method="POST" th:action="@{/pizzas/new}" th:object="${pizzaToAdd}">
+<form th:method="POST" th:action="@{/restaurants/new}" th:object="${restaurantToAdd}">
   <label for="name">Enter name: </label>
   <input type="text" th:field="*{name}" id="name">
   <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
   <br/>
 
   <label for="size">Enter size: </label>
-  <input type="number" th:field="*{size}" id="size">
+  <input type="text" th:field="*{size}" id="size">
   <div style="color:red" th:if="${#fields.hasErrors('size')}" th:errors="*{size}"> Error</div>
   <br/>
 

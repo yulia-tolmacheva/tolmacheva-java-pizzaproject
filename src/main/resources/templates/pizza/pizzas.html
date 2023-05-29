@@ -38,7 +38,7 @@
         <span th:if="${pizza.id==pizzaToUpdateId}">
             <form th:action="@{/pizzas/edit/{id}(id=${pizza.getId()})}" th:object="${pizzaToUpdate}" th:method="post">
                 <td>
-                <input type="text" th:value="${pizza.name}" th:field="*{name}" name="name">
+                <input type="text" th:value="${pizza.name}"  name="name">
                 </td>
                 <td>
                 <input type="number" th:value="${pizza.size}" name="size">
@@ -59,28 +59,6 @@
                 <button type="submit">Save</button>
                 </td>
                 </form>
-
-
-<!--            <form th:action="@{/pizzas/edit}" th:object="${pizzaToUpdate}" th:method="post">-->
-<!--                <td>-->
-<!--                <input type="text" th:value="*{name}" name="name">-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                <input type="number" th:value="*{size}" name="size">-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                <input type="text" th:value="*{price}" name="price">-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                <input type="text" th:value="*{keyIngredients}" name="keyIngredients">-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                <input type="text" th:value="*{restaurantId}" name="restaurantId">-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                <button type="submit">Save</button>-->
-<!--                </td>-->
-<!--                </form>-->
         </span>
 
         <td th:unless="${pizza.id==pizzaToUpdateId}">
