@@ -6,6 +6,7 @@ import de.telran.pizzaproject.service.PizzaService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PizzaServiceImpl implements PizzaService {
@@ -20,4 +21,19 @@ public class PizzaServiceImpl implements PizzaService {
     public List<Pizza> getAllPizzas() {
         return repository.findAll();
     }
+
+    @Override
+    public Pizza getPizzaById(Long pizzaId) {
+        return repository.getReferenceById(pizzaId);
+    }
+    @Override
+    public Pizza addOrUpdate(Pizza pizza) {
+        return repository.save(pizza);
+    }
+
+    @Override
+    public void deletePizza(Long pizzaId) {
+        repository.deleteById(pizzaId);
+    }
+
 }
