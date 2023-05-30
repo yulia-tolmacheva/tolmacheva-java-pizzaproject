@@ -44,9 +44,9 @@
         </div>
 
         <div>
-            <label for="restaurantId">Enter restaurant: </label>
-            <input type="text" th:field="*{restaurantId}" id="restaurantId">
-            <div class="error" th:if="${#fields.hasErrors('restaurantId')}" th:errors="*{restaurantId}"> Error</div>
+            <label for="restaurantId">Select restaurant: </label>
+            <input type="text" th:field="*{restaurant.id}" id="restaurantId">
+            <div class="error" th:if="${#fields.hasErrors('restaurant')}" th:errors="*{restaurant}"> Error</div>
         </div>
 
         </div>
