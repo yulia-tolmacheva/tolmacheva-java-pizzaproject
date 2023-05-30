@@ -55,22 +55,26 @@ public class PizzaController {
     }
 
     @PostMapping("/edit")
-    public String showFieldsEditPizza(@ModelAttribute("pizzaToUpdate") Pizza pizzaToUpdate,
-            @RequestParam Long pizzaToUpdateId,
-                                      HttpServletRequest request, RedirectAttributes attributes, Model model) {
-//        Long pizzaToUpdateId = Long.getLong(request.getParameter("pizzaToUpdateId"));
-//        Pizza pizza = service.getPizzaById(pizzaToUpdateId);
-        System.out.println("pizza = " + pizzaToUpdate.getId());
-//        model.addAttribute("pizzaToUpdate", pizzaToUpdate);
-        attributes.addFlashAttribute("pizzaToUpdateId", pizzaToUpdateId);
+    public String showFieldsToEditPizza(
+            @RequestParam Long pizzaToUpdateId, RedirectAttributes attributes) {
 
+        attributes.addFlashAttribute("pizzaToUpdateId", pizzaToUpdateId);
         return "redirect:/pizzas";
     }
 
     @PostMapping("/edit/{id}")
-    public String editPizza(@ModelAttribute("pizzaToUpdate") Pizza pizzaToUpdate,
-                            HttpServletRequest request,
-                            Model model, RedirectAttributes attributes) {
+    public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
+                            BindingResult result, Model model,
+                            RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            System.out.println(result.hasErrors());
+            System.out.println(result.getAllErrors());
+            model.addAttribute("pizzaToUpdate", pizzaToUpdate);
+            attributes.addFlashAttribute("pizzaToUpdateId", pizzaToUpdate.getId());
+            attributes.addFlashAttribute("result", result.getAllErrors());
+            attributes.addFlashAttribute("errorField", pizzaToUpdate.getId());
+            return "redirect:/pizzas";
+        }
         attributes.addFlashAttribute("updated", pizzaToUpdate.getId());
         service.addOrUpdate(pizzaToUpdate);
         return "redirect:/pizzas";
