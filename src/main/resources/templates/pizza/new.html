@@ -3,47 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Add New Pizza</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 
-<h2>Add new Pizza:</h2>
+<nav>
+    <a href="/">Home</a>
+    <a href="/restaurants">Restaurants</a>
+    <a href="/pizzas">Pizzas</a>
+    <a href="/users">Users</a>
+</nav>
 
-<form th:method="POST" th:action="@{/pizzas/new}" th:object="${pizzaToAdd}">
-  <label for="name">Enter name: </label>
-  <input type="text" th:field="*{name}" id="name">
-  <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
-  <br/>
+<h1>Add new Pizza:</h1>
 
-  <label for="size">Enter size: </label>
-  <input type="number" th:field="*{size}" id="size">
-  <div style="color:red" th:if="${#fields.hasErrors('size')}" th:errors="*{size}"> Error</div>
-  <br/>
+    <form class="container" th:method="POST" th:action="@{/pizzas/new}" th:object="${pizzaToAdd}">
+        <div>
+        <div>
+            <label for="name">Enter name: </label>
+            <input type="text" th:field="*{name}" id="name">
+            <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
+        </div>
 
-  <label for="price">Enter price: </label>
-  <input type="text" th:field="*{price}" id="price">
-  <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"> Error</div>
-  <br/>
+        <div>
+            <label for="size">Enter size: </label>
+            <input type="number" th:field="*{size}" id="size">
+            <div class="error" th:if="${#fields.hasErrors('size')}" th:errors="*{size}"> Error</div>
+        </div>
 
-  <label for="keyIngredients">Enter Key Ingredients: </label>
-  <input type="text" th:field="*{keyIngredients}" id="keyIngredients">
-  <div style="color:red" th:if="${#fields.hasErrors('keyIngredients')}" th:errors="*{keyIngredients}"> Error</div>
-  <br/>
+        <div>
+            <label for="price">Enter price: </label>
+            <input type="text" th:field="*{price}" id="price">
+            <div class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"> Error</div>
+        </div>
 
-  <label for="restaurantId">Enter restaurant: </label>
-  <input type="text" th:field="*{restaurantId}" id="restaurantId">
-  <div style="color:red" th:if="${#fields.hasErrors('restaurantId')}" th:errors="*{restaurantId}"> Error</div>
-  <br/>
+        <div>
+            <label for="keyIngredients">Enter Key Ingredients: </label>
+            <input type="text" th:field="*{keyIngredients}" id="keyIngredients">
+            <div class="error" th:if="${#fields.hasErrors('keyIngredients')}" th:errors="*{keyIngredients}"> Error
+            </div>
+        </div>
 
-  <input type="submit" value="Create! ">
-</form>
+        <div>
+            <label for="restaurantId">Enter restaurant: </label>
+            <input type="text" th:field="*{restaurantId}" id="restaurantId">
+            <div class="error" th:if="${#fields.hasErrors('restaurantId')}" th:errors="*{restaurantId}"> Error</div>
+        </div>
 
-<td>
-  <form th:action="@{/pizzas}" th:method="get">
-    <div>
-      <button type="submit">Back</button>
-    </div>
-  </form>
-</td>
+        </div>
+
+        <div class="center_button create">
+            <button type="submit">Create</button>
+        </div>
+
+    </form>
+
+<div class="center_button">
+    <form th:action="@{/pizzas}" th:method="get">
+        <div>
+            <button type="submit">Back</button>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

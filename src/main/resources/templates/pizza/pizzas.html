@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>All restaurants</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 
+<nav>
+    <a href="/">Home</a>
+    <a href="/restaurants">Restaurants</a>
+    <a href="/pizzas">Pizzas</a>
+    <a href="/users">Users</a>
+</nav>
+
 <h1>All pizzas</h1>
 
-
-<table>
+<table class="table">
     <thead>
     <tr>
         <th>№</th>
-        <th>ID</th>
         <th>Name</th>
         <th>Size</th>
         <th>Price</th>
@@ -26,46 +31,14 @@
     <tbody>
     <tr th:each="pizza, iter : ${pizzas}">
         <td th:text="${iter.index}+1"></td>
-        <td th:text="${pizza.id}"></td>
-
-        <span th:unless="${pizza.id==pizzaToUpdateId}">
         <td th:text="${pizza.name}"></td>
         <td th:text="${pizza.size}"></td>
         <td th:text="${pizza.price}"></td>
         <td th:text="${pizza.keyIngredients}"></td>
         <td th:text="${pizza.restaurantId}"></td>
-        </span>
 
-        <span th:if="${pizza.id==pizzaToUpdateId}">
-            <form th:action="@{/pizzas/edit/{id}(id=${pizza.getId()})}" th:object="${pizzaToUpdate}" th:method="post">
-                <td>
-                    <input id="name" type="text" th:value="${pizza.name}" name="name">
-                    <span th:if="${#fields.hasErrors('name')}">Full name error</span>
-                </td>
-                <td>
-                <input type="number" th:value="${pizza.size}" name="size">
-                    <span th:if="${#fields.hasErrors('size')}" th:errors="*{size}">Full name error</span>
-                </td>
-                <td>
-                <input type="text" th:value="${pizza.price}" name="price">
-                </td>
-                <td>
-                <input type="text" th:value="${pizza.keyIngredients}" name="keyIngredients">
-                </td>
-                <td>
-                <input type="text" th:value="${pizza.restaurantId}" name="restaurantId">
-                </td>
-                <div>
-                    <input type="hidden" th:value="${pizza.id}" name="pizzaToUpdateId">
-                </div>
-                <td>
-                    <button type="submit">Save</button>
-                </td>
-                </form>
-        </span>
-
-        <td th:unless="${pizza.id==pizzaToUpdateId}">
-            <form th:action="@{/pizzas/edit}" th:method="post">
+        <td>
+            <form th:action="@{/pizzas/edit}" th:method="get">
                 <div>
                     <input type="hidden" th:value="${pizza.id}" name="pizzaToUpdateId">
                 </div>
@@ -91,7 +64,7 @@
 
 <br>
 
-<div>
+<div class ="center_button">
     <form th:action="@{/pizzas/new}" th:method="get">
         <div>
             <button type="submit">Add new pizza</button>
@@ -99,15 +72,10 @@
     </form>
 </div>
 
-<!--<div th:if="${result}">-->
-<!--    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="'name'"> Error</div>-->
-<!--</div>-->
+
 
 <div style="color: olivedrab" th:if="${deleted}">
     Pizza with id <span th:text="${deleted}"></span> successfully deleted
-</div>
-<div style="color: red" th:if="${errorField}">
-    Pizza with id <span th:text="${errorField}"></span> has an error
 </div>
 <div style="color: olivedrab" th:if="${added}">
     Pizza with id <span th:text="${added}"></span> successfully added
@@ -115,22 +83,6 @@
 <div style="color: olivedrab" th:if="${updated}">
     Pizza with id <span th:text="${updated}"></span> successfully updated
 </div>
-<div style="color: red" th:if="${error}">
-    <span th:text="${error}"></span>
-</div>
 
 </body>
 </html>
-
-<script>
-    function validateForm() {
-        // var name = document.getElementById("name").value;
-        //
-        // if (name == "") {
-        //     alert("Name must be filled out");
-        //     return false;
-        // }
-
-        return true;
-    }
-</script>

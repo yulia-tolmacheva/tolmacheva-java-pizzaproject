@@ -9,8 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/pizzas")
@@ -54,34 +57,30 @@ public class PizzaController {
         return "redirect:/pizzas";
     }
 
-    @PostMapping("/edit")
-    public String showFieldsToEditPizza(
-            @RequestParam Long pizzaToUpdateId, RedirectAttributes attributes) {
-
-        attributes.addFlashAttribute("pizzaToUpdateId", pizzaToUpdateId);
-        return "redirect:/pizzas";
+    @GetMapping("/edit")
+    public String openEditPage(@RequestParam Long pizzaToUpdateId,
+                               Model model) {
+        model.addAttribute("pizzaToUpdate", service.getPizzaById(pizzaToUpdateId));
+        return "pizza/edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
-                            BindingResult result, Model model,
-                            RedirectAttributes attributes) {
+    public String editPizza(@PathVariable("id") Long id,
+                            @ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
+                            BindingResult result, RedirectAttributes attributes,
+                            Model model) {
         if (result.hasErrors()) {
-            System.out.println(result.hasErrors());
-            System.out.println(result.getAllErrors());
-            model.addAttribute("pizzaToUpdate", pizzaToUpdate);
-            attributes.addFlashAttribute("pizzaToUpdateId", pizzaToUpdate.getId());
-            attributes.addFlashAttribute("result", result.getAllErrors());
-            attributes.addFlashAttribute("errorField", pizzaToUpdate.getId());
-            return "redirect:/pizzas";
+            return "pizza/edit";
         }
-        attributes.addFlashAttribute("updated", pizzaToUpdate.getId());
         service.addOrUpdate(pizzaToUpdate);
+        model.addAttribute("pizzaToUpdate", pizzaToUpdate);
+        attributes.addFlashAttribute("updated", pizzaToUpdate.getId());
         return "redirect:/pizzas";
     }
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        model.addAttribute("pizzaToUpdate", new Pizza(0L));
+        model.addAttribute("pizzaToUpdate", new Pizza());
     }
 }
+
