@@ -35,7 +35,7 @@
         <td th:text="${pizza.size}"></td>
         <td th:text="${pizza.price}"></td>
         <td th:text="${pizza.keyIngredients}"></td>
-        <td th:text="${pizza.restaurantId}"></td>
+        <td th:text="${pizza.restaurant.id}"></td>
 
         <td>
             <form th:action="@{/pizzas/edit}" th:method="get">

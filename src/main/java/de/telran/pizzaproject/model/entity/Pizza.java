@@ -35,7 +35,9 @@ public class Pizza {
     @Size(min = 5, max = 40, message = "{pizza.ingredients.invalid}")
     private String keyIngredients;
 
-    private Long restaurantId;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
     public Pizza(Long id) {
         this.id = id;
