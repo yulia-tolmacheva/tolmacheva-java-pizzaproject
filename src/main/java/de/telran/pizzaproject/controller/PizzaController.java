@@ -1,28 +1,30 @@
 package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.Pizza;
+import de.telran.pizzaproject.repository.IngredientRepository;
+import de.telran.pizzaproject.repository.RestaurantRepository;
 import de.telran.pizzaproject.service.PizzaService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/pizzas")
 public class PizzaController {
 
     private final PizzaService service;
+    private final IngredientRepository ingredientRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    public PizzaController(PizzaService service) {
+    public PizzaController(PizzaService service, IngredientRepository ingredientRepository, RestaurantRepository restaurantRepository) {
         this.service = service;
+        this.ingredientRepository = ingredientRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     @GetMapping
@@ -80,6 +82,8 @@ public class PizzaController {
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("pizzaToUpdate", new Pizza());
+        model.addAttribute("allIngredients", ingredientRepository.findAll());
+        model.addAttribute("allRestaurants", restaurantRepository.findAll());
     }
 }
 

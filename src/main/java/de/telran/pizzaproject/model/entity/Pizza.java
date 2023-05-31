@@ -1,12 +1,15 @@
 package de.telran.pizzaproject.model.entity;
 
+import de.telran.pizzaproject.repository.IngredientRepository;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,11 +38,13 @@ public class Pizza {
     @Digits(integer = 2, fraction = 2, message = "{pizza.price.invalid}")
     private BigDecimal price;
 
-    @NotBlank(message = "{field.required}")
-//    @Size(min = 5, max = 40, message = "{pizza.ingredients.invalid}")
-//    @ManyToMany(mappedBy = "")
-//    private Set<Ingredient> ingredients;
-    private String ingredients;
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "pizzas_ingredients",
+            joinColumns = @JoinColumn(name = "pizza_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
@@ -50,5 +55,10 @@ public class Pizza {
     }
 
     public Pizza() {
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

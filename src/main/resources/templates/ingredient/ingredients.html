@@ -148,6 +148,14 @@
 </div>
 
 
+<div class="center_button">
+    <form th:action="@{/pizzas}" th:method="get">
+        <div>
+            <button type="submit">Back to pizzas</button>
+        </div>
+    </form>
+</div>
+
 <div style="color: olivedrab" th:if="${deleted}">
     Ingredient with id <span th:text="${deleted}"></span> successfully deleted
 </div>

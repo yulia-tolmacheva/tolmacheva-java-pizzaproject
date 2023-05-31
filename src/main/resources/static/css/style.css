@@ -50,7 +50,7 @@ footer {
     text-decoration: none;
 }
 
-table {
+table.table {
     /*border-collapse: collapse;*/
     width: 800px;
     text-align: center;
@@ -71,7 +71,7 @@ table {
 
 button {
     width: 120px;
-    height: 30px;
+    height: 40px;
     font-size: 15px;
 }
 
@@ -121,3 +121,8 @@ input {
     width: fit-content;
 }
 
+
+.ingredients {
+    display: flex;
+    flex-direction: column;
+}
