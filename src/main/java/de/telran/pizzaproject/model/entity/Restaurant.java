@@ -20,7 +20,6 @@ public class Restaurant {
     private String address;
     private int phone;
 
-    @OneToMany
-    @JoinColumn(name = "pizza_id")
-    private List<Pizza> pizza;
+    @OneToMany(mappedBy="restaurant")
+    private List<Pizza> pizzas;
 }

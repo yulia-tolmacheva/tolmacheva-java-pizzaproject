@@ -23,7 +23,7 @@
         <th>Name</th>
         <th>Size</th>
         <th>Price</th>
-        <th>Key Ingredients</th>
+        <th>Ingredients</th>
         <th>Restaurant</th>
     </tr>
     </thead>
@@ -34,7 +34,7 @@
         <td th:text="${pizza.name}"></td>
         <td th:text="${pizza.size}"></td>
         <td th:text="${pizza.price}"></td>
-        <td th:text="${pizza.keyIngredients}"></td>
+        <td th:text="${pizza.ingredients}"></td>
         <td th:text="${pizza.restaurant.id}"></td>
 
         <td>
@@ -68,6 +68,14 @@
     <form th:action="@{/pizzas/new}" th:method="get">
         <div>
             <button type="submit">Add new pizza</button>
+        </div>
+    </form>
+</div>
+
+<div class ="center_button">
+    <form th:action="@{/ingredients}" th:method="get">
+        <div>
+            <button type="submit">Open ingredients</button>
         </div>
     </form>
 </div>

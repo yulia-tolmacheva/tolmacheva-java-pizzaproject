@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All restaurants</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/restaurants">Restaurants</a>
+    <a href="/pizzas">Pizzas</a>
+    <a href="/users">Users</a>
+</nav>
+
+<h1>All ingredients</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Name</th>
+        <th>Vegetarian</th>
+        <th>Spicy</th>
+        <th>Gluten Free</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="ingredient, iter : ${ingredients}">
+        <td th:text="${iter.index}+1"></td>
+        <td th:text="${ingredient.name}"></td>
+        <td>
+            <label>
+                <input type="checkbox" disabled="disabled" name="vegetarian" th:checked="${ingredient.isVegetarian()}"/>
+            </label>
+        </td>
+        <td>
+            <label>
+                <input type="checkbox" disabled="disabled" name="spicy" th:checked="${ingredient.isSpicy()}"/>
+            </label>
+        </td>
+        <td>
+            <label>
+                <input type="checkbox" disabled="disabled" name="glutenfree" th:checked="${ingredient.isGlutenfree()}"/>
+            </label>
+        </td>
+
+        <td>
+            <form th:action="@{/ingredients/update}" th:method="post">
+                <div>
+                    <input type="hidden" th:value="${ingredient.id}" name="ingredientToUpdateId">
+                </div>
+                <div>
+                    <button type="submit">Edit</button>
+                </div>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/ingredients/delete}" th:method="delete">
+                <div>
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" th:value="${ingredient.id}" name="ingredientId">
+                </div>
+                <div>
+                    <button type="submit">Delete</button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+
+<div class="new" th:if="${ingredientToUpdateId != null}">
+    <h2>Update the ingredient</h2>
+    <form th:action="@{/ingredients/update/{id}(id=${ingredientToUpdateId})}" th:object="${ingredientToUpdate}" th:method="patch">
+        <div>
+            <input type="hidden" name="_method" value="patch">
+            <input type="hidden" th:value="${ingredientToUpdate.id}" name="ingredientToUpdateId">
+        </div>
+        <div>
+            <label>Name</label>
+            <label>
+                <input type="text" th:field="*{name}">
+                <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
+            </label>
+        </div>
+        <div>
+            <label>Vegetarian</label>
+            <label>
+                <input type="checkbox" name="vegetarian" th:checked="*{isVegetarian()}"/>
+            </label>
+        </div>
+        <div>
+            <label>Spicy</label>
+            <label>
+                <input type="checkbox" name="spicy" th:checked="*{isSpicy()}"/>
+            </label>
+        </div>
+        <div>
+            <label>Gluten Free</label>
+            <label>
+                <input type="checkbox" name="glutenfree" th:checked="*{isGlutenfree()}"/>
+            </label>
+        </div>
+        <div>
+            <button type="submit">Update</button>
+        </div>
+    </form>
+</div>
+
+<div class="new" th:if="${ingredientToUpdateId == null}">
+    <h2>Add new ingredient</h2>
+    <form th:action="@{/ingredients}" th:object="${ingredientToAdd}" th:method="post">
+        <div>
+            <label>Name</label>
+            <label>
+                <input type="text" th:field="*{name}">
+                <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
+            </label>
+        </div>
+        <div>
+            <label>Vegetarian</label>
+            <label>
+                <input type="checkbox" name="vegetarian" th:checked="*{isVegetarian()}" id="isVegetarian"/>
+            </label>
+        </div>
+        <div>
+            <label>Spicy</label>
+            <label>
+                <input type="checkbox" name="spicy" th:checked="*{isSpicy()}" id="isSpicy"/>
+            </label>
+        </div>
+        <div>
+            <label>Gluten Free</label>
+            <label>
+                <input type="checkbox" name="glutenfree" th:checked="*{isGlutenfree()}" id="isGlutenFree"/>
+            </label>
+        </div>
+        <div>
+            <button type="submit">Add</button>
+        </div>
+    </form>
+</div>
+
+
+<div style="color: olivedrab" th:if="${deleted}">
+    Ingredient with id <span th:text="${deleted}"></span> successfully deleted
+</div>
+<div style="color: olivedrab" th:if="${added}">
+    Ingredient with id <span th:text="${added}"></span> successfully added
+</div>
+<div style="color: olivedrab" th:if="${updated}">
+    Ingredient with id <span th:text="${updated}"></span> successfully updated
+</div>
+
+</body>
+</html>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>All restaurants</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 
@@ -15,6 +16,7 @@
         <th>Name</th>
         <th>Address</th>
         <th>Phone</th>
+        <th>Pizzas</th>
     </tr>
     </thead>
     <tbody>
@@ -23,6 +25,7 @@
         <td th:text="${restaurant.name}"></td>
         <td th:text="${restaurant.address}"></td>
         <td th:text="${restaurant.phone}"></td>
+        <td th:text="${restaurant.pizzas}"></td>
         <td>
             <form th:action="@{/restaurant/edit}" th:method="post">
                 <div>
