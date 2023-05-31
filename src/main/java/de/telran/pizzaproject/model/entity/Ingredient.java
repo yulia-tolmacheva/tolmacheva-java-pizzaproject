@@ -28,4 +28,9 @@ public class Ingredient {
 //    @ManyToMany(mappedBy = "")
 //    private Set<Pizza> ingredients;
 
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

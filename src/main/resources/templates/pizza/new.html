@@ -16,8 +16,8 @@
 
 <h1>Add new Pizza:</h1>
 
-    <form class="container" th:method="POST" th:action="@{/pizzas/new}" th:object="${pizzaToAdd}">
-        <div>
+<form class="container" th:method="POST" th:action="@{/pizzas/new}" th:object="${pizzaToAdd}">
+    <div>
         <div>
             <label for="name">Enter name: </label>
             <input type="text" th:field="*{name}" id="name">
@@ -37,25 +37,44 @@
         </div>
 
         <div>
-            <label for="ingredients">Select Ingredients: </label>
-            <input type="text" th:field="*{ingredients}" id="ingredients">
+            <label class="ingredients" for="ingredients">
+                Select Ingredients:
+                <table>
+                    <tbody>
+                    <tr th:each="ingredient : ${allIngredients}">
+                        <td th:text="${ingredient.name}">
+                        </td>
+                        <td>
+                            <input type="checkbox" name="ingredients" id="ingredients" th:value="${ingredient.id}"
+                                   th:field="*{ingredients}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </label>
             <div class="error" th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}"> Error
             </div>
         </div>
 
         <div>
             <label for="restaurantId">Select restaurant: </label>
-            <input type="text" th:field="*{restaurant.id}" id="restaurantId">
+            <select th:field="*{restaurant}">
+                <option th:each="restaurant : ${allRestaurants}"
+                        th:value="${restaurant.id}"
+                        th:text="${restaurant.name}"
+                        id="restaurantId">
+                </option>
+            </select>
             <div class="error" th:if="${#fields.hasErrors('restaurant')}" th:errors="*{restaurant}"> Error</div>
         </div>
 
-        </div>
+    </div>
 
-        <div class="center_button create">
-            <button type="submit">Create</button>
-        </div>
+    <div class="center_button create">
+        <button type="submit">Create</button>
+    </div>
 
-    </form>
+</form>
 
 <div class="center_button">
     <form th:action="@{/pizzas}" th:method="get">

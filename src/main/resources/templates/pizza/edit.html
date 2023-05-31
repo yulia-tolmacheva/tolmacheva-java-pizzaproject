@@ -41,15 +41,34 @@
         </div>
 
         <div>
-            <label for="ingredients">Select ingredients: </label>
-            <input type="text" th:field="*{ingredients}" id="ingredients">
+            <label class="ingredients" for="ingredients">
+                Select Ingredients:
+                <table>
+                    <tbody>
+                    <tr th:each="ingredient : ${allIngredients}">
+                        <td th:text="${ingredient.name}">
+                        </td>
+                        <td>
+                            <input type="checkbox" name="ingredients" id="ingredients" th:value="${ingredient.id}"
+                                   th:field="*{ingredients}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </label>
             <div class="error" th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}"> Error
             </div>
         </div>
 
         <div>
             <label for="restaurantId">Select restaurant: </label>
-            <input type="text" th:field="*{restaurant.id}" id="restaurantId">
+            <select th:field="*{restaurant}">
+                <option th:each="restaurant : ${allRestaurants}"
+                        th:value="${restaurant.id}"
+                        th:text="${restaurant.name}"
+                        id="restaurantId">
+                </option>
+            </select>
             <div class="error" th:if="${#fields.hasErrors('restaurant')}" th:errors="*{restaurant}"> Error</div>
         </div>
 

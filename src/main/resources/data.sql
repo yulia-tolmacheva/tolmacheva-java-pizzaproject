@@ -16,16 +16,27 @@ values ('Cheese', true, false, true);
 insert into ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
 values ('Salami', false, true, true);
 
-insert into pizzas (name, size, price, ingredients, restaurant_id)
-values ('Pizza1', 14, 10.99, 1, 1);
-insert into pizzas (name, size, price, ingredients, restaurant_id)
-values ('Pizza2', 14, 10.99, 1, 1);
-insert into pizzas (name, size, price, ingredients, restaurant_id)
-values ('Pizza3', 15, 12.99, 1, 1);
-insert into pizzas (name, size, price, ingredients, restaurant_id)
-values ('Pizza4', 14, 10.99, 1, 1);
-insert into pizzas (name, size, price, ingredients, restaurant_id)
-values ('Pizza5', 15, 12.99, 1, 1);
+insert into pizzas (name, size, price, restaurant_id)
+values ('Pizza1', 14, 10.99, 1);
+insert into pizzas (name, size, price, restaurant_id)
+values ('Pizza2', 14, 10.99, 1);
+insert into pizzas (name, size, price, restaurant_id)
+values ('Pizza3', 15, 12.99, 1);
+insert into pizzas (name, size, price, restaurant_id)
+values ('Pizza4', 14, 10.99, 1);
+insert into pizzas (name, size, price, restaurant_id)
+values ('Pizza5', 15, 12.99, 1);
+
+insert into pizzas_ingredients values (1, 1);
+insert into pizzas_ingredients values (2, 1);
+insert into pizzas_ingredients values (3, 1);
+insert into pizzas_ingredients values (4, 1);
+insert into pizzas_ingredients values (5, 1);
+insert into pizzas_ingredients values (1, 2);
+insert into pizzas_ingredients values (2, 2);
+insert into pizzas_ingredients values (3, 2);
+insert into pizzas_ingredients values (4, 2);
+insert into pizzas_ingredients values (5, 2);
 
 insert into users (name, password, access_rights)
 values ('admin', 'admin', 'admin');
