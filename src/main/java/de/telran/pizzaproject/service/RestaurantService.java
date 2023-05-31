@@ -9,4 +9,9 @@ public interface RestaurantService {
 
     List<Restaurant> getAllRestaurants();
 
+    Restaurant addOrUpdate(Restaurant restaurant);
+
+    void deletePizza(Long restaurantId);
+
+    Restaurant getRestaurantById(Long restaurantId);
 }

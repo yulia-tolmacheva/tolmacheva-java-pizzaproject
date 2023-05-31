@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +27,6 @@ public class Pizza {
 
     @NotBlank(message = "{field.required}")
     @Size(min = 1, max = 14, message = "{pizza.name.invalid}")
-//    @UniqueElements
     private String name;
 
     @NotNull(message = "{field.required}")

@@ -1,11 +1,14 @@
 package de.telran.pizzaproject.controller;
 
+import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.model.entity.Restaurant;
 import de.telran.pizzaproject.service.RestaurantService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -23,7 +26,49 @@ public class RestaurantController {
     public String getAll(Model model) {
         List<Restaurant> restaurants = service.getAllRestaurants();
         model.addAttribute("restaurants", restaurants);
-        model.addAttribute("restaurantToAdd", new Restaurant());
         return "restaurant/restaurants";
+    }
+
+    @GetMapping("/new")
+    public String addRestaurantDetails(@ModelAttribute("restaurantToAdd") Restaurant restaurant) {
+        return "restaurant/new";
+    }
+
+    @PostMapping("/new")
+    public String addRestaurant(@ModelAttribute("restaurantToAdd") @Valid Restaurant restaurant,
+                           BindingResult result,
+                           RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            return "restaurant/new";
+        }
+
+        Restaurant restaurantAdded = service.addOrUpdate(restaurant);
+        attributes.addFlashAttribute("added", restaurantAdded.getId());
+        return "redirect:/restaurants";
+    }
+
+    @DeleteMapping("/delete")
+    public String deletePizza(@RequestParam Long restaurantId, RedirectAttributes attributes) {
+        service.deletePizza(restaurantId);
+        attributes.addFlashAttribute("deleted", restaurantId);
+        return "redirect:/restaurants";
+    }
+
+    @GetMapping("/edit")
+    public String openEditPage(@RequestParam Long restaurantId,
+                               Model model) {
+        model.addAttribute("restaurantToUpdate", service.getRestaurantById(restaurantId));
+        return "restaurant/edit";
+    }
+
+    @PatchMapping("/edit/{id}")
+    public String editPizza(@ModelAttribute("restaurantToUpdate") @Valid Restaurant restaurantToUpdate,
+                            BindingResult result, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            return "restaurant/edit";
+        }
+        service.addOrUpdate(restaurantToUpdate);
+        attributes.addFlashAttribute("updated", restaurantToUpdate.getId());
+        return "redirect:/restaurants";
     }
 }

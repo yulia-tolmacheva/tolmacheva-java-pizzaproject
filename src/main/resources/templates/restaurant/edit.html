@@ -14,9 +14,14 @@
     <a href="/users">Users</a>
 </nav>
 
-<h1>Add new Restaurant:</h1>
+<h1>Edit Restaurant:</h1>
 
-<form class="container" th:method="POST" th:action="@{/restaurants/new}" th:object="${restaurantToAdd}">
+<form class="container" th:method="PATCH" th:action="@{/restaurants/edit/{id}(id=${restaurantToUpdate.getId()})}"
+      th:object="${restaurantToUpdate}">
+    <div>
+        <input type="hidden" name="_method" value="patch">
+        <input type="hidden" th:value="${restaurantToUpdate.id}" name="restaurantToUpdate">
+    </div>
     <div>
         <div>
             <label for="name">Enter name: </label>
@@ -38,7 +43,7 @@
 
     </div>
     <div class="center_button create">
-        <button type="submit">Create</button>
+        <button type="submit">Update</button>
     </div>
 </form>
 

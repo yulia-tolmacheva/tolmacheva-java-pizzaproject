@@ -68,20 +68,17 @@ public class PizzaController {
 
     @PatchMapping("/edit/{id}")
     public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
-                            BindingResult result, RedirectAttributes attributes,
-                            Model model) {
+                            BindingResult result, RedirectAttributes attributes) {
         if (result.hasErrors()) {
             return "pizza/edit";
         }
         service.addOrUpdate(pizzaToUpdate);
-        model.addAttribute("pizzaToUpdate", pizzaToUpdate);
         attributes.addFlashAttribute("updated", pizzaToUpdate.getId());
         return "redirect:/pizzas";
     }
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        model.addAttribute("pizzaToUpdate", new Pizza());
         model.addAttribute("allIngredients", ingredientRepository.findAll());
         model.addAttribute("allRestaurants", restaurantRepository.findAll());
     }
