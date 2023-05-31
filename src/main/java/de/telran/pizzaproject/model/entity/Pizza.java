@@ -1,18 +1,12 @@
 package de.telran.pizzaproject.model.entity;
 
-import de.telran.pizzaproject.repository.IngredientRepository;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.UniqueElements;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,6 +14,9 @@ import java.util.Set;
 @Getter
 @Setter
 public class Pizza {
+
+    public static final int PIZZA_MIN_SIZE = 12;
+    public static final int PIZZA_MAX_SIZE = 28;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +27,8 @@ public class Pizza {
     private String name;
 
     @NotNull(message = "{field.required}")
-    @Min(message = "{pizza.size.invalid}", value = 12)
-    @Max(message = "{pizza.size.invalid}", value = 28)
+    @Min(message = "{pizza.size.invalid}", value = PIZZA_MIN_SIZE)
+    @Max(message = "{pizza.size.invalid}", value = PIZZA_MAX_SIZE)
     private Integer size;
 
     @NotNull(message = "{field.required}")

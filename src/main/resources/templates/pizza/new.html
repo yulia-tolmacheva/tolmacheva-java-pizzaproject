@@ -25,8 +25,13 @@
         </div>
 
         <div>
-            <label for="size">Enter size: </label>
-            <input type="number" th:field="*{size}" id="size">
+            <label> Select size: </label>
+            <select th:field="*{size}">
+                <option th:each="size : ${allPizzaSizes}"
+                        th:text="${size}"
+                        th:value="${size}">
+                </option>
+            </select>
             <div class="error" th:if="${#fields.hasErrors('size')}" th:errors="*{size}"> Error</div>
         </div>
 
@@ -45,7 +50,8 @@
                         <td th:text="${ingredient.name}">
                         </td>
                         <td>
-                            <input type="checkbox" name="ingredients" id="ingredients" th:value="${ingredient.id}"
+                            <input type="checkbox"
+                                   name="ingredients" id="ingredients" th:value="${ingredient.id}"
                                    th:field="*{ingredients}"/>
                         </td>
                     </tr>

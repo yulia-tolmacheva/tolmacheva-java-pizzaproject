@@ -77,7 +77,8 @@
 
 <div class="new" th:if="${ingredientToUpdateId != null}">
     <h2>Update the ingredient</h2>
-    <form th:action="@{/ingredients/update/{id}(id=${ingredientToUpdateId})}" th:object="${ingredientToUpdate}" th:method="patch">
+    <form th:action="@{/ingredients/update/{id}(id=${ingredientToUpdateId})}"
+          th:object="${ingredientToUpdate}" th:method="patch">
         <div>
             <input type="hidden" name="_method" value="patch">
             <input type="hidden" th:value="${ingredientToUpdate.id}" name="ingredientToUpdateId">
