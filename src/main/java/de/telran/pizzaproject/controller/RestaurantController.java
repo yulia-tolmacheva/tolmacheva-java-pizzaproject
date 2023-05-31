@@ -1,6 +1,5 @@
 package de.telran.pizzaproject.controller;
 
-import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.model.entity.Restaurant;
 import de.telran.pizzaproject.service.RestaurantService;
 import jakarta.validation.Valid;

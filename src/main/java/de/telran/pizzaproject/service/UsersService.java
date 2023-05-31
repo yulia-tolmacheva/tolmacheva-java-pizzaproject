@@ -9,4 +9,9 @@ public interface UsersService {
 
     List<User> getAllUsers();
 
+    User addOrUpdate(User userToAdd);
+
+    User getUserById(Long userToAddId);
+
+    void deleteUser(Long userId);
 }

@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>All restaurants</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 
+<nav>
+    <a href="/">Home</a>
+    <a href="/restaurants">Restaurants</a>
+    <a href="/pizzas">Pizzas</a>
+    <a href="/users">Users</a>
+</nav>
+
 <h1>All users</h1>
 
-<table>
+<table class="table">
     <thead>
     <tr>
         <th>№</th>
         <th>Name</th>
         <th>Password</th>
-        <th>Access rights</th>
+        <th>Roles</th>
     </tr>
     </thead>
     <tbody>
@@ -22,11 +30,11 @@
         <td th:text="${iter.index}+1"></td>
         <td th:text="${user.name}"></td>
         <td th:text="${user.password}"></td>
-        <td th:text="${user.accessRights}"></td>
+        <td th:text="${user.getRoles()}"></td>
         <td>
-            <form th:action="@{/user/edit}" th:method="post">
+            <form th:action="@{/users/update}" th:method="post">
                 <div>
-                    <input type="hidden" th:value="${user.id}" name="userId">
+                    <input type="hidden" th:value="${user.id}" name="userToUpdateId">
                 </div>
                 <div>
                     <button type="submit">Edit</button>
@@ -34,8 +42,9 @@
             </form>
         </td>
         <td>
-            <form th:action="@{/user/delete}" th:method="post">
+            <form th:action="@{/users/delete}" th:method="delete">
                 <div>
+                    <input type="hidden" name="_method" value="delete">
                     <input type="hidden" th:value="${user.id}" name="userId">
                 </div>
                 <div>
@@ -46,6 +55,75 @@
     </tr>
     </tbody>
 </table>
+
+<div class="new" th:if="${userToUpdateId != null}">
+    <h2>Update user</h2>
+    <form th:action="@{/users/update/{id}(id=${userToUpdateId})}"
+          th:object="${userToUpdate}" th:method="patch">
+        <div>
+            <input type="hidden" name="_method" value="patch">
+            <input type="hidden" th:value="${userToUpdate.id}" name="userToUpdateId">
+        </div>
+        <div>
+            <label>Name</label>
+            <label>
+                <input type="text" th:field="*{name}">
+                <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
+            </label>
+        </div>
+        <div>
+            <label>Password</label>
+            <label>
+                <input type="text" th:field="*{password}">
+            </label>
+        </div>
+        <div>
+            <label>Roles</label>
+                <input type="checkbox" name="roles"
+                       th:each="role : ${allRoles}"
+                       th:text="${role.name}"
+                       th:value="${role.id}"
+                       th:field="*{roles}"
+                />
+        </div>
+        <div>
+            <button type="submit">Update</button>
+        </div>
+    </form>
+</div>
+
+<div class="new" th:if="${userToUpdateId == null}">
+    <h2>Add new user</h2>
+    <form th:action="@{/users}" th:object="${userToAdd}" th:method="post">
+        <div>
+            <label>Name</label>
+            <label>
+                <input type="text" th:field="*{name}">
+                <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
+            </label>
+        </div>
+        <div>
+            <label>Password</label>
+            <label>
+                <input type="text" th:field="*{password}">
+            </label>
+        </div>
+        <div>
+            <label class="roles">
+                Select Roles:
+                <input type="checkbox" name="roles"
+                       th:each="role : ${allRoles}"
+                       th:text="${role.name}"
+                       th:value="${role.id}"
+                       th:field="*{roles}"
+                />
+            </label>
+        </div>
+        <div>
+            <button type="submit">Add</button>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

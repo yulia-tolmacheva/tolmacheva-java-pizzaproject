@@ -28,13 +28,13 @@ public class IngredientsController {
     @GetMapping
     public String getAll(Model model) {
         List<Ingredient> ingredients = service.getAllIngredients();
-        model.addAttribute("ingredients", ingredients);
+//        model.addAttribute("ingredients", ingredients);
         model.addAttribute("ingredientToAdd", new Ingredient());
         return "ingredient/ingredients";
     }
 
     @PostMapping
-    public String addPizzaDetails(@ModelAttribute("ingredientToAdd") @Valid Ingredient ingredientToAdd,
+    public String addIngredientsDetails(@ModelAttribute("ingredientToAdd") @Valid Ingredient ingredientToAdd,
                                   BindingResult result,
                                   RedirectAttributes attributes, Model model) {
         if (result.hasErrors()) {
@@ -55,13 +55,13 @@ public class IngredientsController {
     }
 
     @PatchMapping("/update/{id}")
-    public String updatePizzaDetails(@ModelAttribute("ingredientToUpdate") @Valid Ingredient ingredientToUpdate,
+    public String updateIngredientsDetails(
+            @ModelAttribute("ingredientToUpdate") @Valid Ingredient ingredientToUpdate,
                                      BindingResult result,
                                      Model model,
                                      @RequestParam("ingredientToUpdateId") Long ingredientToUpdateId,
                                      RedirectAttributes attributes) {
         if (result.hasErrors()) {
-            model.addAttribute("ingredientToUpdate", ingredientToUpdate);
             model.addAttribute("ingredientToUpdateId", ingredientToUpdateId);
             return "/ingredient/ingredients";
         }

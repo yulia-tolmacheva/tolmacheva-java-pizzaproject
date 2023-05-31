@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/pizzas")
@@ -81,6 +83,7 @@ public class PizzaController {
     public void addAttributes(Model model) {
         model.addAttribute("allIngredients", ingredientRepository.findAll());
         model.addAttribute("allRestaurants", restaurantRepository.findAll());
+        model.addAttribute("allPizzaSizes", List.of(12, 20, 28));
     }
 }
 
