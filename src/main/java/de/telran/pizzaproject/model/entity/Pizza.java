@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "pizzas")
@@ -19,6 +22,7 @@ public class Pizza {
 
     @NotBlank(message = "{field.required}")
     @Size(min = 1, max = 14, message = "{pizza.name.invalid}")
+//    @UniqueElements
     private String name;
 
     @NotNull(message = "{field.required}")
@@ -28,12 +32,14 @@ public class Pizza {
 
     @NotNull(message = "{field.required}")
     @Min(message = "{pizza.price.invalid}", value = 0)
-    @Max(message = "{pizza.price.invalid}", value = 100)
+    @Digits(integer = 2, fraction = 2, message = "{pizza.price.invalid}")
     private BigDecimal price;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 5, max = 40, message = "{pizza.ingredients.invalid}")
-    private String keyIngredients;
+//    @Size(min = 5, max = 40, message = "{pizza.ingredients.invalid}")
+//    @ManyToMany(mappedBy = "")
+//    private Set<Ingredient> ingredients;
+    private String ingredients;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

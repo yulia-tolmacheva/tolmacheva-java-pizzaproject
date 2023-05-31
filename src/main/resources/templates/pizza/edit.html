@@ -16,7 +16,11 @@
 
 <h1>Edit Pizza:</h1>
 
-<form class="container" th:method="POST" th:action="@{/pizzas/edit/{id}(id=${pizzaToUpdate.getId()})}" th:object="${pizzaToUpdate}">
+<form class="container" th:method="PATCH" th:action="@{/pizzas/edit/{id}(id=${pizzaToUpdate.getId()})}" th:object="${pizzaToUpdate}">
+    <div>
+        <input type="hidden" name="_method" value="patch">
+        <input type="hidden" th:value="${pizzaToUpdate.id}" name="pizzaId">
+    </div>
     <div>
         <div>
             <label for="name">Enter name: </label>
@@ -37,9 +41,9 @@
         </div>
 
         <div>
-            <label for="keyIngredients">Enter Key Ingredients: </label>
-            <input type="text" th:field="*{keyIngredients}" id="keyIngredients">
-            <div class="error" th:if="${#fields.hasErrors('keyIngredients')}" th:errors="*{keyIngredients}"> Error
+            <label for="ingredients">Select ingredients: </label>
+            <input type="text" th:field="*{ingredients}" id="ingredients">
+            <div class="error" th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}"> Error
             </div>
         </div>
 

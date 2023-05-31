@@ -64,9 +64,8 @@ public class PizzaController {
         return "pizza/edit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editPizza(@PathVariable("id") Long id,
-                            @ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
+    @PatchMapping("/edit/{id}")
+    public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
                             BindingResult result, RedirectAttributes attributes,
                             Model model) {
         if (result.hasErrors()) {
