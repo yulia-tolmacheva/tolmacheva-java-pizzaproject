@@ -20,4 +20,19 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Restaurant> getAllRestaurants() {
         return repository.findAll();
     }
+
+    @Override
+    public Restaurant addOrUpdate(Restaurant restaurant) {
+        return repository.save(restaurant);
+    }
+
+    @Override
+    public void deletePizza(Long restaurantId) {
+        repository.deleteById(restaurantId);
+    }
+
+    @Override
+    public Restaurant getRestaurantById(Long restaurantId) {
+        return repository.getReferenceById(restaurantId);
+    }
 }
