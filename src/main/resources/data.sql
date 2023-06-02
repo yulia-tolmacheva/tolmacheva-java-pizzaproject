@@ -1,9 +1,9 @@
 insert into restaurants (name, address, phone)
 values ('restaurant1', 'Berlin', 54683838);
 insert into restaurants (name, address, phone)
-values ('restaurant2', 'Berlin', 54683838);
+values ('restaurant2', 'Frankfurt', 54683838);
 insert into restaurants (name, address, phone)
-values ('restaurant3', 'Berlin', 54683838);
+values ('restaurant3', 'Dresden', 54683838);
 insert into restaurants (name, address, phone)
 values ('restaurant4', 'Berlin', 54683838);
 
@@ -37,6 +37,8 @@ insert into pizzas_ingredients values (2, 2);
 insert into pizzas_ingredients values (3, 2);
 insert into pizzas_ingredients values (4, 2);
 insert into pizzas_ingredients values (5, 2);
+insert into pizzas_ingredients values (1, 3);
+insert into pizzas_ingredients values (2, 4);
 
 insert into users (name, password)
 values ('admin', 'admin');

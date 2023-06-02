@@ -16,6 +16,13 @@
 
 <h1>All restaurants</h1>
 
+
+<form class="search" th:action="@{/restaurants/search}" method="get">
+    <input type="text" name="address" th:value="${address}" placeholder="Find by Address" size="50" >
+    <button type="submit" class="btn btn-info" >Search</button>
+    <button type="submit" class="btn btn-info" >Reset</button>
+</form>
+
 <table class="table">
     <thead>
     <tr>
@@ -27,19 +34,26 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="restaurant, iter : ${restaurants}">
+    <tr th:each="restaurant, iter : ${filteredList}">
         <td th:text="${iter.index}+1"></td>
         <td th:text="${restaurant.name}"></td>
         <td th:text="${restaurant.address}"></td>
         <td th:text="${restaurant.phone}"></td>
-        <td th:text="${restaurant.getPizzas()}"></td>
+        <td th:text="${restaurant.getPizzas().size()}"></td>
+        <td>
+            <form th:action="@{/restaurants/{id}(id=${restaurant.id})}" th:method="get">
+                <div>
+                    <button class="small" type="submit">View</button>
+                </div>
+            </form>
+        </td>
         <td>
             <form th:action="@{/restaurants/edit}" th:method="get">
                 <div>
                     <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
                 </div>
                 <div>
-                    <button type="submit">Edit</button>
+                    <button class="small" type="submit">Edit</button>
                 </div>
             </form>
         </td>
@@ -50,7 +64,7 @@
                     <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
                 </div>
                 <div>
-                    <button type="submit">Delete</button>
+                    <button class="small" type="submit">Delete</button>
                 </div>
             </form>
         </td>
@@ -64,6 +78,16 @@
             <button type="submit">Add new restaurant</button>
         </div>
     </form>
+</div>
+
+<div style="color: olivedrab" th:if="${deleted}">
+    Restaurant with id <span th:text="${deleted}"></span> successfully deleted
+</div>
+<div style="color: olivedrab" th:if="${added}">
+    Restaurant with id <span th:text="${added}"></span> successfully added
+</div>
+<div style="color: olivedrab" th:if="${updated}">
+    Restaurant with id <span th:text="${updated}"></span> successfully updated
 </div>
 
 </body>

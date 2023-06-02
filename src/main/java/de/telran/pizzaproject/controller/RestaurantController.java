@@ -22,10 +22,25 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public String getAll(Model model) {
-        List<Restaurant> restaurants = service.getAllRestaurants();
-        model.addAttribute("restaurants", restaurants);
+    public String getAll() {
         return "restaurant/restaurants";
+    }
+
+    @GetMapping("/search")
+    public String getSearchByAddress(Model model, @RequestParam String address) {
+        System.out.println(address + " keyword");
+        List<Restaurant> filteredList;
+        if (address != null) {
+            filteredList = service.getAllByAddress(address);
+            model.addAttribute("filteredList", filteredList);
+        }
+        return "restaurant/restaurants";
+    }
+
+    @GetMapping("/{id}")
+    public String addRestaurantDetails(@PathVariable Long id, Model model) {
+        model.addAttribute("restaurantToView", service.getRestaurantById(id));
+        return "restaurant/view";
     }
 
     @GetMapping("/new")
@@ -35,8 +50,8 @@ public class RestaurantController {
 
     @PostMapping("/new")
     public String addRestaurant(@ModelAttribute("restaurantToAdd") @Valid Restaurant restaurant,
-                           BindingResult result,
-                           RedirectAttributes attributes) {
+                                BindingResult result,
+                                RedirectAttributes attributes) {
         if (result.hasErrors()) {
             return "restaurant/new";
         }
@@ -69,5 +84,10 @@ public class RestaurantController {
         service.addOrUpdate(restaurantToUpdate);
         attributes.addFlashAttribute("updated", restaurantToUpdate.getId());
         return "redirect:/restaurants";
+    }
+
+    @ModelAttribute
+    public void getList(Model model) {
+        model.addAttribute("filteredList", service.getAllRestaurants());
     }
 }

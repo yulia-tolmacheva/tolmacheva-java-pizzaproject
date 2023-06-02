@@ -14,4 +14,6 @@ public interface RestaurantService {
     void deletePizza(Long restaurantId);
 
     Restaurant getRestaurantById(Long restaurantId);
+
+    List<Restaurant> getAllByAddress(String keyword);
 }

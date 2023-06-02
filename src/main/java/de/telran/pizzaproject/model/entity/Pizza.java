@@ -20,10 +20,12 @@ public class Pizza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotBlank(message = "{field.required}")
     @Size(min = 1, max = 14, message = "{pizza.name.invalid}")
+    @Column(name = "name")
     private String name;
 
     @NotNull(message = "{field.required}")
@@ -48,9 +50,7 @@ public class Pizza {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    public Pizza(Long id) {
-        this.id = id;
-    }
+//    private boolean isSpicy = ingredients.str
 
     public Pizza() {
     }

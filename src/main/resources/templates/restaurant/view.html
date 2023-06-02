@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/restaurants">Restaurants</a>
+    <a href="/pizzas">Pizzas</a>
+    <a href="/users">Users</a>
+</nav>
+
+<h1 th:text="Restaurant + '  ' + ${restaurantToView.name}"> </h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Pizzas</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:object="${restaurantToView}">
+        <td th:text="${restaurantToView.name}"></td>
+        <td th:text="${restaurantToView.address}"></td>
+        <td th:text="${restaurantToView.phone}"></td>
+        <td th:text="${restaurantToView.getPizzas()}"></td>
+        <td>
+            <form th:action="@{/restaurants/edit}" th:method="get">
+                <div>
+                    <input type="hidden" th:value="${restaurantToView.id}" name="restaurantId">
+                </div>
+                <div>
+                    <button type="submit">Edit</button>
+                </div>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/restaurants/delete}" th:method="delete">
+                <div>
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" th:value="${restaurantToView.id}" name="restaurantId">
+                </div>
+                <div>
+                    <button type="submit">Delete</button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class ="center_button">
+    <form th:action="@{/restaurants}" th:method="get">
+        <div>
+            <button type="submit">Back to all restaurants</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
