@@ -1,5 +1,6 @@
 package de.telran.pizzaproject.controller;
 
+import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.repository.IngredientRepository;
 import de.telran.pizzaproject.repository.RestaurantRepository;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/pizzas")
@@ -33,6 +34,23 @@ public class PizzaController {
     public String getAll(Model model) {
         List<Pizza> pizzas = service.getAllPizzas();
         model.addAttribute("pizzas", pizzas);
+
+        Map<Long, Boolean> spicyPizzas = pizzas.stream().collect(Collectors.toMap(Pizza::getId,
+                pizza -> pizza.getIngredients().stream().map(Ingredient::isSpicy)
+                        .filter(aBoolean -> aBoolean).findAny().orElse(false)));
+
+        Map<Long, Boolean> veggiePizzas = pizzas.stream().collect(Collectors.toMap(Pizza::getId,
+                pizza -> pizza.getIngredients().stream().map(Ingredient::isVegetarian)
+                        .filter(aBoolean -> !aBoolean).findAny().orElse(true)));
+
+        Map<Long, Boolean> glutenFreePizzas = pizzas.stream().collect(Collectors.toMap(Pizza::getId,
+                pizza -> pizza.getIngredients().stream().map(Ingredient::isGlutenfree)
+                        .filter(aBoolean -> aBoolean).findAny().orElse(false)));
+
+        model.addAttribute("spicyPizzas", spicyPizzas);
+        model.addAttribute("veggiePizzas", veggiePizzas);
+        model.addAttribute("glutenFreePizzas", glutenFreePizzas);
+
         return "pizza/pizzas";
     }
 

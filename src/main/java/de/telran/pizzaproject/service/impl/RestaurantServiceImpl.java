@@ -35,4 +35,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Restaurant getRestaurantById(Long restaurantId) {
         return repository.getReferenceById(restaurantId);
     }
+
+    @Override
+    public List<Restaurant> getAllByAddress(String keyword) {
+        return repository.findAllByAddressContainingIgnoreCase(keyword);
+    }
 }

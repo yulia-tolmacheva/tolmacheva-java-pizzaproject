@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "ingredients")
 @Getter
@@ -14,23 +16,38 @@ public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotBlank(message = "{field.required}")
     @Size(min = 1, max = 15, message = "{ingredients.name.invalid}")
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "is_vegetarian")
+    private boolean isVegetarian;
 
-    private boolean isVegetarian = false;
-    private boolean isSpicy = false;
-    private boolean isGlutenfree = false;
+    @Column(name = "is_spicy")
+    private boolean isSpicy;
 
-//    @ManyToMany(mappedBy = "")
-//    private Set<Pizza> ingredients;
-
+    @Column(name = "is_glutenfree")
+    private boolean isGlutenfree;
 
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ingredient that = (Ingredient) o;
+        return isVegetarian == that.isVegetarian && isSpicy == that.isSpicy && isGlutenfree == that.isGlutenfree && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, isVegetarian, isSpicy, isGlutenfree);
     }
 }
