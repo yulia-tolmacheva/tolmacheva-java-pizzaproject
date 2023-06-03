@@ -10,11 +10,13 @@ values ('restaurant4', 'Berlin', 54683838);
 insert into ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
 values ('Dough', true, false, false);
 insert into ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
-values ('Tomato sauce', false, false, true);
+values ('Tomato sauce', true, false, true);
 insert into ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
 values ('Cheese', true, false, true);
 insert into ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
 values ('Salami', false, true, true);
+insert into ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
+values ('Dough Gluten Free', true, false, true);
 
 insert into pizzas (name, size, price, restaurant_id)
 values ('Pizza1', 12, 10.99, 1);
@@ -29,7 +31,7 @@ values ('Pizza5', 28, 12.99, 1);
 
 insert into pizzas_ingredients values (1, 1);
 insert into pizzas_ingredients values (2, 1);
-insert into pizzas_ingredients values (3, 1);
+insert into pizzas_ingredients values (3, 5);
 insert into pizzas_ingredients values (4, 1);
 insert into pizzas_ingredients values (5, 1);
 insert into pizzas_ingredients values (1, 2);
