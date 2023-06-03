@@ -2,6 +2,7 @@ package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.model.entity.Pizza;
+import de.telran.pizzaproject.model.entity.Restaurant;
 import de.telran.pizzaproject.repository.IngredientRepository;
 import de.telran.pizzaproject.repository.RestaurantRepository;
 import de.telran.pizzaproject.service.PizzaService;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,26 +33,7 @@ public class PizzaController {
     }
 
     @GetMapping
-    public String getAll(Model model) {
-        List<Pizza> pizzas = service.getAllPizzas();
-        model.addAttribute("pizzas", pizzas);
-
-        Map<Long, Boolean> spicyPizzas = pizzas.stream().collect(Collectors.toMap(Pizza::getId,
-                pizza -> pizza.getIngredients().stream().map(Ingredient::isSpicy)
-                        .filter(aBoolean -> aBoolean).findAny().orElse(false)));
-
-        Map<Long, Boolean> veggiePizzas = pizzas.stream().collect(Collectors.toMap(Pizza::getId,
-                pizza -> pizza.getIngredients().stream().map(Ingredient::isVegetarian)
-                        .filter(aBoolean -> !aBoolean).findAny().orElse(true)));
-
-        Map<Long, Boolean> glutenFreePizzas = pizzas.stream().collect(Collectors.toMap(Pizza::getId,
-                pizza -> pizza.getIngredients().stream().map(Ingredient::isGlutenfree)
-                        .filter(aBoolean -> aBoolean).findAny().orElse(false)));
-
-        model.addAttribute("spicyPizzas", spicyPizzas);
-        model.addAttribute("veggiePizzas", veggiePizzas);
-        model.addAttribute("glutenFreePizzas", glutenFreePizzas);
-
+    public String getAll() {
         return "pizza/pizzas";
     }
 
@@ -97,11 +80,42 @@ public class PizzaController {
         return "redirect:/pizzas";
     }
 
+    @GetMapping("/search")
+    public String findAllPizzaBySizeAndIngredient(@RequestParam(name = "size", required = false) Integer size,
+                                               @RequestParam(name = "ingredient", required = false) String ingredient,
+                                               Model model) {
+        List<Pizza> pizzas;
+
+        if (size != null) {
+            if (!"".equals(ingredient)) {
+                pizzas = service.getAllPizzasBySizeAndByIngredient(size, ingredient);
+                model.addAttribute("pizzas", pizzas);
+                return "pizza/pizzas";
+            }
+            pizzas = service.getAllPizzasBySize(size);
+            model.addAttribute("pizzas", pizzas);
+            return "pizza/pizzas";
+        } else if (!"".equals(ingredient)) {
+            pizzas = service.getAllPizzasByIngredient(ingredient);
+            model.addAttribute("pizzas", pizzas);
+            return "pizza/pizzas";
+        }
+
+        return "pizza/pizzas";
+    }
+
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("allIngredients", ingredientRepository.findAll());
         model.addAttribute("allRestaurants", restaurantRepository.findAll());
         model.addAttribute("allPizzaSizes", List.of(12, 20, 28));
+
+        List<Pizza> pizzas = service.getAllPizzas();
+        model.addAttribute("pizzas", service.getAllPizzas());
+
+        model.addAttribute("spicyPizzas", service.getMapPizzaIdIsSpicy(pizzas));
+        model.addAttribute("veggiePizzas", service.getMapPizzaIdIsVegetarian(pizzas));
+        model.addAttribute("glutenFreePizzas", service.getMapPizzaIdIsGlutenFree(pizzas));
     }
 }
 

@@ -20,7 +20,7 @@ public class Ingredient {
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 15, message = "{ingredients.name.invalid}")
+    @Size(min = 1, max = 20, message = "{ingredients.name.invalid}")
     @Column(name = "name")
     private String name;
 

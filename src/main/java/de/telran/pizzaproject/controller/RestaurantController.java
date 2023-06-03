@@ -28,7 +28,6 @@ public class RestaurantController {
 
     @GetMapping("/search")
     public String getSearchByAddress(Model model, @RequestParam String address) {
-        System.out.println(address + " keyword");
         List<Restaurant> filteredList;
         if (address != null) {
             filteredList = service.getAllByAddress(address);

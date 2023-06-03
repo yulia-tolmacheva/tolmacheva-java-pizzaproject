@@ -27,6 +27,8 @@
         <div>
             <label> Select size: </label>
             <select th:field="*{size}">
+                <option th:selected th:disabled value="">Select</option>
+<!--                <option th:default="" disabled="disabled" selected value="" th:text="Select"></option>-->
                 <option th:each="size : ${allPizzaSizes}"
                         th:text="${size}"
                         th:value="${size}">
