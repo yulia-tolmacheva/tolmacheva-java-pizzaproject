@@ -4,8 +4,9 @@ package de.telran.pizzaproject.service;
 import de.telran.pizzaproject.model.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface UsersService {
+public interface UserService {
 
     List<User> getAllUsers();
 
@@ -14,4 +15,6 @@ public interface UsersService {
     User getUserById(Long userToAddId);
 
     void deleteUser(Long userId);
+
+    Optional<User> getUserByUsername(String username);
 }
