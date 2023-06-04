@@ -32,6 +32,6 @@ public class Restaurant {
     @Pattern(regexp = "\\d{6,12}", message = "{restaurant.phone.invalid}")
     private String phone;
 
-    @OneToMany(mappedBy="restaurant", cascade=CascadeType.REMOVE)
+    @OneToMany(mappedBy="restaurant", cascade=CascadeType.ALL)
     private Set<Pizza> pizzas = new HashSet<>();
 }
