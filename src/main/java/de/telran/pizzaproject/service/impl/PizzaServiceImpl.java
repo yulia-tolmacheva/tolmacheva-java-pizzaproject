@@ -45,52 +45,56 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
     @Override
-    public Map<Long, Boolean> getMapPizzaIdIsSpicy(List<Pizza> pizzas) {
+    public Map<Long, Boolean> getMapPizzaIdIsSpicy() {
         return getMapPizzaIdAndIngredients().entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        entry -> entry.getValue().stream().map(Ingredient::isSpicy)
-                                .filter(b -> b).findAny().orElse(false)
+                        entry -> entry.getValue().stream().anyMatch(Ingredient::isSpicy)
                 ));
     }
 
     @Override
-    public Map<Long, Boolean> getMapPizzaIdIsVegetarian(List<Pizza> pizzas) {
+    public Map<Long, Boolean> getMapPizzaIdIsVegetarian() {
         return getMapPizzaIdAndIngredients().entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        entry -> entry.getValue().stream().map(Ingredient::isVegetarian)
-                                .filter(b -> !b).findAny().orElse(true)
+                        entry -> entry.getValue().stream().allMatch(Ingredient::getIsVegetarian)
                 ));
     }
 
     @Override
-    public Map<Long, Boolean> getMapPizzaIdIsGlutenFree(List<Pizza> pizzas) {
+    public Map<Long, Boolean> getMapPizzaIdIsGlutenFree() {
         return getMapPizzaIdAndIngredients().entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        entry -> entry.getValue().stream().map(Ingredient::isGlutenfree)
-                                .filter(b -> !b).findAny().orElse(true)
+                        entry -> entry.getValue().stream().allMatch(Ingredient::isGlutenfree)
                 ));
     }
 
+
     @Override
-    public List<Pizza> getAllPizzasBySize(Integer size) {
-        return repository.getPizzasBySize(size);
+    public List<Pizza> applyRestaurantAndSizeAndIngredientFilters(Long restaurantId, Integer size, String ingredient) {
+        if (size != null && ingredient != null && !ingredient.isEmpty()) {
+            return repository.findAllByRestaurant_IdAndSizeAndAndIngredients_NameContainingIgnoreCase(restaurantId, size, ingredient);
+        } else if (size != null) {
+            return repository.findAllByRestaurant_IdAndSize(restaurantId, size);
+        } else if (ingredient != null && !ingredient.isEmpty()) {
+            return repository.findAllByRestaurant_IdAndIngredients_NameContainingIgnoreCase(restaurantId, ingredient);
+        } else {
+            return repository.findAllByRestaurant_Id(restaurantId);
+        }
     }
 
     @Override
-    public List<Pizza> getAllPizzasBySizeAndByIngredient(Integer size, String ingredient) {
-        return repository.findAllBySizeAndIngredients_NameContainingIgnoreCase(size, ingredient);
-    }
-
-    @Override
-    public List<Pizza> getAllPizzasByIngredient(String ingredient) {
-        return repository.findAllByIngredients_NameContainingIgnoreCase(ingredient);
-    }
-
-    @Override
-    public List<Pizza> getAllPizzasByRestaurant(Long restaurantId) {
-        return repository.findAllByRestaurant_Id(restaurantId);
+    public List<Pizza> applySizeOrIngredientFilters(Integer size, String ingredient) {
+        if (size != null && ingredient != null && !ingredient.isEmpty()) {
+            return repository.findAllBySizeAndIngredients_NameContainingIgnoreCase(size, ingredient);
+        } else if (size != null) {
+            return repository.getPizzasBySize(size);
+        } else if (ingredient != null && !ingredient.isEmpty()) {
+            return repository.findAllByIngredients_NameContainingIgnoreCase(ingredient);
+        } else {
+            return repository.findAll();
+        }
     }
 }

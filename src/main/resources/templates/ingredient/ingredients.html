@@ -7,12 +7,7 @@
 </head>
 <body>
 
-<nav>
-    <a href="/">Home</a>
-    <a href="/restaurants">Restaurants</a>
-    <a href="/pizzas">Pizzas</a>
-    <a href="/users">Users</a>
-</nav>
+<nav th:replace="~{index.html :: navigation}"></nav>
 
 <h1>All ingredients</h1>
 
@@ -33,7 +28,7 @@
         <td th:text="${ingredient.name}"></td>
         <td>
             <label>
-                <input type="checkbox" disabled="disabled" name="vegetarian" th:checked="${ingredient.isVegetarian()}"/>
+                <input type="checkbox" disabled="disabled" name="vegetarian" th:checked="${ingredient.getIsVegetarian()}"/>
             </label>
         </td>
         <td>
@@ -92,7 +87,7 @@
         </div>
         <div>
             <label>
-                <input type="checkbox" name="vegetarian" th:checked="*{isVegetarian()}"/>
+                <input type="checkbox" name="vegetarian" th:checked="*{getIsVegetarian()}"/>
             </label>
             <label>Vegetarian</label>
         </div>
@@ -126,19 +121,19 @@
         </div>
         <div>
             <label>
-                <input type="checkbox" name="vegetarian" th:checked="*{isVegetarian()}" id="isVegetarian"/>
+                <input type="checkbox" name="vegetarian" th:field="*{isVegetarian}" id="isVegetarian"/>
             </label>
             <label>Vegetarian</label>
         </div>
         <div>
             <label>
-                <input type="checkbox" name="spicy" th:checked="*{isSpicy()}" id="isSpicy"/>
+                <input type="checkbox" name="spicy" th:field="*{spicy}" id="isSpicy"/>
             </label>
             <label>Spicy</label>
         </div>
         <div>
             <label>
-                <input type="checkbox" name="glutenfree" th:checked="*{isGlutenfree()}" id="isGlutenFree"/>
+                <input type="checkbox" name="glutenfree" th:field="*{glutenfree}" id="isGlutenFree"/>
             </label>
             <label>Gluten Free</label>
         </div>

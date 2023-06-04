@@ -23,9 +23,9 @@ values ('Pizza1', 12, 10.99, 1);
 insert into pizzas (name, size, price, restaurant_id)
 values ('Pizza2', 12, 10.99, 1);
 insert into pizzas (name, size, price, restaurant_id)
-values ('Pizza3', 20, 12.99, 1);
+values ('Pizza3', 20, 12.99, 2);
 insert into pizzas (name, size, price, restaurant_id)
-values ('Pizza4', 28, 10.99, 1);
+values ('Pizza4', 28, 10.99, 3);
 insert into pizzas (name, size, price, restaurant_id)
 values ('Pizza5', 28, 12.99, 1);
 

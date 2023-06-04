@@ -7,43 +7,40 @@
 </head>
 <body>
 
-<nav>
-    <a href="/">Home</a>
-    <a href="/restaurants">Restaurants</a>
-    <a href="/pizzas">Pizzas</a>
-    <a href="/users">Users</a>
-</nav>
+<nav th:replace="~{index.html :: navigation}"></nav>
 
 <div class="restaurant-filter-pizzas">
-<h1>All pizzas for restaurant</h1>
-    <form th:action="@{/pizzas/search/{id}(id=${restaurantId})}" method="get">
-        <select name="restaurantId">
-            <option th:selected value="">All</option>
+    <h1>All pizzas for restaurant</h1>
+    <form th:action="@{/pizzas/search}" method="get">
+        <select name="restaurantId" th:onchange="this.form.submit()">
+            <option value="">All</option>
             <option th:each="restaurant : ${allRestaurants}"
+                    th:selected="${restaurantId != null and restaurantId == restaurant.id}"
                     th:text="${restaurant.name}"
                     th:value="${restaurant.id}">
             </option>
         </select>
-        <button type="submit">Show</button>
     </form>
 </div>
 
 <div class="filter">
     <h3 style="margin-right: 20px">Filters</h3>
-    <div>
         <form class="search" th:action="@{/pizzas/search}" method="get">
             <select name="size">
-                <option th:selected value="">Size</option>
+                <option value="">Size</option>
                 <option th:each="size : ${allPizzaSizes}"
+                        th:selected="${size == selectedSize}"
                         th:text="${size}"
                         th:value="${size}">
                 </option>
             </select>
             <input type="text" name="ingredient" th:value="${ingredient}" placeholder="Find by ingredient" size="50">
+            <input type="hidden" name="restaurantId" th:value="${restaurantId}">
             <button type="submit" class="btn btn-info">Filter</button>
-            <button type="reset" class="btn btn-info">Reset</button>
         </form>
-    </div>
+    <form class="search" th:action="@{/pizzas}" method="get">
+        <button type="submit" class="btn btn-info">Reset</button>
+    </form>
 </div>
 
 <h2 class="nothing-found" th:if="${pizzas.isEmpty()}">Nothing found</h2>

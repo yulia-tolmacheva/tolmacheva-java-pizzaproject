@@ -14,5 +14,9 @@ public interface PizzaRepository extends JpaRepository<Pizza, Long> {
     List<Pizza> findAllByIngredients_NameContainingIgnoreCase(String ingredient);
     List<Pizza> findAllBySizeAndIngredients_NameContainingIgnoreCase(Integer size, String ingredient);
     List<Pizza> findAllByRestaurant_Id(Long restaurantId);
+    List<Pizza> findAllByRestaurant_IdAndSizeAndAndIngredients_NameContainingIgnoreCase(Long restaurantId, Integer size, String ingredient);
 
+    List<Pizza> findAllByRestaurant_IdAndSize(Long restaurantId, Integer size);
+
+    List<Pizza> findAllByRestaurant_IdAndIngredients_NameContainingIgnoreCase(Long restaurantId, String ingredient);
 }

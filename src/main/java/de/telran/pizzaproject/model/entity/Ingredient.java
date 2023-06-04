@@ -2,6 +2,7 @@ package de.telran.pizzaproject.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +25,9 @@ public class Ingredient {
     @Column(name = "name")
     private String name;
 
+    @NotNull(message = "{field.required}")
     @Column(name = "is_vegetarian")
-    private boolean isVegetarian;
+    private Boolean isVegetarian;
 
     @Column(name = "is_spicy")
     private boolean isSpicy;
