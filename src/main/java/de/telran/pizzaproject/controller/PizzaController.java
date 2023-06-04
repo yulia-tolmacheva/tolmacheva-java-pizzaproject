@@ -33,7 +33,9 @@ public class PizzaController {
     }
 
     @GetMapping
-    public String getAll() {
+    public String getAll(Model model) {
+        List<Pizza> pizzas = service.getAllPizzas();
+        model.addAttribute("pizzas", service.getAllPizzas());
         return "pizza/pizzas";
     }
 
@@ -81,28 +83,26 @@ public class PizzaController {
     }
 
     @GetMapping("/search")
-    public String findAllPizzaBySizeAndIngredient(@RequestParam(name = "size", required = false) Integer size,
-                                               @RequestParam(name = "ingredient", required = false) String ingredient,
-                                               Model model) {
+    public String findAllPizzasByRestaurantOrBySizeOrIngredient(
+            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "ingredient", required = false) String ingredient,
+            @RequestParam(name = "restaurantId", required = false) Long restaurantId,
+            Model model) {
         List<Pizza> pizzas;
 
-        if (size != null) {
-            if (!"".equals(ingredient)) {
-                pizzas = service.getAllPizzasBySizeAndByIngredient(size, ingredient);
-                model.addAttribute("pizzas", pizzas);
-                return "pizza/pizzas";
-            }
-            pizzas = service.getAllPizzasBySize(size);
-            model.addAttribute("pizzas", pizzas);
-            return "pizza/pizzas";
-        } else if (!"".equals(ingredient)) {
-            pizzas = service.getAllPizzasByIngredient(ingredient);
-            model.addAttribute("pizzas", pizzas);
-            return "pizza/pizzas";
+        if (restaurantId != null) {
+            pizzas = service.applyRestaurantAndSizeAndIngredientFilters(restaurantId, size, ingredient);
+            model.addAttribute("restaurantId", restaurantId);
+        } else {
+            pizzas = service.applySizeOrIngredientFilters(size, ingredient);
         }
 
+        model.addAttribute("selectedSize", size);
+        model.addAttribute("ingredient", ingredient);
+        model.addAttribute("pizzas", pizzas);
         return "pizza/pizzas";
     }
+
 
     @ModelAttribute
     public void addAttributes(Model model) {
@@ -110,12 +110,9 @@ public class PizzaController {
         model.addAttribute("allRestaurants", restaurantRepository.findAll());
         model.addAttribute("allPizzaSizes", List.of(12, 20, 28));
 
-        List<Pizza> pizzas = service.getAllPizzas();
-        model.addAttribute("pizzas", service.getAllPizzas());
-
-        model.addAttribute("spicyPizzas", service.getMapPizzaIdIsSpicy(pizzas));
-        model.addAttribute("veggiePizzas", service.getMapPizzaIdIsVegetarian(pizzas));
-        model.addAttribute("glutenFreePizzas", service.getMapPizzaIdIsGlutenFree(pizzas));
+        model.addAttribute("spicyPizzas", service.getMapPizzaIdIsSpicy());
+        model.addAttribute("veggiePizzas", service.getMapPizzaIdIsVegetarian());
+        model.addAttribute("glutenFreePizzas", service.getMapPizzaIdIsGlutenFree());
     }
 }
 

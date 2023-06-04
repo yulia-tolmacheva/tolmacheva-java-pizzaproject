@@ -2,11 +2,8 @@ package de.telran.pizzaproject.controller;
 
 
 import de.telran.pizzaproject.model.entity.Ingredient;
-import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.service.IngredientService;
-import de.telran.pizzaproject.service.PizzaService;
 import jakarta.validation.Valid;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,8 +24,6 @@ public class IngredientsController {
 
     @GetMapping
     public String getAll(Model model) {
-        List<Ingredient> ingredients = service.getAllIngredients();
-//        model.addAttribute("ingredients", ingredients);
         model.addAttribute("ingredientToAdd", new Ingredient());
         return "ingredient/ingredients";
     }
