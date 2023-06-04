@@ -24,15 +24,16 @@ public class User {
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 10, message = "{user.name.size}")
+    @Size(min = 1, max = 20, message = "{user.name.size}")
     @Pattern(regexp = "[A-Za-z0-9]+", message = "{user.name.invalid}")
     @Column(name = "username")
     private String username;
 
     @Column(name = "password")
+    @Size(min = 0, max = 20, message = "{user.password.size}")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
