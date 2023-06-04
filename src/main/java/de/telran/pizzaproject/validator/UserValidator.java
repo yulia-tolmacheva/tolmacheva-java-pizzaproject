@@ -27,11 +27,5 @@ public class UserValidator implements Validator {
         if (userService.getUserByUsername(user.getUsername()).isPresent()){
             errors.rejectValue("username", "", "This username already exists");
         }
-//        if (user.getPassword().length() < 8) {
-//            errors.rejectValue("password", "Password length should be no less than 8 symbols");
-//        }
-//        if (!user.getPassword().matches("[A-Za-z0-9_-]+")){
-//            errors.rejectValue("password", "Incorrect symbols used");
-//        }
     }
 }
