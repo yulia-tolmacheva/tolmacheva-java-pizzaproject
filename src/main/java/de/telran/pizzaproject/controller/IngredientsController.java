@@ -3,6 +3,7 @@ package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.service.IngredientService;
+import de.telran.pizzaproject.validator.IngredientValidator;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +18,11 @@ import java.util.List;
 public class IngredientsController {
 
     private final IngredientService service;
+    private final IngredientValidator validator;
 
-    public IngredientsController(IngredientService service) {
+    public IngredientsController(IngredientService service, IngredientValidator validator) {
         this.service = service;
+        this.validator = validator;
     }
 
     @GetMapping
@@ -32,6 +35,7 @@ public class IngredientsController {
     public String addIngredientsDetails(@ModelAttribute("ingredientToAdd") @Valid Ingredient ingredientToAdd,
                                   BindingResult result,
                                   RedirectAttributes attributes, Model model) {
+        validator.validate(ingredientToAdd, result);
         if (result.hasErrors()) {
             model.addAttribute("ingredientToAdd", ingredientToAdd);
             return "/ingredient/ingredients";
@@ -56,6 +60,7 @@ public class IngredientsController {
                                      Model model,
                                      @RequestParam("ingredientToUpdateId") Long ingredientToUpdateId,
                                      RedirectAttributes attributes) {
+        validator.validate(ingredientToUpdate, result);
         if (result.hasErrors()) {
             model.addAttribute("ingredientToUpdateId", ingredientToUpdateId);
             return "/ingredient/ingredients";

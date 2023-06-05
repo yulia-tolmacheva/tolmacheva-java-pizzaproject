@@ -26,7 +26,7 @@ public class User {
     @NotBlank(message = "{field.required}")
     @Size(min = 1, max = 20, message = "{user.name.size}")
     @Pattern(regexp = "[A-Za-z0-9]+", message = "{user.name.invalid}")
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")

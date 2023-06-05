@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.util.digester.ArrayStack;
+import org.hibernate.annotations.Check;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,27 +19,26 @@ import java.util.Set;
 @Setter
 public class Pizza {
 
-    public static final int PIZZA_MIN_SIZE = 12;
-    public static final int PIZZA_MAX_SIZE = 28;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 14, message = "{pizza.name.invalid}")
+    @Size(min = 1, max = 14, message = "{pizza.name.size}")
+    @Pattern(regexp = "[A-Za-z0-9]+", message = "{pizza.name.invalid}")
     @Column(name = "name")
     private String name;
 
     @NotNull(message = "{field.required}")
-    @Min(message = "{pizza.size.invalid}", value = PIZZA_MIN_SIZE)
-    @Max(message = "{pizza.size.invalid}", value = PIZZA_MAX_SIZE)
+    @Check(constraints = "size in (12, 20, 28)")
+    @Column(name = "size")
     private Integer size;
 
     @NotNull(message = "{field.required}")
     @Min(message = "{pizza.price.invalid}", value = 0)
     @Digits(integer = 2, fraction = 2, message = "{pizza.price.invalid}")
+    @Column(name = "price")
     private BigDecimal price;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
@@ -49,7 +49,7 @@ public class Pizza {
     )
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 

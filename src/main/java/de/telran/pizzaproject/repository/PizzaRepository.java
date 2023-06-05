@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PizzaRepository extends JpaRepository<Pizza, Long> {
@@ -19,4 +20,6 @@ public interface PizzaRepository extends JpaRepository<Pizza, Long> {
     List<Pizza> findAllByRestaurant_IdAndSize(Long restaurantId, Integer size);
 
     List<Pizza> findAllByRestaurant_IdAndIngredients_NameContainingIgnoreCase(Long restaurantId, String ingredient);
+
+    Optional<Pizza> getFirstByNameIgnoreCaseAndSizeAndRestaurant_Id(String name, Integer size, Long id);
 }

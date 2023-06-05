@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -96,5 +97,10 @@ public class PizzaServiceImpl implements PizzaService {
         } else {
             return repository.findAll();
         }
+    }
+
+    @Override
+    public Optional<Pizza> getPizzaByNameAndBySizeAndRestaurant(String name, Integer size, Long id) {
+        return repository.getFirstByNameIgnoreCaseAndSizeAndRestaurant_Id(name, size, id);
     }
 }
