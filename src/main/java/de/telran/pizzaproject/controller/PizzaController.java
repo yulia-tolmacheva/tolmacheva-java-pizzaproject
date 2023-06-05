@@ -1,11 +1,10 @@
 package de.telran.pizzaproject.controller;
 
-import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.model.entity.Pizza;
-import de.telran.pizzaproject.model.entity.Restaurant;
 import de.telran.pizzaproject.repository.IngredientRepository;
 import de.telran.pizzaproject.repository.RestaurantRepository;
 import de.telran.pizzaproject.service.PizzaService;
+import de.telran.pizzaproject.validator.PizzaValidator;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,27 +13,25 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/pizzas")
 public class PizzaController {
 
     private final PizzaService service;
+    private final PizzaValidator pizzaValidator;
     private final IngredientRepository ingredientRepository;
     private final RestaurantRepository restaurantRepository;
 
-    public PizzaController(PizzaService service, IngredientRepository ingredientRepository, RestaurantRepository restaurantRepository) {
+    public PizzaController(PizzaService service, PizzaValidator pizzaValidator, IngredientRepository ingredientRepository, RestaurantRepository restaurantRepository) {
         this.service = service;
+        this.pizzaValidator = pizzaValidator;
         this.ingredientRepository = ingredientRepository;
         this.restaurantRepository = restaurantRepository;
     }
 
     @GetMapping
     public String getAll(Model model) {
-        List<Pizza> pizzas = service.getAllPizzas();
         model.addAttribute("pizzas", service.getAllPizzas());
         return "pizza/pizzas";
     }
@@ -48,6 +45,7 @@ public class PizzaController {
     public String addPizza(@ModelAttribute("pizzaToAdd") @Valid Pizza pizza,
                            BindingResult result,
                            RedirectAttributes attributes) {
+        pizzaValidator.validate(pizza, result);
         if (result.hasErrors()) {
             return "pizza/new";
         }
@@ -74,6 +72,7 @@ public class PizzaController {
     @PatchMapping("/edit/{id}")
     public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
                             BindingResult result, RedirectAttributes attributes) {
+        pizzaValidator.validate(pizzaToUpdate, result);
         if (result.hasErrors()) {
             return "pizza/edit";
         }

@@ -7,6 +7,7 @@ import de.telran.pizzaproject.service.IngredientService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
@@ -35,5 +36,10 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public void deleteIngredient(Long ingredientId) {
         repository.deleteById(ingredientId);
+    }
+
+    @Override
+    public Optional<Ingredient> getIngredientByName(String name) {
+        return repository.findFirstByNameIgnoreCase(name);
     }
 }

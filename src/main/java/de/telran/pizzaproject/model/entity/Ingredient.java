@@ -3,6 +3,7 @@ package de.telran.pizzaproject.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,8 @@ public class Ingredient {
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 20, message = "{ingredients.name.invalid}")
+    @Size(min = 1, max = 20, message = "{ingredients.name.size}")
+    @Pattern(regexp = "[A-Za-z0-9]+", message = "{ingredient.name.invalid}")
     @Column(name = "name")
     private String name;
 

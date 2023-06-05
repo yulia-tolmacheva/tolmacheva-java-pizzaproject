@@ -42,9 +42,9 @@ insert into pizzas_ingredients values (5, 2);
 insert into pizzas_ingredients values (1, 3);
 insert into pizzas_ingredients values (2, 4);
 
-insert into users (name, password)
+insert into users (username, password)
 values ('admin', 'admin');
-insert into users (name, password)
+insert into users (username, password)
 values ('user1', 'user1');
 
 insert into roles (name) values ('admin');

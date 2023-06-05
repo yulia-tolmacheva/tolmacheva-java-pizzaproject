@@ -2,6 +2,7 @@ package de.telran.pizzaproject.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,14 +24,16 @@ public class User {
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 10, message = "{user.name.invalid}")
-    @Column(name = "name")
-    private String name;
+    @Size(min = 1, max = 20, message = "{user.name.size}")
+    @Pattern(regexp = "[A-Za-z0-9]+", message = "{user.name.invalid}")
+    @Column(name = "username", unique = true)
+    private String username;
 
     @Column(name = "password")
+    @Size(min = 0, max = 20, message = "{user.password.size}")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -43,11 +46,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name);
+        return Objects.equals(username, user.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(username);
     }
 }

@@ -6,8 +6,7 @@ import de.telran.pizzaproject.model.entity.Pizza;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public interface PizzaService {
 
@@ -30,4 +29,5 @@ public interface PizzaService {
 
     List<Pizza> applySizeOrIngredientFilters(Integer size, String ingredient);
 
+    Optional<Pizza> getPizzaByNameAndBySizeAndRestaurant(String name, Integer size, Long id);
 }

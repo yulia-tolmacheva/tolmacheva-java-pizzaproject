@@ -1,9 +1,9 @@
 package de.telran.pizzaproject.controller;
 
-import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.model.entity.User;
 import de.telran.pizzaproject.repository.RoleRepository;
-import de.telran.pizzaproject.service.UsersService;
+import de.telran.pizzaproject.service.UserService;
+import de.telran.pizzaproject.validator.UserValidator;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +17,14 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UsersService service;
+    private final UserService service;
+    private final UserValidator validator;
 
     private final RoleRepository roleRepository;
 
-    public UserController(UsersService service, RoleRepository roleRepository) {
+    public UserController(UserService service, UserValidator validator, RoleRepository roleRepository) {
         this.service = service;
+        this.validator = validator;
         this.roleRepository = roleRepository;
     }
 
@@ -38,6 +40,7 @@ public class UserController {
     public String addUsersDetails(@ModelAttribute("userToAdd") @Valid User userToAdd,
                                   BindingResult result,
                                   RedirectAttributes attributes, Model model) {
+        validator.validate(userToAdd, result);
         if (result.hasErrors()) {
             model.addAttribute("userToAdd", userToAdd);
             return "/user/users";
@@ -61,6 +64,7 @@ public class UserController {
                                            Model model,
                                            @RequestParam("userToUpdateId") Long userToUpdateId,
                                            RedirectAttributes attributes) {
+        validator.validate(userToUpdate, result);
         if (result.hasErrors()) {
             model.addAttribute("userToUpdate", userToUpdate);
             model.addAttribute("userToUpdateId", userToUpdateId);
