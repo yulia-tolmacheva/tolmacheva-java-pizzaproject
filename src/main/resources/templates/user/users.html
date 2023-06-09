@@ -118,5 +118,15 @@
     </form>
 </div>
 
+<div style="color: olivedrab" th:if="${deleted}">
+    User with id <span th:text="${deleted}"></span> successfully deleted
+</div>
+<div style="color: olivedrab" th:if="${added}">
+    User with id <span th:text="${added}"></span> successfully added
+</div>
+<div style="color: olivedrab" th:if="${updated}">
+    User with id <span th:text="${updated}"></span> successfully updated
+</div>
+
 </body>
 </html>
