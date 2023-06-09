@@ -13,7 +13,9 @@ public interface PizzaService {
     List<Pizza> getAllPizzas();
     Pizza getPizzaById(Long pizzaId);
 
-    Pizza addOrUpdate(Pizza pizza);
+    Pizza add(Pizza pizza);
+
+    Pizza update(Pizza pizza);
 
     void deletePizza(Long pizzaId);
 

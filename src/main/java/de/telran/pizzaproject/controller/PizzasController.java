@@ -16,14 +16,14 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/pizzas")
-public class PizzaController {
+public class PizzasController {
 
     private final PizzaService service;
     private final PizzaValidator pizzaValidator;
     private final IngredientRepository ingredientRepository;
     private final RestaurantRepository restaurantRepository;
 
-    public PizzaController(PizzaService service, PizzaValidator pizzaValidator, IngredientRepository ingredientRepository, RestaurantRepository restaurantRepository) {
+    public PizzasController(PizzaService service, PizzaValidator pizzaValidator, IngredientRepository ingredientRepository, RestaurantRepository restaurantRepository) {
         this.service = service;
         this.pizzaValidator = pizzaValidator;
         this.ingredientRepository = ingredientRepository;
@@ -50,33 +50,38 @@ public class PizzaController {
             return "pizza/new";
         }
 
-        Pizza pizzaAdded = service.addOrUpdate(pizza);
+        Pizza pizzaAdded = service.add(pizza);
         attributes.addFlashAttribute("added", pizzaAdded.getId());
         return "redirect:/pizzas";
     }
 
     @DeleteMapping("/delete")
-    public String deletePizza(@RequestParam Long pizzaId, RedirectAttributes attributes) {
-        service.deletePizza(pizzaId);
-        attributes.addFlashAttribute("deleted", pizzaId);
+    public String deletePizza(@RequestParam Long id, RedirectAttributes attributes) {
+        service.deletePizza(id);
+        attributes.addFlashAttribute("deleted", id);
         return "redirect:/pizzas";
     }
 
     @GetMapping("/edit")
-    public String openEditPage(@RequestParam Long pizzaToUpdateId,
+    public String openEditPage(@RequestParam Long id,
                                Model model) {
-        model.addAttribute("pizzaToUpdate", service.getPizzaById(pizzaToUpdateId));
+        model.addAttribute("pizzaToUpdate", service.getPizzaById(id));
         return "pizza/edit";
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/edit")
     public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
-                            BindingResult result, RedirectAttributes attributes) {
+                            BindingResult result, RedirectAttributes attributes,
+                            Model model) {
         pizzaValidator.validate(pizzaToUpdate, result);
         if (result.hasErrors()) {
             return "pizza/edit";
         }
-        service.addOrUpdate(pizzaToUpdate);
+        Pizza updated = service.update(pizzaToUpdate);
+        if (updated == null) {
+            model.addAttribute("notfound", pizzaToUpdate.getId());
+            return "pizza/edit";
+        }
         attributes.addFlashAttribute("updated", pizzaToUpdate.getId());
         return "redirect:/pizzas";
     }

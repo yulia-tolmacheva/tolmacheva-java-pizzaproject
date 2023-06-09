@@ -15,14 +15,14 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/users")
-public class UserController {
+public class UsersController {
 
     private final UserService service;
     private final UserValidator validator;
 
     private final RoleRepository roleRepository;
 
-    public UserController(UserService service, UserValidator validator, RoleRepository roleRepository) {
+    public UsersController(UserService service, UserValidator validator, RoleRepository roleRepository) {
         this.service = service;
         this.validator = validator;
         this.roleRepository = roleRepository;

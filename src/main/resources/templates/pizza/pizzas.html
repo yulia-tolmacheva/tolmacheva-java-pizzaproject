@@ -79,7 +79,7 @@
         <td>
             <form th:action="@{/pizzas/edit}" th:method="get">
                 <div>
-                    <input type="hidden" th:value="${pizza.id}" name="pizzaToUpdateId">
+                    <input type="hidden" th:value="${pizza.id}" name="id">
                 </div>
                 <div>
                     <button class="small" type="submit">Edit</button>
@@ -90,7 +90,7 @@
             <form th:action="@{/pizzas/delete}" th:method="delete">
                 <div>
                     <input type="hidden" name="_method" value="delete">
-                    <input type="hidden" th:value="${pizza.id}" name="pizzaId">
+                    <input type="hidden" th:value="${pizza.id}" name="id">
                 </div>
                 <div>
                     <button class="small" type="submit">Delete</button>

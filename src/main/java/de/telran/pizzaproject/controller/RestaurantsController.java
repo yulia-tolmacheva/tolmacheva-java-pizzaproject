@@ -13,11 +13,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/restaurants")
-public class RestaurantController {
+public class RestaurantsController {
 
     private final RestaurantService service;
 
-    public RestaurantController(RestaurantService service) {
+    public RestaurantsController(RestaurantService service) {
         this.service = service;
     }
 

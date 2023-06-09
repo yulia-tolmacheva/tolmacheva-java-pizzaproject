@@ -41,7 +41,7 @@ public class Pizza {
     @Column(name = "price")
     private BigDecimal price;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "pizzas_ingredients",
             joinColumns = @JoinColumn(name = "pizza_id"),
@@ -50,7 +50,7 @@ public class Pizza {
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
     private Restaurant restaurant;
 
     public Pizza() {

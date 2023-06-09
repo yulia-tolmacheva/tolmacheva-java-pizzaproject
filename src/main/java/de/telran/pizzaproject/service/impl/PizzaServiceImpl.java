@@ -31,8 +31,17 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
     @Override
-    public Pizza addOrUpdate(Pizza pizza) {
+    public Pizza add(Pizza pizza) {
         return repository.save(pizza);
+    }
+
+    @Override
+    public Pizza update(Pizza pizza) {
+        Optional<Pizza> pizzaById = repository.findById(pizza.getId());
+        if (pizzaById.isPresent()) {
+            return repository.save(pizza);
+        }
+        else return null;
     }
 
     @Override

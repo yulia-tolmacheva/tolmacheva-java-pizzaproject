@@ -11,10 +11,10 @@
 
 <h1>Edit Pizza:</h1>
 
-<form class="container" th:method="PATCH" th:action="@{/pizzas/edit/{id}(id=${pizzaToUpdate.getId()})}" th:object="${pizzaToUpdate}">
+<form class="container" th:method="PATCH" th:action="@{/pizzas/edit}" th:object="${pizzaToUpdate}">
     <div>
         <input type="hidden" name="_method" value="patch">
-        <input type="hidden" th:value="${pizzaToUpdate.id}" name="pizzaId">
+        <input type="hidden" th:value="${pizzaToUpdate.id}" name="id">
     </div>
     <div>
         <div>
@@ -80,6 +80,11 @@
         <button type="submit">Update</button>
     </div>
 </form>
+
+
+<div style="color: olivedrab" th:if="${notfound}">
+    Pizza with id <span th:text="${notfound}"></span> is not found. Maybe it was deleted.
+</div>
 
 <div class="center_button">
     <form th:action="@{/pizzas}" th:method="get">
