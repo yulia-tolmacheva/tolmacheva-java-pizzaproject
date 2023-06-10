@@ -23,13 +23,12 @@ public class Ingredient {
 
     @NotBlank(message = "{field.required}")
     @Size(min = 1, max = 20, message = "{ingredients.name.size}")
-    @Pattern(regexp = "[A-Za-z0-9]+", message = "{ingredient.name.invalid}")
+    @Pattern(regexp = "[A-Za-z0-9 ]+", message = "{ingredients.name.invalid}")
     @Column(name = "name")
     private String name;
 
-    @NotNull(message = "{field.required}")
     @Column(name = "is_vegetarian")
-    private Boolean isVegetarian;
+    private boolean isVegetarian;
 
     @Column(name = "is_spicy")
     private boolean isSpicy;
@@ -47,11 +46,11 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return isVegetarian == that.isVegetarian && isSpicy == that.isSpicy && isGlutenfree == that.isGlutenfree && Objects.equals(name, that.name);
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, isVegetarian, isSpicy, isGlutenfree);
+        return Objects.hash(name);
     }
 }

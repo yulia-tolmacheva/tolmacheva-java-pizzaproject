@@ -42,14 +42,14 @@ insert into pizzas_ingredients values (5, 2);
 insert into pizzas_ingredients values (1, 3);
 insert into pizzas_ingredients values (2, 4);
 
-insert into users (username, password)
-values ('admin', 'admin');
-insert into users (username, password)
-values ('user1', 'user1');
+insert into users (username, password, role)
+values ('admin', '$2a$10$mh8GJtH3bYmM9Ai4WzoE0eHSEa9Xai37cYOhGvmOM6Ay/HzPF/aam', 'ROLE_ADMIN');
+insert into users (username, password, role)
+values ('user1', '$2a$10$Azdm73hzgOrKK0Oq9lRF8eeWDXiGklzVZFfTsbgnWzzCqDsVgXHvy', 'ROLE_USER');
 
 insert into roles (name) values ('admin');
 insert into roles (name) values ('user');
 
 insert into users_roles (user_id, role_id) values (1, 1);
 insert into users_roles (user_id, role_id)  values (1, 2);
-insert into users_roles (user_id, role_id) values (2, 1);
+insert into users_roles (user_id, role_id) values (2, 2);

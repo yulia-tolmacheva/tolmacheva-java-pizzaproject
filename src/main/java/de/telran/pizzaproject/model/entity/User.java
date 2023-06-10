@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -29,9 +28,12 @@ public class User {
     @Column(name = "username", unique = true)
     private String username;
 
-    @Size(min = 0, max = 20, message = "{user.password.size}")
+    @Size(min = 0, max = 100, message = "{user.password.size}")
     @Column(name = "password")
     private String password;
+
+    @Column(name="role")
+    private String role;
 
     @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(

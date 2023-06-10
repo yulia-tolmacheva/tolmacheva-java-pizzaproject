@@ -68,7 +68,7 @@ public class PizzaServiceImpl implements PizzaService {
         return getMapPizzaIdAndIngredients().entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        entry -> entry.getValue().stream().allMatch(Ingredient::getIsVegetarian)
+                        entry -> entry.getValue().stream().allMatch(Ingredient::isVegetarian)
                 ));
     }
 

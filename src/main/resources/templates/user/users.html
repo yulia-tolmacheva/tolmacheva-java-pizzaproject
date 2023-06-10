@@ -16,7 +16,7 @@
     <tr>
         <th>№</th>
         <th>Username</th>
-        <th>Password</th>
+        <th>Role</th>
         <th>Roles</th>
     </tr>
     </thead>
@@ -24,7 +24,7 @@
     <tr th:each="user, iter : ${users}">
         <td th:text="${iter.index}+1"></td>
         <td th:text="${user.username}"></td>
-        <td th:text="${user.password}"></td>
+        <td th:text="${user.role}"></td>
         <td th:text="${user.getRoles()}"></td>
         <td>
             <form th:action="@{/users/update}" th:method="post">
@@ -69,7 +69,7 @@
         <div>
             <label>Password</label>
             <label>
-                <input type="text" th:field="*{password}">
+                <input type="password" th:field="*{password}">
             </label>
         </div>
         <div>

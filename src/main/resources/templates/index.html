@@ -18,6 +18,14 @@
     <a href="/users">Users</a>
 </nav>
 
+<div class="center_button">
+    <form th:action="@{/logout}" th:method="post">
+        <div>
+            <button type="submit">Logout</button>
+        </div>
+    </form>
+</div>
+
 
 <footer class="info">
     <p>Spring Boot Pizza Project

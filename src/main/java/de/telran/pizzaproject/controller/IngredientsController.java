@@ -58,11 +58,12 @@ public class IngredientsController {
             @ModelAttribute("ingredientToUpdate") @Valid Ingredient ingredientToUpdate,
                                      BindingResult result,
                                      Model model,
-                                     @RequestParam("ingredientToUpdateId") Long ingredientToUpdateId,
                                      RedirectAttributes attributes) {
         validator.validate(ingredientToUpdate, result);
         if (result.hasErrors()) {
-            model.addAttribute("ingredientToUpdateId", ingredientToUpdateId);
+            System.out.println(result.getAllErrors());
+            System.out.println("method is here");
+            model.addAttribute("ingredientToUpdateId", ingredientToUpdate.getId());
             return "/ingredient/ingredients";
         }
         Ingredient ingredient = service.addOrUpdate(ingredientToUpdate);
@@ -78,13 +79,13 @@ public class IngredientsController {
         return "redirect:/ingredients";
     }
 
-    @ModelAttribute("ingredients")
-    public List<Ingredient> getListIngredients() {
-        return service.getAllIngredients();
+    @ModelAttribute
+    public void addAttributes(Model model) {
+         model.addAttribute("ingredients", service.getAllIngredients());
     }
 
-    @ModelAttribute("ingredientToUpdate")
-    public Ingredient getIngredientToUpdate() {
-        return new Ingredient();
-    }
+//    @ModelAttribute("ingredientToUpdate")
+//    public Ingredient getIngredientToUpdate() {
+//        return new Ingredient();
+//    }
 }
