@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Component
 public class PizzaValidator implements Validator {
 
@@ -23,12 +26,18 @@ public class PizzaValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Pizza pizza = (Pizza) target;
+        Optional<Pizza> foundPizza = pizzaService.getPizzaByNameAndBySizeAndRestaurant(
+                pizza.getName(),
+                pizza.getSize(),
+                pizza.getRestaurant().getId());
 
-        if (pizzaService.getPizzaByNameAndBySizeAndRestaurant(pizza.getName(), pizza.getSize(), pizza.getRestaurant().getId()).isPresent()){
-            errors.rejectValue("name", "", "This pizza already exists");
+        if (foundPizza.isPresent()) {
+            if (!Objects.equals(foundPizza.get().getId(), pizza.getId())) {
+                errors.rejectValue("name", "", "This pizza already exists");
+            }
         }
-        if (!(pizza.getSize().equals(12) || pizza.getSize().equals(20) || pizza.getSize().equals(28))) {
-            errors.rejectValue("size", "", "Available pizza sizes: 12, 20, 28");
-        }
+//        if (!(pizza.getSize().equals(12) || pizza.getSize().equals(20) || pizza.getSize().equals(28))) {
+//            errors.rejectValue("size", "", "Available pizza sizes: 12, 20, 28");
+//        }
     }
 }

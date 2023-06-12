@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h1>
+    Welcome to Restaurant Web App
+</h1>
+
+<form class="center_button" th:method="post" th:action="@{/process_login}">
+
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <div>
+        <label for="username">Enter username: </label>
+        <input type="text" name="username" id="username"/>
+    </div>
+
+    <div>
+        <label for="password">Enter password: </label>
+        <input type="password" name="password" id="password"/>
+    </div>
+
+    <div>
+        <input type="submit" value="Login"/>
+    </div>
+
+    <div class="error" th:if="${param.error}">
+        Wrong name or password
+    </div>
+
+</form>
+
+</body>
+</html>

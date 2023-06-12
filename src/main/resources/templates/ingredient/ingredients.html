@@ -28,7 +28,7 @@
         <td th:text="${ingredient.name}"></td>
         <td>
             <label>
-                <input type="checkbox" disabled="disabled" name="vegetarian" th:checked="${ingredient.getIsVegetarian()}"/>
+                <input type="checkbox" disabled="disabled" name="vegetarian" th:checked="${ingredient.isVegetarian()}"/>
             </label>
         </td>
         <td>
@@ -87,7 +87,7 @@
         </div>
         <div>
             <label>
-                <input type="checkbox" name="vegetarian" th:checked="*{getIsVegetarian()}"/>
+                <input type="checkbox" name="vegetarian" th:checked="*{isVegetarian()}"/>
             </label>
             <label>Vegetarian</label>
         </div>
@@ -121,7 +121,7 @@
         </div>
         <div>
             <label>
-                <input type="checkbox" name="vegetarian" th:field="*{isVegetarian}" id="isVegetarian"/>
+                <input type="checkbox" name="vegetarian" th:field="*{vegetarian}" id="isVegetarian"/>
             </label>
             <label>Vegetarian</label>
         </div>

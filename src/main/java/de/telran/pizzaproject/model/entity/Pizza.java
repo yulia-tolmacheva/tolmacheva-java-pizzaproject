@@ -1,17 +1,14 @@
 package de.telran.pizzaproject.model.entity;
 
+import de.telran.pizzaproject.model.PizzaSize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.tomcat.util.digester.ArrayStack;
-import org.hibernate.annotations.Check;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "pizzas")
@@ -31,9 +28,9 @@ public class Pizza {
     private String name;
 
     @NotNull(message = "{field.required}")
-    @Check(constraints = "size in (12, 20, 28)")
+    @Enumerated(EnumType.STRING)
     @Column(name = "size")
-    private Integer size;
+    private PizzaSize size;
 
     @NotNull(message = "{field.required}")
     @Min(message = "{pizza.price.invalid}", value = 0)
@@ -41,7 +38,7 @@ public class Pizza {
     @Column(name = "price")
     private BigDecimal price;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "pizzas_ingredients",
             joinColumns = @JoinColumn(name = "pizza_id"),
@@ -50,7 +47,7 @@ public class Pizza {
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
     private Restaurant restaurant;
 
     public Pizza() {

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Component
 public class UserValidator implements Validator {
 
@@ -24,8 +27,12 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User) target;
 
-        if (userService.getUserByUsername(user.getUsername()).isPresent()){
-            errors.rejectValue("username", "", "This username already exists");
+        Optional<User> foundUser = userService.getUserByUsername(user.getUsername());
+
+        if (foundUser.isPresent()) {
+            if (!Objects.equals(foundUser.get().getId(), user.getId())) {
+                errors.rejectValue("username", "", "This username already exists");
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package de.telran.pizzaproject.service;
 
 import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.model.entity.Pizza;
+import de.telran.pizzaproject.model.PizzaSize;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,9 @@ public interface PizzaService {
     List<Pizza> getAllPizzas();
     Pizza getPizzaById(Long pizzaId);
 
-    Pizza addOrUpdate(Pizza pizza);
+    Pizza add(Pizza pizza);
+
+    Pizza update(Pizza pizza);
 
     void deletePizza(Long pizzaId);
 
@@ -25,9 +28,9 @@ public interface PizzaService {
 
     Map<Long, Boolean> getMapPizzaIdIsGlutenFree();
 
-    List<Pizza> applyRestaurantAndSizeAndIngredientFilters(Long restaurantId, Integer size, String ingredient);
+    List<Pizza> applyRestaurantAndSizeAndIngredientFilters(Long restaurantId, PizzaSize size, String ingredient);
 
-    List<Pizza> applySizeOrIngredientFilters(Integer size, String ingredient);
+    List<Pizza> applySizeOrIngredientFilters(PizzaSize size, String ingredient);
 
-    Optional<Pizza> getPizzaByNameAndBySizeAndRestaurant(String name, Integer size, Long id);
+    Optional<Pizza> getPizzaByNameAndBySizeAndRestaurant(String name, PizzaSize size, Long id);
 }

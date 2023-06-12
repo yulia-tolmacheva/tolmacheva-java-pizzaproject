@@ -1,5 +1,6 @@
 package de.telran.pizzaproject.model.entity;
 
+import de.telran.pizzaproject.model.RoleName;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,14 +13,23 @@ import lombok.Setter;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name", unique = true)
-    private String name;
+    @Column(name = "name", unique = true, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleName roleName;
+
+    public Role(RoleName roleName) {
+        this.roleName = roleName;
+    }
+
+    public Role() {
+    }
 
     @Override
     public String toString() {
-        return this.name;
+        return this.roleName.name();
     }
 
     @Override

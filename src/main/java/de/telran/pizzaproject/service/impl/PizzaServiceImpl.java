@@ -2,6 +2,7 @@ package de.telran.pizzaproject.service.impl;
 
 import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.model.entity.Pizza;
+import de.telran.pizzaproject.model.PizzaSize;
 import de.telran.pizzaproject.repository.PizzaRepository;
 import de.telran.pizzaproject.service.PizzaService;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,17 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
     @Override
-    public Pizza addOrUpdate(Pizza pizza) {
+    public Pizza add(Pizza pizza) {
         return repository.save(pizza);
+    }
+
+    @Override
+    public Pizza update(Pizza pizza) {
+        Optional<Pizza> pizzaById = repository.findById(pizza.getId());
+        if (pizzaById.isPresent()) {
+            return repository.save(pizza);
+        }
+        else return null;
     }
 
     @Override
@@ -59,7 +69,7 @@ public class PizzaServiceImpl implements PizzaService {
         return getMapPizzaIdAndIngredients().entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        entry -> entry.getValue().stream().allMatch(Ingredient::getIsVegetarian)
+                        entry -> entry.getValue().stream().allMatch(Ingredient::isVegetarian)
                 ));
     }
 
@@ -74,7 +84,7 @@ public class PizzaServiceImpl implements PizzaService {
 
 
     @Override
-    public List<Pizza> applyRestaurantAndSizeAndIngredientFilters(Long restaurantId, Integer size, String ingredient) {
+    public List<Pizza> applyRestaurantAndSizeAndIngredientFilters(Long restaurantId, PizzaSize size, String ingredient) {
         if (size != null && ingredient != null && !ingredient.isEmpty()) {
             return repository.findAllByRestaurant_IdAndSizeAndAndIngredients_NameContainingIgnoreCase(restaurantId, size, ingredient);
         } else if (size != null) {
@@ -87,7 +97,7 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
     @Override
-    public List<Pizza> applySizeOrIngredientFilters(Integer size, String ingredient) {
+    public List<Pizza> applySizeOrIngredientFilters(PizzaSize size, String ingredient) {
         if (size != null && ingredient != null && !ingredient.isEmpty()) {
             return repository.findAllBySizeAndIngredients_NameContainingIgnoreCase(size, ingredient);
         } else if (size != null) {
@@ -100,7 +110,7 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
     @Override
-    public Optional<Pizza> getPizzaByNameAndBySizeAndRestaurant(String name, Integer size, Long id) {
+    public Optional<Pizza> getPizzaByNameAndBySizeAndRestaurant(String name, PizzaSize size, Long id) {
         return repository.getFirstByNameIgnoreCaseAndSizeAndRestaurant_Id(name, size, id);
     }
 }

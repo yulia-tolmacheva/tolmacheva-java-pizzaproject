@@ -3,6 +3,7 @@ package de.telran.pizzaproject.controller;
 import de.telran.pizzaproject.model.entity.Restaurant;
 import de.telran.pizzaproject.service.RestaurantService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,11 +14,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/restaurants")
-public class RestaurantController {
+public class RestaurantsController {
 
     private final RestaurantService service;
 
-    public RestaurantController(RestaurantService service) {
+    public RestaurantsController(RestaurantService service) {
         this.service = service;
     }
 
@@ -36,18 +37,20 @@ public class RestaurantController {
         return "restaurant/restaurants";
     }
 
-    @GetMapping("/{id}")
-    public String addRestaurantDetails(@PathVariable Long id, Model model) {
-        model.addAttribute("restaurantToView", service.getRestaurantById(id));
-        return "restaurant/view";
-    }
+//    @GetMapping("/{id}")
+//    public String addRestaurantDetails(@PathVariable Long id, Model model) {
+//        model.addAttribute("restaurantToView", service.getRestaurantById(id));
+//        return "restaurant/view";
+//    }
 
     @GetMapping("/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String addRestaurantDetails(@ModelAttribute("restaurantToAdd") Restaurant restaurant) {
         return "restaurant/new";
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String addRestaurant(@ModelAttribute("restaurantToAdd") @Valid Restaurant restaurant,
                                 BindingResult result,
                                 RedirectAttributes attributes) {
@@ -61,13 +64,15 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/delete")
-    public String deletePizza(@RequestParam Long restaurantId, RedirectAttributes attributes) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String deleteRestaurant(@RequestParam Long restaurantId, RedirectAttributes attributes) {
         service.deletePizza(restaurantId);
         attributes.addFlashAttribute("deleted", restaurantId);
         return "redirect:/restaurants";
     }
 
     @GetMapping("/edit")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String openEditPage(@RequestParam Long restaurantId,
                                Model model) {
         model.addAttribute("restaurantToUpdate", service.getRestaurantById(restaurantId));
@@ -75,7 +80,8 @@ public class RestaurantController {
     }
 
     @PatchMapping("/edit/{id}")
-    public String editPizza(@ModelAttribute("restaurantToUpdate") @Valid Restaurant restaurantToUpdate,
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String editRestaurant(@ModelAttribute("restaurantToUpdate") @Valid Restaurant restaurantToUpdate,
                             BindingResult result, RedirectAttributes attributes) {
         if (result.hasErrors()) {
             return "restaurant/edit";

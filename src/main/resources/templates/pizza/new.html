@@ -24,7 +24,7 @@
             <select th:field="*{size}">
                 <option th:selected th:disabled value="">Select</option>
 <!--                <option th:default="" disabled="disabled" selected value="" th:text="Select"></option>-->
-                <option th:each="size : ${allPizzaSizes}"
+                <option th:each="size : ${pizzaDataProviderService.getAllPizzaSizes()}"
                         th:text="${size}"
                         th:value="${size}">
                 </option>
@@ -43,7 +43,7 @@
                 Select Ingredients:
                 <table>
                     <tbody>
-                    <tr th:each="ingredient : ${allIngredients}">
+                    <tr th:each="ingredient : ${pizzaDataProviderService.getAllIngredients()}">
                         <td th:text="${ingredient.name}">
                         </td>
                         <td>
@@ -62,7 +62,7 @@
         <div>
             <label for="restaurantId">Select restaurant: </label>
             <select th:field="*{restaurant}">
-                <option th:each="restaurant : ${allRestaurants}"
+                <option th:each="restaurant : ${pizzaDataProviderService.getAllRestaurants()}"
                         th:value="${restaurant.id}"
                         th:text="${restaurant.name}"
                         id="restaurantId">
