@@ -66,6 +66,11 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(request -> request
                                 .requestMatchers("/css/**").permitAll()
                                 .requestMatchers("/error").permitAll()
+                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/restaurants/search").permitAll()
+                                .requestMatchers("/restaurants").permitAll()
+                                .requestMatchers("/pizzas/search").permitAll()
+                                .requestMatchers("/pizzas").permitAll()
                                 .requestMatchers("/auth/login").permitAll()
                                 .requestMatchers("/ingredients").hasAnyAuthority("CREATOR", "ADMIN")
                                 .requestMatchers("/admin").hasAuthority("ADMIN")
@@ -77,7 +82,7 @@ public class WebSecurityConfig {
                         .loginProcessingUrl("/process_login"))
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login"));
+                        .logoutSuccessUrl("/"));
 
 //        http.authenticationProvider(authenticationProvider());
 //

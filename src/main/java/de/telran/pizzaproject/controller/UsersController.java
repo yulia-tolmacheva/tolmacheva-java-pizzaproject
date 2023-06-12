@@ -1,8 +1,8 @@
 package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.User;
-import de.telran.pizzaproject.repository.RoleRepository;
 import de.telran.pizzaproject.security.CustomUserDetails;
+import de.telran.pizzaproject.service.RoleService;
 import de.telran.pizzaproject.service.UserService;
 import de.telran.pizzaproject.validator.UserValidator;
 import jakarta.validation.Valid;
@@ -21,13 +21,13 @@ import java.util.List;
 public class UsersController {
 
     private final UserService service;
+    private final RoleService roleService;
     private final UserValidator validator;
-    private final RoleRepository roleRepository;
 
-    public UsersController(UserService service, UserValidator validator, RoleRepository roleRepository) {
+    public UsersController(UserService service, RoleService roleService, UserValidator validator) {
         this.service = service;
+        this.roleService = roleService;
         this.validator = validator;
-        this.roleRepository = roleRepository;
     }
 
     @GetMapping
@@ -134,6 +134,6 @@ public class UsersController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("allRoles", roleService.getAllRoles());
     }
 }

@@ -1,7 +1,7 @@
 package de.telran.pizzaproject.repository;
 
 import de.telran.pizzaproject.model.entity.Role;
-import de.telran.pizzaproject.model.entity.RoleName;
+import de.telran.pizzaproject.model.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

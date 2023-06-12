@@ -26,7 +26,7 @@
         <div>
             <label for="size">Select size: </label>
             <select th:field="*{size}">
-                <option th:each="size : ${allPizzaSizes}"
+                <option th:each="size : ${pizzaDataProviderService.getAllPizzaSizes()}"
                         th:field="*{size}"
                         id="size"
                         th:text="${size}"
@@ -47,7 +47,7 @@
                 Select Ingredients:
                 <table>
                     <tbody>
-                    <tr th:each="ingredient : ${allIngredients}">
+                    <tr th:each="ingredient : ${pizzaDataProviderService.getAllIngredients()}">
                         <td th:text="${ingredient.name}">
                         </td>
                         <td>
@@ -65,7 +65,7 @@
         <div>
             <label for="restaurantId">Select restaurant: </label>
             <select th:field="*{restaurant}">
-                <option th:each="restaurant : ${allRestaurants}"
+                <option th:each="restaurant : ${pizzaDataProviderService.getAllRestaurants()}"
                         th:value="${restaurant.id}"
                         th:text="${restaurant.name}"
                         id="restaurantId">

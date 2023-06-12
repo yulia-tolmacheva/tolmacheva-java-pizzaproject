@@ -1,7 +1,7 @@
 package de.telran.pizzaproject.dataLoader;
 
 import de.telran.pizzaproject.model.entity.Role;
-import de.telran.pizzaproject.model.entity.RoleName;
+import de.telran.pizzaproject.model.RoleName;
 import de.telran.pizzaproject.model.entity.User;
 import de.telran.pizzaproject.repository.RoleRepository;
 import de.telran.pizzaproject.repository.UserRepository;

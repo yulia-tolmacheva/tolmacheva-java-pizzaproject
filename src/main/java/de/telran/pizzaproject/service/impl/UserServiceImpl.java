@@ -29,6 +29,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addOrUpdate(User user) {
+        Optional<User> byId = repository.findById(user.getId());
+
+        if (byId.isPresent()) {
+            if (user.getPassword().isEmpty()) {
+                user.setPassword(byId.get().getPassword());
+                return repository.save(user);
+            }
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
         return repository.save(user);

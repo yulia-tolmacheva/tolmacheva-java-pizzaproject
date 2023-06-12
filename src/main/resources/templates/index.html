@@ -19,10 +19,17 @@
     <a href="/users">User</a>
 </nav>
 
-<div class="center_button" >
+<div class="center_button" sec:authorize="isAuthenticated()">
     <form th:action="@{/logout}" th:method="post">
         <div>
             <button type="submit">Logout</button>
+        </div>
+    </form>
+</div>
+<div class="center_button" sec:authorize="isAnonymous()">
+    <form th:action="@{/auth/login}" th:method="get">
+        <div>
+            <button type="submit">Login</button>
         </div>
     </form>
 </div>

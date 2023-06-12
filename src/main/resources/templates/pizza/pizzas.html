@@ -15,7 +15,7 @@
     <form th:action="@{/pizzas/search}" method="get">
         <select name="restaurantId" th:onchange="this.form.submit()">
             <option value="">All</option>
-            <option th:each="restaurant : ${allRestaurants}"
+            <option th:each="restaurant : ${pizzaDataProviderService.getAllRestaurants()}"
                     th:selected="${restaurantId != null and restaurantId == restaurant.id}"
                     th:text="${restaurant.name}"
                     th:value="${restaurant.id}">
@@ -29,7 +29,7 @@
     <form class="search" th:action="@{/pizzas/search}" method="get">
         <select name="size">
             <option value="">Size</option>
-            <option th:each="size : ${allPizzaSizes}"
+            <option th:each="size : ${pizzaDataProviderService.getAllPizzaSizes()}"
                     th:selected="${size == selectedSize}"
                     th:text="${size}"
                     th:value="${size}">
@@ -39,8 +39,9 @@
         <input type="hidden" name="restaurantId" th:value="${restaurantId}">
         <button type="submit" class="btn btn-info">Filter</button>
     </form>
-    <form class="search" th:action="@{/pizzas}" method="get">
+    <form class="search" th:action="@{/pizzas/search}" method="get">
         <button type="submit" class="btn btn-info">Reset</button>
+        <input type="hidden" name="restaurantId" th:value="${restaurantId}">
     </form>
 </div>
 
@@ -67,11 +68,11 @@
         <td th:text="${pizza.getIngredients()}"></td>
         <td>
             <div>
-                <img th:if="${veggiePizzas.get(pizza.id) == true}" width="25" height="25"
+                <img th:if="${pizzaDataProviderService.getVeggiePizzas().get(pizza.id) == true}" width="25" height="25"
                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEBElEQVR4nO1ZXYgcRRCui6JiHowKERJ/koBBznBCLjvVM1WTQcnB4YMveiga8iBRfBCiiKAgLCpqzE7V7iWCyZuBPOQPBNEHRaPxByUQTHwTDAoakkgU4kUlMWal5/aSnr2925m7vdtZyQfNsrPT3d9XXVVd3QtwBVfw/4ZX4X4j9LQR/tAInzRibpq2Awq9a4Q2QB36YD5RhgWe0D1Gw42oXDXKHyWEleuXmtDPbXlhbe2dRvi0UT6wJg5vm2veRsxSVNqCysdTZFs2Gs00qF8N1xrlc9YCngbhXJFH5SdRaKw98fGGEj6YeXDrRuPLxuc95Yc6yrwOfQ03qedp1sVyzYPK2xLlSv+g8CMdIV+GBai8My95kxjTLM01V3+5/xoj9M2ECCM8PFv+Rrk8yTWUf0OhrXa1pybPFy2f3BN6lXC5UTrbmOiP3MvoYI3yiiS2Un7Nb2MNbzHKX0zv//TrTOcFVNrkWOuHwc3rbpjZOPy6Y9HzKLzePjdK0t59+NNZ+a1R/trJx/tmJoC+aljzAsbBw8mzOHjAukf7DEQvzVyAdSUhk54oeCzvGEbox4Y1X7HfqUa3W//PYP0/vdHo1lkJSAgo7XcGPV3aVro5nwA+g8KHonJ0dUPQJ9myDz0DnUAp5pWpTCFcySVgPIDXNcg/mjF9xtBJoPA7TkD/lWdpUXiX/bRJwCidaOPzF1DotY7XZEbD1U1p8K2sfQd3DF6fCJluFxa+iEIHjTJ1lHhKhPDnjqXGomq0KGvf4M1gCSr97ZD+1wgdReXtthK1+w7MNWxR1WS5Z7P3JXXdpBTzSphv2CyCyj9dFkDfZ+nnV/zFNiU6wndDt2CUX03FQpUxd5+YB6Fb8GP/rqassTXDql06tKDSx9Bt2OBzUuqpkb0jV031ri88khYc3A/dhhF60SXlx2Ew5bvKBxyxx6cTO29ISm2nPko2nhbAarQs9Z7SFigKjPIRZxWOZFkprPEAFAXo1vjWjSr+HZPfoe+cnftbKBIwJk5vasFTky6mUsdHegGKhGg8Pf7uWPg993dL2BVQUrobigajvNspxs5M1PsWKPSl89sxKCJQ+IlUHNT8kn1u7zFtveMIqEERgfY6MlUSh88nz4XXp0sHGoKiApV/cY6A7yfPhPc4As5NnAcKCRTe5cbB8OjwtengpoNQZBgNNzYVd881pc+XocjwJuX7y9a3zZPgXig06smNc8s7HpuJBipDC6HoMMoftBZQsPJhKtjrv5YClLdDL8DT8L5WAvwqPQ69gIHK0MLkf4RmARV/FfQKUOhwUwCPFeL0lRXNt26o9Bn0EtDe96ddaDP0EgaSOOBTTlkx6//V5h916OM3+MaoHF3Xhdmhp/AfmXmMFU0BMMoAAAAASUVORK5CYII=">
-                <img th:if="${glutenFreePizzas.get(pizza.id) == true}"
+                <img th:if="${pizzaDataProviderService.getGlutenFreePizzas().get(pizza.id) == true}"
                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAACXBIWXMAAAsTAAALEwEAmpwYAAADC0lEQVR4nL2U/UtTURjHF733Q0RBbWZOt3OmzVJB2OhVKnLuanupDOoPEAohEKIfCsIgcgujkGqJIb5s53ihV1KIiAKzMIKEJCeu1F5Yis1sup0zixtn3aszfLk3WA8cuPdyn+dznu/zolL9b8vPL1uaVIBpv+2wyWLvM1vs6UnLwGSx95gtdsFUaAuYipypcvwEQbVIuJO1Lv7MG5dFESynCLRSDO/P6sACi5kw0MBCGREeGAkCXQRDr/C0YAlB4DnFUIgfBB7P6SgXJDzQrKIIfGYBCQaYtsCjU4D4N3h2XgnmAwl86soIr0tLDEoQvBZu1NVOQ8AXSULFIAYgCHRSDNoIgqekoGMN+qrA5ZTRcIPuIUHwjMAb1y4ImAv06mqO68/NwSTBBoeYBemrTgl99WyqiCFwnCBwOoZgmdAEVisCbbfa+hmIc3B0sM4oSqLbMt4E+OAN7UTUp4/XZrroMCjczJc/b1EE9IN1xpG9JSVDDGQ7aBUY6FPNxkN+t3pktD7DM6PgCFDig8UqJUYxuM2cA7XZz6wO7gcDFTu5yfbK9FD/Fc2xKG/IoC36IwTD6xSDaspnbpUdnBVZaAPLCYZR8ZZD7pMFecUOLhKXzs7RgTrjL6lGFMNHBMHNsgHEa8gSZyA3UQZ/lWZnx/m0Uc7JTSRKJ7btO0VdRTDsEIfsHJto9hzxgl6/S/3N79bYL5bvybU6uLDYDLGumpwa4a52jWxA1At1CauhlfIwL+IF3UFPWiTiBR8Igj8JhmPva7Nf7DtQMix3Bc2wGK/fljDJr3tdml0sg0izPp4RTTgfbxm/7yiKA5SBwr6MDWzAWJCJZtAuSSQuwzfSAFIM7xE+M1PpUp0yggwVBMFo0KONjHv1L1lGFIMnFIMLMR80C/XaFYn//xOo95J6t9+tDhEEQn9LRBAcnm1lKAJJACZRDIMTknRiG3eydTKXr2xQj1tT2eNKsUnv4UbdetYMxKuDC0oggQptAQYyW2xvS0tLF6uSYaYiZ6q50N5tstiU7TCllrQM5rPf6tdGdtmm0a4AAAAASUVORK5CYII=">
-                <img th:if="${spicyPizzas.get(pizza.id) == true}" width="25" height="25"
+                <img th:if="${pizzaDataProviderService.getSpicyPizzas().get(pizza.id) == true}" width="25" height="25"
                      src="https://img.icons8.com/emoji/25/hot-pepper.png" alt="hot-pepper"/>
             </div>
         </td>

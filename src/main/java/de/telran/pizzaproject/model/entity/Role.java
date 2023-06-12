@@ -1,5 +1,6 @@
 package de.telran.pizzaproject.model.entity;
 
+import de.telran.pizzaproject.model.RoleName;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

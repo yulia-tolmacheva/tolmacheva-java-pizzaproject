@@ -25,15 +25,13 @@ public class PizzasController {
     private final PizzaService service;
     private final PizzaValidator pizzaValidator;
     private final PizzaDataProviderService pizzaDataProviderService;
-    private final IngredientRepository ingredientRepository;
-    private final RestaurantRepository restaurantRepository;
 
-    public PizzasController(PizzaService service, PizzaValidator pizzaValidator, PizzaDataProviderService pizzaDataProviderService, IngredientRepository ingredientRepository, RestaurantRepository restaurantRepository) {
+    public PizzasController(PizzaService service,
+                            PizzaValidator pizzaValidator,
+                            PizzaDataProviderService pizzaDataProviderService) {
         this.service = service;
         this.pizzaValidator = pizzaValidator;
         this.pizzaDataProviderService = pizzaDataProviderService;
-        this.ingredientRepository = ingredientRepository;
-        this.restaurantRepository = restaurantRepository;
     }
 
     @GetMapping
@@ -122,13 +120,6 @@ public class PizzasController {
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("pizzaDataProviderService", pizzaDataProviderService);
-        model.addAttribute("allIngredients", ingredientRepository.findAll());
-        model.addAttribute("allRestaurants", restaurantRepository.findAll());
-        model.addAttribute("allPizzaSizes", List.of(PizzaSize.values()));
-
-        model.addAttribute("spicyPizzas", service.getMapPizzaIdIsSpicy());
-        model.addAttribute("veggiePizzas", service.getMapPizzaIdIsVegetarian());
-        model.addAttribute("glutenFreePizzas", service.getMapPizzaIdIsGlutenFree());
     }
 }
 
