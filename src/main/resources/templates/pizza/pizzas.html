@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>All restaurants</title>
@@ -25,19 +26,19 @@
 
 <div class="filter">
     <h3 style="margin-right: 20px">Filters</h3>
-        <form class="search" th:action="@{/pizzas/search}" method="get">
-            <select name="size">
-                <option value="">Size</option>
-                <option th:each="size : ${allPizzaSizes}"
-                        th:selected="${size == selectedSize}"
-                        th:text="${size}"
-                        th:value="${size}">
-                </option>
-            </select>
-            <input type="text" name="ingredient" th:value="${ingredient}" placeholder="Find by ingredient" size="50">
-            <input type="hidden" name="restaurantId" th:value="${restaurantId}">
-            <button type="submit" class="btn btn-info">Filter</button>
-        </form>
+    <form class="search" th:action="@{/pizzas/search}" method="get">
+        <select name="size">
+            <option value="">Size</option>
+            <option th:each="size : ${allPizzaSizes}"
+                    th:selected="${size == selectedSize}"
+                    th:text="${size}"
+                    th:value="${size}">
+            </option>
+        </select>
+        <input type="text" name="ingredient" th:value="${ingredient}" placeholder="Find by ingredient" size="50">
+        <input type="hidden" name="restaurantId" th:value="${restaurantId}">
+        <button type="submit" class="btn btn-info">Filter</button>
+    </form>
     <form class="search" th:action="@{/pizzas}" method="get">
         <button type="submit" class="btn btn-info">Reset</button>
     </form>
@@ -74,9 +75,9 @@
                      src="https://img.icons8.com/emoji/25/hot-pepper.png" alt="hot-pepper"/>
             </div>
         </td>
-        <td th:text="${pizza.restaurant.id}"></td>
+        <td th:text="${pizza.restaurant.name}"></td>
 
-        <td>
+        <td sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')">
             <form th:action="@{/pizzas/edit}" th:method="get">
                 <div>
                     <input type="hidden" th:value="${pizza.id}" name="id">
@@ -86,7 +87,7 @@
                 </div>
             </form>
         </td>
-        <td>
+        <td sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')">
             <form th:action="@{/pizzas/delete}" th:method="delete">
                 <div>
                     <input type="hidden" name="_method" value="delete">
@@ -103,7 +104,7 @@
 
 <br>
 
-<div class="center_button">
+<div class="center_button" sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')">
     <form th:action="@{/pizzas/new}" th:method="get">
         <div>
             <button type="submit">Add new pizza</button>
@@ -111,7 +112,7 @@
     </form>
 </div>
 
-<div class="center_button">
+<div class="center_button" sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')">
     <form th:action="@{/ingredients}" th:method="get">
         <div>
             <button type="submit">Open ingredients</button>

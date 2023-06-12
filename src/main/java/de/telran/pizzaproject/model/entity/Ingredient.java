@@ -24,7 +24,7 @@ public class Ingredient {
     @NotBlank(message = "{field.required}")
     @Size(min = 1, max = 20, message = "{ingredients.name.size}")
     @Pattern(regexp = "[A-Za-z0-9 ]+", message = "{ingredients.name.invalid}")
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @Column(name = "is_vegetarian")

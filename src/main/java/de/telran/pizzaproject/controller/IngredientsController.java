@@ -11,8 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/ingredients")
 public class IngredientsController {
@@ -61,8 +59,6 @@ public class IngredientsController {
                                      RedirectAttributes attributes) {
         validator.validate(ingredientToUpdate, result);
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
-            System.out.println("method is here");
             model.addAttribute("ingredientToUpdateId", ingredientToUpdate.getId());
             return "/ingredient/ingredients";
         }
@@ -83,9 +79,4 @@ public class IngredientsController {
     public void addAttributes(Model model) {
          model.addAttribute("ingredients", service.getAllIngredients());
     }
-
-//    @ModelAttribute("ingredientToUpdate")
-//    public Ingredient getIngredientToUpdate() {
-//        return new Ingredient();
-//    }
 }

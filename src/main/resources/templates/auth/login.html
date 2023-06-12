@@ -11,7 +11,7 @@
     Welcome to Restaurant Web App
 </h1>
 
-<form th:method="post" th:action="@{/process_login}">
+<form class="center_button" th:method="post" th:action="@{/process_login}">
 
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 

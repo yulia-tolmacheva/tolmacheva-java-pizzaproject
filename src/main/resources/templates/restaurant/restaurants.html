@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
 <head>
     <meta charset="UTF-8">
     <title>All restaurants</title>
@@ -43,7 +45,7 @@
                 </div>
             </form>
         </td>
-        <td>
+        <td sec:authorize="hasAuthority('ADMIN')">
             <form th:action="@{/restaurants/edit}" th:method="get">
                 <div>
                     <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
@@ -53,7 +55,7 @@
                 </div>
             </form>
         </td>
-        <td>
+        <td sec:authorize="hasAuthority('ADMIN')">
             <form th:action="@{/restaurants/delete}" th:method="delete">
                 <div>
                     <input type="hidden" name="_method" value="delete">
@@ -68,7 +70,7 @@
     </tbody>
 </table>
 
-<div class ="center_button">
+<div class ="center_button" sec:authorize="hasAnyAuthority('ADMIN')">
     <form th:action="@{/restaurants/new}" th:method="get">
         <div>
             <button type="submit">Add new restaurant</button>

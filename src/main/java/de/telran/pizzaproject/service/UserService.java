@@ -11,6 +11,7 @@ public interface UserService {
     List<User> getAllUsers();
 
     User addOrUpdate(User user);
+    User updateNameOrPassword(User user, Long id);
 
     User getUserById(Long id);
 

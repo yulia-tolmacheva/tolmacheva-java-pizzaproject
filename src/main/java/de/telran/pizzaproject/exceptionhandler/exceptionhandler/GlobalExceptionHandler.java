@@ -33,33 +33,33 @@ public class GlobalExceptionHandler {
 //        }
 //    }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getCode();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> handleConstraintValidationExceptions(ConstraintViolationException ex) {
-        return new ResponseEntity<>("not valid due to validation error: " +
-                ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-    
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    ResponseEntity<String> handleException(Exception e) {
-//        log.error("Error occurred", e);
-//        log.info("Info message");
-//        log.debug("Debug message");
-        return new ResponseEntity<>("Exception: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach(error -> {
+//            String fieldName = ((FieldError) error).getField();
+//            String errorMessage = error.getCode();
+//            errors.put(fieldName, errorMessage);
+//        });
+//        return errors;
+//    }
+//
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public ResponseEntity<String> handleConstraintValidationExceptions(ConstraintViolationException ex) {
+//        return new ResponseEntity<>("not valid due to validation error: " +
+//                ex.getMessage(), HttpStatus.BAD_REQUEST);
+//    }
+//
+//
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler(Exception.class)
+//    ResponseEntity<String> handleException(Exception e) {
+////        log.error("Error occurred", e);
+////        log.info("Info message");
+////        log.debug("Debug message");
+//        return new ResponseEntity<>("Exception: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
 }

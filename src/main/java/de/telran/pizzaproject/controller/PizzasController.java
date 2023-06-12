@@ -1,11 +1,15 @@
 package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.Pizza;
+import de.telran.pizzaproject.model.PizzaSize;
 import de.telran.pizzaproject.repository.IngredientRepository;
 import de.telran.pizzaproject.repository.RestaurantRepository;
+import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.PizzaService;
+import de.telran.pizzaproject.service.impl.PizzaDataProviderServiceImpl;
 import de.telran.pizzaproject.validator.PizzaValidator;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,12 +24,14 @@ public class PizzasController {
 
     private final PizzaService service;
     private final PizzaValidator pizzaValidator;
+    private final PizzaDataProviderService pizzaDataProviderService;
     private final IngredientRepository ingredientRepository;
     private final RestaurantRepository restaurantRepository;
 
-    public PizzasController(PizzaService service, PizzaValidator pizzaValidator, IngredientRepository ingredientRepository, RestaurantRepository restaurantRepository) {
+    public PizzasController(PizzaService service, PizzaValidator pizzaValidator, PizzaDataProviderService pizzaDataProviderService, IngredientRepository ingredientRepository, RestaurantRepository restaurantRepository) {
         this.service = service;
         this.pizzaValidator = pizzaValidator;
+        this.pizzaDataProviderService = pizzaDataProviderService;
         this.ingredientRepository = ingredientRepository;
         this.restaurantRepository = restaurantRepository;
     }
@@ -37,11 +43,13 @@ public class PizzasController {
     }
 
     @GetMapping("/new")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
     public String addPizzaDetails(@ModelAttribute("pizzaToAdd") Pizza pizza) {
         return "pizza/new";
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
     public String addPizza(@ModelAttribute("pizzaToAdd") @Valid Pizza pizza,
                            BindingResult result,
                            RedirectAttributes attributes) {
@@ -56,6 +64,7 @@ public class PizzasController {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
     public String deletePizza(@RequestParam Long id, RedirectAttributes attributes) {
         service.deletePizza(id);
         attributes.addFlashAttribute("deleted", id);
@@ -63,6 +72,7 @@ public class PizzasController {
     }
 
     @GetMapping("/edit")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
     public String openEditPage(@RequestParam Long id,
                                Model model) {
         model.addAttribute("pizzaToUpdate", service.getPizzaById(id));
@@ -70,6 +80,7 @@ public class PizzasController {
     }
 
     @PatchMapping("/edit")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
     public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
                             BindingResult result, RedirectAttributes attributes,
                             Model model) {
@@ -88,7 +99,7 @@ public class PizzasController {
 
     @GetMapping("/search")
     public String findAllPizzasByRestaurantOrBySizeOrIngredient(
-            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "size", required = false) PizzaSize size,
             @RequestParam(name = "ingredient", required = false) String ingredient,
             @RequestParam(name = "restaurantId", required = false) Long restaurantId,
             Model model) {
@@ -110,9 +121,10 @@ public class PizzasController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
+        model.addAttribute("pizzaDataProviderService", pizzaDataProviderService);
         model.addAttribute("allIngredients", ingredientRepository.findAll());
         model.addAttribute("allRestaurants", restaurantRepository.findAll());
-        model.addAttribute("allPizzaSizes", List.of(12, 20, 28));
+        model.addAttribute("allPizzaSizes", List.of(PizzaSize.values()));
 
         model.addAttribute("spicyPizzas", service.getMapPizzaIdIsSpicy());
         model.addAttribute("veggiePizzas", service.getMapPizzaIdIsVegetarian());

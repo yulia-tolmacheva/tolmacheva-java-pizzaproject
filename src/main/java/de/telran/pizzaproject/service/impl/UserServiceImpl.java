@@ -3,7 +3,7 @@ package de.telran.pizzaproject.service.impl;
 import de.telran.pizzaproject.model.entity.User;
 import de.telran.pizzaproject.repository.UserRepository;
 import de.telran.pizzaproject.service.UserService;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
@@ -27,11 +28,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User addOrUpdate(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        user.setRole("ROLE_USER");
+        user.setEnabled(true);
         return repository.save(user);
+    }
+
+    @Override
+    public User updateNameOrPassword(User user, Long id) {
+        User byId = repository.getReferenceById(id);
+        byId.setUsername(user.getUsername());
+        if (!user.getPassword().isEmpty()) {
+            byId.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        byId.setFirstName(user.getFirstName());
+        byId.setLastName(user.getLastName());
+        return repository.save(byId);
     }
 
     @Override

@@ -1,12 +1,12 @@
 package de.telran.pizzaproject.security;
 
+import de.telran.pizzaproject.model.entity.Role;
 import de.telran.pizzaproject.model.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -18,7 +18,15 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
+//        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
+        List<Role> roles = user.getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName().name()));
+        }
+
+        return authorities;
     }
 
     @Override
@@ -48,7 +56,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled();
     }
 
     public User getUser() {

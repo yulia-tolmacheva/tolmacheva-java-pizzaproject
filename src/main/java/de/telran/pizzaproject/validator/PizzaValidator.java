@@ -36,8 +36,8 @@ public class PizzaValidator implements Validator {
                 errors.rejectValue("name", "", "This pizza already exists");
             }
         }
-        if (!(pizza.getSize().equals(12) || pizza.getSize().equals(20) || pizza.getSize().equals(28))) {
-            errors.rejectValue("size", "", "Available pizza sizes: 12, 20, 28");
-        }
+//        if (!(pizza.getSize().equals(12) || pizza.getSize().equals(20) || pizza.getSize().equals(28))) {
+//            errors.rejectValue("size", "", "Available pizza sizes: 12, 20, 28");
+//        }
     }
 }
