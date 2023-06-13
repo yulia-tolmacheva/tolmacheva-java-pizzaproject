@@ -77,8 +77,9 @@ public class WebSecurityConfig {
                         .anyRequest().hasAnyAuthority(RoleName.ADMIN.name(), RoleName.USER.name(), RoleName.CREATOR.name()))
                         .formLogin((formLogin) -> formLogin
                                 .loginPage("/auth/login")
+                                .loginProcessingUrl("/process_login")
                                 .failureUrl("/auth/login?error")
-                                .loginProcessingUrl("/process_login"))
+                                .defaultSuccessUrl("/"))
                         .logout((logout) -> logout
                                 .logoutUrl("/logout")
                                 .logoutSuccessUrl("/"));

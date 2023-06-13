@@ -55,6 +55,8 @@ public class SetupDataLoader implements
         if (userInDB.isEmpty()) {
             User user = new User();
             user.setUsername(name.toLowerCase());
+            user.setFirstName(name.toLowerCase());
+            user.setLastName(name.toLowerCase());
             user.setPassword(passwordEncoder.encode(name.toLowerCase()));
             user.setRoles(Arrays.asList(role));
             user.setEnabled(true);

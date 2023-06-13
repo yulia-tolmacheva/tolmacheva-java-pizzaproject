@@ -9,11 +9,45 @@
 
 <h1>Error</h1>
 
+<!--<body th:with="status=${status}">-->
+<!--<div th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(status)}">-->
+<!--    <h1 th:text="|${httpStatus.value()} - ${httpStatus.reasonPhrase}|">404</h1>-->
+<!--    <h3 th:utext="${errorMessage}">Error java.lang.NullPointerException</h3>-->
+<!--<h1 th:text="${httpStatus}">404</h1>-->
+<!--<p th:utext="${errorMessage}">Error</p>-->
+<!--</div>-->
+
+<table>
+    <tr>
+        <td>Date</td>
+        <td th:text="${timestamp}"/>
+    </tr>
+    <tr>
+        <td>Path</td>
+        <td th:text="${path}"/>
+    </tr>
+    <tr>
+        <td>Error</td>
+        <td th:text="${error}"/>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td th:text="${status}"/>
+    </tr>
+    <tr>
+        <td>Message</td>
+        <td th:text="${errorMessage}"/>
+    </tr>
+    <tr>
+        <td>Exception</td>
+        <td th:text="${exception}"/>
+    </tr>
+
 <!--<body th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">-->
-<body>
+<!--<body>-->
 <!--<h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>-->
 <!--<p th:utext="${httpStatus.name()}">Error java.lang.NullPointerException</p>-->
-<p th:utext="${httpStatus}">Error java.lang.NullPointerException</p>
+<!--<p th:utext="${httpStatus}">Error java.lang.NullPointerException</p>-->
 
 <div class="center_button">
     <form th:action="@{/}">

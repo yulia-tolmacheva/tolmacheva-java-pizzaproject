@@ -2,6 +2,7 @@ package de.telran.pizzaproject.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -26,14 +27,17 @@ public class User {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Size(min = 0, max = 100, message = "{user.password.size}")
+    @NotBlank(message = "{field.required}")
+    @Size(min = 3, max = 100, message = "{user.password.size}")
     @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name", length = 20)
+    @Column(name = "first_name")
+    @NotNull()
     private String firstName;
 
-    @Column(name = "last_name", length = 20)
+    @Column(name = "last_name")
+    @NotNull()
     private String lastName;
 
     @Column(name = "is_enabled")

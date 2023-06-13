@@ -1,31 +1,30 @@
 package de.telran.pizzaproject.exceptionhandler.exceptionhandler;
 
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
-//    @ExceptionHandler(Throwable.class)
+    @ExceptionHandler(Throwable.class)
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public String exception(final Throwable throwable, final Model model) {
-//        log.error("Exception during execution of SpringSecurity application", throwable);
-//        String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
-//        model.addAttribute("error", errorMessage);
+    public String exceptionServer(final Throwable throwable, final Model model) {
+        log.error("Exception during execution of SpringSecurity application", throwable);
+        String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
+        model.addAttribute("errorMessage", errorMessage);
+        return "error";
+    }
+
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public String exceptionBadRequest(final Exception exception, final Model model) {
+//        log.error("Exception ", exception);
+//        String errorMessage = (exception != null ? exception.getMessage() : "Unknown error");
+//        model.addAttribute("errorMessage", errorMessage);
 //        return "error";
 //    }
 
