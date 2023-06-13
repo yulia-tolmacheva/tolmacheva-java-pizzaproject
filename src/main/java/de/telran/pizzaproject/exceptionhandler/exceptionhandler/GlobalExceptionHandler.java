@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
@@ -16,8 +17,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-//@Slf4j
+@Slf4j
 public class GlobalExceptionHandler {
+
+//    @ExceptionHandler(Throwable.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public String exception(final Throwable throwable, final Model model) {
+//        log.error("Exception during execution of SpringSecurity application", throwable);
+//        String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
+//        model.addAttribute("error", errorMessage);
+//        return "error";
+//    }
 
 //    private final UserValidator validator;
 ////    private Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);

@@ -44,7 +44,7 @@ public class Pizza {
             joinColumns = @JoinColumn(name = "pizza_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private List<Ingredient> ingredients = new ArrayList<>();
+    private List<Ingredient> ingredients;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
