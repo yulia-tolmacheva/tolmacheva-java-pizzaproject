@@ -27,7 +27,7 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User) target;
 
-        Optional<User> foundUser = userService.getUserByUsername(user.getUsername());
+        Optional<User> foundUser = userService.findUserByUsername(user.getUsername());
 
         if (foundUser.isPresent()) {
             if (!Objects.equals(foundUser.get().getId(), user.getId())) {

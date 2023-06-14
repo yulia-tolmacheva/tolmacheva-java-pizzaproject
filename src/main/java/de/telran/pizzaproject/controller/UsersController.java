@@ -1,7 +1,6 @@
 package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.User;
-import de.telran.pizzaproject.security.CustomUserDetails;
 import de.telran.pizzaproject.service.RoleService;
 import de.telran.pizzaproject.service.UserService;
 import de.telran.pizzaproject.validator.UserValidator;
@@ -10,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -159,10 +159,8 @@ public class UsersController {
 
     @ModelAttribute
     public void addAttributes(Authentication authentication, Model model) {
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        model.addAttribute("userToShow",
-                service.getUserById(customUserDetails.getUser().getId()));
-
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("userToShow", service.getUserById(user.getId()));
         model.addAttribute("users", service.getAllUsers());
         model.addAttribute("allRoles", roleService.getAllRoles());
     }

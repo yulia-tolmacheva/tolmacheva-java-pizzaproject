@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <title>Homepage</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <style>
+        .login_button {
+            width: 151px;
+            height: 47px;
+            font-size: 20px;
+            border: none;
+            border-radius: 25px;
+        }
+    </style>
 </head>
 <body>
 
@@ -47,23 +56,25 @@
 <!--</nav>-->
 
 <div class="wrapper">
-    <h1 class="main_text">
-        Pizza Web App
-    </h1>
+    <div class="login_form_wrapper">
+        <h1 class="main_text">
+            Pizza Web App
+        </h1>
 
-    <div sec:authorize="isAuthenticated()">
-        <form th:action="@{/logout}" th:method="post">
-            <div>
-                <button class="login_button" type="submit">Logout</button>
-            </div>
-        </form>
-    </div>
-    <div sec:authorize="isAnonymous()">
-        <form th:action="@{/auth/login}" th:method="get">
-            <div>
-                <button class="login_button" type="submit">Login</button>
-            </div>
-        </form>
+        <div sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" th:method="post">
+                <div>
+                    <button class="login_button" type="submit">Logout</button>
+                </div>
+            </form>
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <form th:action="@{/auth/login}" th:method="get">
+                <div>
+                    <button class="login_button" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

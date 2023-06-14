@@ -1,58 +1,41 @@
-package de.telran.pizzaproject.security;
+package de.telran.pizzaproject.config;
 
 import de.telran.pizzaproject.model.RoleName;
-import de.telran.pizzaproject.service.impl.UserDetailsServiceImpl;
+import de.telran.pizzaproject.repository.UserRepository;
+import de.telran.pizzaproject.service.UserService;
+import de.telran.pizzaproject.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.Arrays;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-@RequiredArgsConstructor
-public class WebSecurityConfig {
+//@RequiredArgsConstructor
+public class SecurityConfig {
 
-//    private final UserDetailsService userDetailsService;
+    @Autowired
+    private UserRepository userService;
 
-//    @Autowired
-//    private AuthEntryPointJwt unauthorizedHandler;
-
-//    @Bean
-//    public AuthTokenFilter authenticationJwtTokenFilter() {
-//        return new AuthTokenFilter();
+//    public SecurityConfig(UserService userService) {
+//        this.userService = userService;
 //    }
 
-//    @Bean
-//    public DaoAuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//
-//        authProvider.setUserDetailsService(userDetailsService);
-//        authProvider.setPasswordEncoder(getPasswordEncoder());
-//
-//        return authProvider;
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
-//            throws Exception {
-//        return authConfig.getAuthenticationManager();
-//    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+//        return username -> userService.findUserByUsername(username)
+        return username -> userService.findByUsernameIgnoreCase(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {

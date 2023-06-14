@@ -55,10 +55,19 @@ header {
 
 footer {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     text-align: center;
     color: #303b44;
     width: 100%;
+}
+
+.login_form_wrapper {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 nav {
@@ -92,8 +101,7 @@ nav a {
     margin: 0 30px 30px 30px;
     min-width: 600px;
     height: calc(100vh - 100px);
-    background-color: #9ea4a9;
-    /* border-radius: 8px; */
+    background-color: #9ea4a95c;
     box-shadow: 1px 7px 11px 3px #303b448a;
     min-height: 600px;
 
@@ -108,23 +116,6 @@ nav a {
     font-size: 30px;
     color: #eaf1f9;
     text-shadow: 2px 2px 4px #1f2b3a;
-}
-
-.login_button {
-    width: 151px;
-    height: 47px;
-    font-size: 20px;
-    border: none;
-    border-radius: 25px;
-}
-
-.login_form {
-    width: 200px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
 }
 
 table.table {

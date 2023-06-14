@@ -2,11 +2,8 @@ package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.model.PizzaSize;
-import de.telran.pizzaproject.repository.IngredientRepository;
-import de.telran.pizzaproject.repository.RestaurantRepository;
 import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.PizzaService;
-import de.telran.pizzaproject.service.impl.PizzaDataProviderServiceImpl;
 import de.telran.pizzaproject.validator.PizzaValidator;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
