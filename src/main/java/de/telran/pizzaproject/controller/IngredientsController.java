@@ -5,6 +5,7 @@ import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.service.IngredientService;
 import de.telran.pizzaproject.validator.IngredientValidator;
 import jakarta.validation.Valid;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/ingredients")
+@Log4j2
 public class IngredientsController {
 
     private final IngredientService service;
@@ -35,6 +37,7 @@ public class IngredientsController {
                                         RedirectAttributes attributes, Model model) {
         validator.validate(ingredientToAdd, result);
         if (result.hasErrors()) {
+            log.info("Ingredient wasn't created " + result.getAllErrors());
             model.addAttribute("ingredientToAdd", ingredientToAdd);
             return "/ingredient/ingredients";
         }
@@ -59,6 +62,7 @@ public class IngredientsController {
             RedirectAttributes attributes) {
         validator.validate(ingredientToUpdate, result);
         if (result.hasErrors()) {
+            log.info("Ingredient wasn't updated " + result.getAllErrors());
             model.addAttribute("ingredientToUpdateId", ingredientToUpdate.getId());
             return "/ingredient/ingredients";
         }
@@ -73,6 +77,7 @@ public class IngredientsController {
         try {
             service.deleteIngredient(ingredientId);
         } catch (Exception e) {
+            log.info("Attempt to delete an ingredient that is assigned to a pizza. id: " + ingredientId);
             attributes.addFlashAttribute("ingredientBlocked", ingredientId);
             return "redirect:/ingredients";
         }

@@ -6,6 +6,8 @@ import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.PizzaService;
 import de.telran.pizzaproject.validator.PizzaValidator;
 import jakarta.validation.Valid;
+import lombok.extern.log4j.Log4j2;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/pizzas")
+@Log4j2
 public class PizzasController {
 
     private final PizzaService service;
@@ -50,6 +53,7 @@ public class PizzasController {
                            RedirectAttributes attributes) {
         pizzaValidator.validate(pizza, result);
         if (result.hasErrors()) {
+            log.info("Pizza wasn't created " + result.getAllErrors());
             return "pizza/new";
         }
 
@@ -81,10 +85,13 @@ public class PizzasController {
                             Model model) {
         pizzaValidator.validate(pizzaToUpdate, result);
         if (result.hasErrors()) {
+            log.info("Restaurant wasn't updated " + result.getAllErrors());
             return "pizza/edit";
         }
-        Pizza updated = service.update(pizzaToUpdate);
-        if (updated == null) {
+        try {
+            service.update(pizzaToUpdate);
+        } catch (ObjectNotFoundException e) {
+            log.info("Attempt to update pizza that doesn't exist(deleted)" + result.getAllErrors());
             model.addAttribute("notfound", pizzaToUpdate.getId());
             return "pizza/edit";
         }

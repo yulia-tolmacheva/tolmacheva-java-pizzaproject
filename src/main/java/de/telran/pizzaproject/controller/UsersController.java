@@ -69,7 +69,7 @@ public class UsersController {
         validator.validate(userToUpdate, result);
         if (result.hasErrors()) {
             model.addAttribute("userToUpdatePas", userToUpdate);
-            log.info("User wasn't updated " + result.getAllErrors());
+            log.info("User password wasn't updated " + result.getAllErrors());
             return "/users/user";
         }
 //        service.updatePassword(userToUpdate);
