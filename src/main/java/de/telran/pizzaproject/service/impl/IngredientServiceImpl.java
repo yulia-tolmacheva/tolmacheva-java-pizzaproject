@@ -6,6 +6,8 @@ import de.telran.pizzaproject.repository.PizzaRepository;
 import de.telran.pizzaproject.service.IngredientService;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 

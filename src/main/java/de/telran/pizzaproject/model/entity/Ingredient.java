@@ -2,12 +2,12 @@ package de.telran.pizzaproject.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -35,6 +35,10 @@ public class Ingredient {
 
     @Column(name = "is_glutenfree")
     private boolean isGlutenfree;
+
+    @ManyToMany(mappedBy = "ingredients")
+    @Column(name = "pizzas")
+    private List<Pizza> pizzas;
 
     @Override
     public String toString() {

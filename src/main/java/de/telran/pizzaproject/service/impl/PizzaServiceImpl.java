@@ -5,6 +5,7 @@ import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.model.PizzaSize;
 import de.telran.pizzaproject.repository.PizzaRepository;
 import de.telran.pizzaproject.service.PizzaService;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,10 +40,10 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public Pizza update(Pizza pizza) {
         Optional<Pizza> pizzaById = repository.findById(pizza.getId());
-        if (pizzaById.isPresent()) {
-            return repository.save(pizza);
+        if (pizzaById.isEmpty()) {
+            throw new ObjectNotFoundException("pizza", pizza);
         }
-        else return null;
+        return repository.save(pizza);
     }
 
     @Override

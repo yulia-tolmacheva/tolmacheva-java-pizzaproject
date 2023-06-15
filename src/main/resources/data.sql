@@ -1,10 +1,10 @@
-insert into restaurants (name, address, phone)
+insert into restaurants (name, city, phone)
 values ('restaurant1', 'Berlin', 54683838);
-insert into restaurants (name, address, phone)
+insert into restaurants (name, city, phone)
 values ('restaurant2', 'Frankfurt', 54683838);
-insert into restaurants (name, address, phone)
+insert into restaurants (name, city, phone)
 values ('restaurant3', 'Dresden', 54683838);
-insert into restaurants (name, address, phone)
+insert into restaurants (name, city, phone)
 values ('restaurant4', 'Berlin', 54683838);
 
 insert into ingredients (name, is_vegetarian, is_spicy, is_glutenfree)

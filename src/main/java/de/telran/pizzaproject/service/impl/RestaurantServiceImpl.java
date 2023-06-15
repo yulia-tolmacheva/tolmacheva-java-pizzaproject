@@ -22,6 +22,21 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public Restaurant getRestaurantById(Long restaurantId) {
+        return repository.getReferenceById(restaurantId);
+    }
+
+    @Override
+    public List<Restaurant> getAllByAddress(String keyword) {
+        return repository.findAllByAddressContainingIgnoreCase(keyword);
+    }
+
+    @Override
+    public List<Restaurant> getAllByCity(String city) {
+        return repository.findAllByCityContainingIgnoreCase(city);
+    }
+
+    @Override
     public Restaurant addOrUpdate(Restaurant restaurant) {
         return repository.save(restaurant);
     }
@@ -31,13 +46,4 @@ public class RestaurantServiceImpl implements RestaurantService {
         repository.deleteById(restaurantId);
     }
 
-    @Override
-    public Restaurant getRestaurantById(Long restaurantId) {
-        return repository.getReferenceById(restaurantId);
-    }
-
-    @Override
-    public List<Restaurant> getAllByAddress(String keyword) {
-        return repository.findAllByAddressContainingIgnoreCase(keyword);
-    }
 }

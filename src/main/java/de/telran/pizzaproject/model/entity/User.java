@@ -2,11 +2,14 @@ package de.telran.pizzaproject.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.support.BeanDefinitionDsl;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
@@ -14,7 +17,7 @@ import java.util.*;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +30,17 @@ public class User {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Size(min = 0, max = 100, message = "{user.password.size}")
+    @NotBlank(message = "{field.required}")
+    @Size(min = 3, max = 100, message = "{user.password.size}")
     @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name", length = 20)
+    @Column(name = "first_name")
+    @NotNull()
     private String firstName;
 
-    @Column(name = "last_name", length = 20)
+    @Column(name = "last_name")
+    @NotNull()
     private String lastName;
 
     @Column(name = "is_enabled")
@@ -47,10 +53,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
-
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -70,11 +72,38 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", isEnabled=" + isEnabled +
-                ", roles=" + roles +
                 '}';
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName().name()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isEnabled;
+    }
+
 }

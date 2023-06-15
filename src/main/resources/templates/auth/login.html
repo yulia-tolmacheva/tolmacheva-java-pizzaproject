@@ -7,33 +7,33 @@
 </head>
 <body>
 
-<h1>
-    Welcome to Restaurant Web App
-</h1>
+<nav th:replace="~{index.html :: header}"></nav>
 
-<form class="center_button" th:method="post" th:action="@{/process_login}">
+<div class="wrapper">
+    <h1 class="main_text">
+        Restaurant-Pizza Web App
+    </h1>
 
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <div class="login_form_wrapper">
+        <form class="login_form" th:method="post" th:action="@{/process_login}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-    <div>
-        <label for="username">Enter username: </label>
-        <input type="text" name="username" id="username"/>
+            <div class="login_form_div">
+                <label for="username">Enter username: </label>
+                <input type="text" name="username" id="username" placeholder="Username" autofocus="autofocus"/>
+            </div>
+            <div class="login_form_div">
+                <label for="password">Enter password: </label>
+                <input type="password" name="password" placeholder="Password" id="password"/>
+            </div>
+            <div>
+                <button class="login_button" type="submit">Login</button>
+            </div>
+            <div class="error" th:if="${param.error}">
+                Wrong name or password
+            </div>
+        </form>
     </div>
-
-    <div>
-        <label for="password">Enter password: </label>
-        <input type="password" name="password" id="password"/>
-    </div>
-
-    <div>
-        <input type="submit" value="Login"/>
-    </div>
-
-    <div class="error" th:if="${param.error}">
-        Wrong name or password
-    </div>
-
-</form>
 
 </body>
 </html>

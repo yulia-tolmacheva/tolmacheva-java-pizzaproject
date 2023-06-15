@@ -3,6 +3,8 @@ package de.telran.pizzaproject.controller;
 import de.telran.pizzaproject.model.entity.Restaurant;
 import de.telran.pizzaproject.service.RestaurantService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +16,22 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/restaurants")
+@RequiredArgsConstructor
+@Log4j2
 public class RestaurantsController {
 
     private final RestaurantService service;
-
-    public RestaurantsController(RestaurantService service) {
-        this.service = service;
-    }
-
     @GetMapping
     public String getAll() {
+        return "restaurant/restaurants";
+    }
+
+    @GetMapping("/{city}")
+    public String getAllByCity(@PathVariable String city, Model model) {
+        model.addAttribute("city", city);
+        List<Restaurant> filteredList;
+        filteredList = service.getAllByCity(city);
+        model.addAttribute("filteredList", filteredList);
         return "restaurant/restaurants";
     }
 
@@ -32,6 +40,16 @@ public class RestaurantsController {
         List<Restaurant> filteredList;
         if (address != null) {
             filteredList = service.getAllByAddress(address);
+            model.addAttribute("filteredList", filteredList);
+        }
+        return "restaurant/restaurants";
+    }
+
+    @GetMapping("/search/city")
+    public String getSearchByCity(Model model, @RequestParam String city) {
+        List<Restaurant> filteredList;
+        if (city != null) {
+            filteredList = service.getAllByCity(city);
             model.addAttribute("filteredList", filteredList);
         }
         return "restaurant/restaurants";
@@ -55,6 +73,7 @@ public class RestaurantsController {
                                 BindingResult result,
                                 RedirectAttributes attributes) {
         if (result.hasErrors()) {
+            log.info("Restaurant wasn't created " + result.getAllErrors());
             return "restaurant/new";
         }
 
@@ -67,6 +86,7 @@ public class RestaurantsController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteRestaurant(@RequestParam Long restaurantId, RedirectAttributes attributes) {
         service.deletePizza(restaurantId);
+        log.info("Restaurant was deleted : " + restaurantId);
         attributes.addFlashAttribute("deleted", restaurantId);
         return "redirect:/restaurants";
     }
@@ -82,8 +102,9 @@ public class RestaurantsController {
     @PatchMapping("/edit/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String editRestaurant(@ModelAttribute("restaurantToUpdate") @Valid Restaurant restaurantToUpdate,
-                            BindingResult result, RedirectAttributes attributes) {
+                                 BindingResult result, RedirectAttributes attributes) {
         if (result.hasErrors()) {
+            log.info("Restaurant wasn't updated " + result.getAllErrors());
             return "restaurant/edit";
         }
         service.addOrUpdate(restaurantToUpdate);

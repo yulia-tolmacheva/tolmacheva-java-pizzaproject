@@ -8,37 +8,64 @@
 </head>
 <body>
 
-<h1>
-    <span sec:authentication="name"></span>, welcome to Restaurant Web App
-</h1>
-
-<nav th:fragment="navigation">
-    <a href="/">Home</a>
-    <a href="/restaurants">Restaurants</a>
-    <a href="/pizzas">Pizzas</a>
-    <a href="/users">User</a>
-</nav>
-
-<div class="center_button" sec:authorize="isAuthenticated()">
-    <form th:action="@{/logout}" th:method="post">
-        <div>
-            <button type="submit">Logout</button>
+<header th:fragment="header">
+    <div class="header__container">
+        <div class="header__div">
+            <div class="header__container__link">
+                <a href="/">Home</a>
+            </div>
+            <div class="header__container__link">
+                <a href="/restaurants">Restaurants</a>
+            </div>
         </div>
-    </form>
-</div>
-<div class="center_button" sec:authorize="isAnonymous()">
-    <form th:action="@{/auth/login}" th:method="get">
-        <div>
-            <button type="submit">Login</button>
+        <div class="header__div">
+            <div class="header__container__link" sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" th:method="post">
+                    <div>
+                        <button type="submit">Logout</button>
+                    </div>
+                </form>
+            </div>
+            <div class="header__container__link" sec:authorize="isAnonymous()">
+                <a href="/auth/login">Login</a>
+            </div>
+            <div class="header__container__link" sec:authorize="isAnonymous()">
+                <a href="/auth/signup">Sign up</a>
+            </div>
         </div>
-    </form>
+    </div>
+    </div>
+
+</header>
+
+<!--<nav th:fragment="navigation">-->
+<!--    <a href="/">Home</a>-->
+<!--    <a href="/restaurants">Restaurants</a>-->
+<!--    <a href="/pizzas">Pizzas</a>-->
+<!--    <a href="/users">User</a>-->
+<!--</nav>-->
+
+<div class="wrapper">
+    <h1 class="main_text">
+        Restaurant-Pizza Web App
+    </h1>
+    <div>
+        <div>
+            <form class="login__search" th:action="@{/search}" method="get">
+                <input class="login__search__input" type="text" name="city" th:value="${city}"
+                       placeholder="Find Restaurants by City" size="50">
+            </form>
+        </div>
+    </div>
 </div>
 
 
-<footer class="info">
-    <p>Spring Boot Pizza Project
+<footer th:fragment="footer">
+    <div>
+        Spring Boot Pizza Project
         <br>
-    Created by <a href="https://github.com/julietatolm">Yulia Tolmacheva</a></p>
+        Created by <a href="https://github.com/julietatolm">Yulia Tolmacheva</a>
+    </div>
 </footer>
 
 </body>

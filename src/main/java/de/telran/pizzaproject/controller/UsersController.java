@@ -1,124 +1,156 @@
 package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.User;
-import de.telran.pizzaproject.security.CustomUserDetails;
 import de.telran.pizzaproject.service.RoleService;
 import de.telran.pizzaproject.service.UserService;
 import de.telran.pizzaproject.validator.UserValidator;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@Log4j2
 public class UsersController {
 
     private final UserService service;
     private final RoleService roleService;
     private final UserValidator validator;
 
-    public UsersController(UserService service, RoleService roleService, UserValidator validator) {
-        this.service = service;
-        this.roleService = roleService;
-        this.validator = validator;
-    }
-
     @GetMapping
-    public String getUser(Authentication authentication, Model model) {
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        model.addAttribute("userToShow",
-                service.getUserById(customUserDetails.getUser().getId()));
-        return "user/user";
+    public String getUser() {
+        return "users/user";
     }
 
     @PostMapping("/edit")
     public String showEditFields(@RequestParam("userToUpdateId") Long userToUpdateId,
                                  Model model) {
         model.addAttribute("userToUpdate", service.getUserById(userToUpdateId));
-        model.addAttribute("userToShow", service.getUserById(userToUpdateId));
-        return "/user/user";
+        return "/users/user";
+    }
+
+    @PostMapping("/edit/p")
+    public String showEditPassword(@RequestParam("userToUpdateId") Long userToUpdateId,
+                                 Model model) {
+        model.addAttribute("userToUpdatePas", service.getUserById(userToUpdateId));
+        return "/users/user";
     }
 
     @PatchMapping("/edit")
-    public String editNamesOrPasswordUser(@ModelAttribute("userToUpdate") @Valid User userToUpdate,
+    public String editNameOrUsername(@ModelAttribute("userToUpdate") @Valid User userToUpdate,
                                           BindingResult result,
                                           RedirectAttributes attributes,
                                           Model model) {
         validator.validate(userToUpdate, result);
-        System.out.println(userToUpdate);
         if (result.hasErrors()) {
             model.addAttribute("userToUpdate", userToUpdate);
-            model.addAttribute("userToUpdateId", userToUpdate.getId());
-            return "/user/user";
+            log.info("User wasn't updated " + result.getAllErrors());
+            return "/users/user";
         }
-        User user = service.updateNameOrPassword(userToUpdate, userToUpdate.getId());
-        attributes.addFlashAttribute("updated", userToUpdate.getId());
+        service.updateUsernameOrName(userToUpdate);
+        attributes.addFlashAttribute("updated", userToUpdate.getUsername());
+        return "redirect:/users";
+    }
+
+    @PatchMapping("/edit/p")
+    public String editPassword(@ModelAttribute("userToUpdatePas") @Valid User userToUpdate,
+                            BindingResult result,
+                            RedirectAttributes attributes,
+                            Model model) {
+        validator.validate(userToUpdate, result);
+        if (result.hasErrors()) {
+            model.addAttribute("userToUpdatePas", userToUpdate);
+            log.info("User password wasn't updated " + result.getAllErrors());
+            return "/users/user";
+        }
+//        service.updatePassword(userToUpdate);
+        attributes.addFlashAttribute("updated", userToUpdate.getUsername());
         return "redirect:/users";
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public String getAll(Model model) {
-        List<User> users = service.getAllUsers();
-        model.addAttribute("users", users);
         model.addAttribute("userToAdd", new User());
-        return "user/users";
+        return "users/admin";
     }
 
-    @PostMapping("/admin")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/admin/new")
     public String addUsersDetails(@ModelAttribute("userToAdd") @Valid User userToAdd,
                                   BindingResult result,
                                   RedirectAttributes attributes, Model model) {
         validator.validate(userToAdd, result);
         if (result.hasErrors()) {
+            log.info("User wasn't created " + result.getAllErrors());
             model.addAttribute("userToAdd", userToAdd);
-            return "/user/users";
+            return "users/admin";
         }
-        User user = service.addOrUpdate(userToAdd);
-        attributes.addFlashAttribute("added", user.getId());
-        return "redirect:/users";
+        User user = service.addUser(userToAdd);
+        attributes.addFlashAttribute("added", user.getUsername());
+        return "redirect:/users/admin";
     }
 
     @PostMapping("/admin/edit")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public String showUpdateFields(@RequestParam("userToUpdateId") Long userToUpdateId,
                                    Model model) {
         model.addAttribute("userToUpdate", service.getUserById(userToUpdateId));
-        model.addAttribute("userToUpdateId", userToUpdateId);
-        return "/user/users";
+        return "/users/admin";
     }
 
-    @PatchMapping("/admin/edit/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/admin/edit/p")
+    public String showUpdatePassword(@RequestParam("userToUpdateId") Long userToUpdateId,
+                                   Model model) {
+        model.addAttribute("password", "");
+//        model.addAttribute("password", service.getUserById(userToUpdateId));
+        return "/users/admin";
+    }
+
+    @PatchMapping("/admin/edit")
     public String updateUserDetails(@ModelAttribute("userToUpdate") @Valid User userToUpdate,
                                     BindingResult result,
                                     Model model,
-                                    @RequestParam("userToUpdateId") Long userToUpdateId,
                                     RedirectAttributes attributes) {
         validator.validate(userToUpdate, result);
         if (result.hasErrors()) {
+            log.info("User wasn't updated " + result.getAllErrors());
             model.addAttribute("userToUpdate", userToUpdate);
-            model.addAttribute("userToUpdateId", userToUpdateId);
-            return "/user/users";
+            return "/users/admin";
         }
-        User user = service.addOrUpdate(userToUpdate);
-        attributes.addFlashAttribute("updated", user.getId());
+        User user = service.updateUser(userToUpdate);
+        attributes.addFlashAttribute("updated", user.getUsername());
+        return "redirect:/users/admin";
+    }
+
+    @PatchMapping("/admin/edit/p")
+    public String updateUserPassword(@ModelAttribute("userToUpdateId") Long userToUpdateId,
+            @ModelAttribute("password") String password,
+                                    Model model,
+                                    RedirectAttributes attributes) {
+//        validator.validate(userToUpdate, result);
+//        if (result.hasErrors()) {
+//            log.info("User password wasn't updated " + result.getAllErrors());
+//            model.addAttribute("userToUpdatePas", userToUpdate);
+//            return "/users/admin";
+//        }
+
+        User user = service.updatePassword(userToUpdateId, password);
+        attributes.addFlashAttribute("updated", user.getUsername());
         return "redirect:/users/admin";
     }
 
     @DeleteMapping("/admin/delete")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteUser(@RequestParam("userId") Long userId,
                              RedirectAttributes attributes) {
         if (service.getUserById(userId).getUsername().equals("admin")) {
+            log.info("Attempt to delete admin user");
             attributes.addFlashAttribute("notauthorized", "not authorized");
             return "redirect:/users/admin";
         }
@@ -127,13 +159,11 @@ public class UsersController {
         return "redirect:/users/admin";
     }
 
-    @ModelAttribute("users")
-    public List<User> getListIngredients() {
-        return service.getAllUsers();
-    }
-
     @ModelAttribute
-    public void addAttributes(Model model) {
+    public void addAttributes(Authentication authentication, Model model) {
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("userToShow", service.getUserById(user.getId()));
+        model.addAttribute("users", service.getAllUsers());
         model.addAttribute("allRoles", roleService.getAllRoles());
     }
 }

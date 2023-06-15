@@ -1,34 +1,22 @@
 package de.telran.pizzaproject.service.impl;
 
-import de.telran.pizzaproject.model.entity.User;
 import de.telran.pizzaproject.repository.UserRepository;
-import de.telran.pizzaproject.security.CustomUserDetails;
+import de.telran.pizzaproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository repository;
-
-    public UserDetailsServiceImpl(UserRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = repository.findByUsernameIgnoreCase(username);
-
-        System.out.println("I was here");
-
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return new CustomUserDetails(user.get());
+        return userService.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
