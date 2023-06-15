@@ -3,14 +3,10 @@ package de.telran.pizzaproject.dataLoader;
 import de.telran.pizzaproject.model.entity.Role;
 import de.telran.pizzaproject.model.RoleName;
 import de.telran.pizzaproject.model.entity.User;
-import de.telran.pizzaproject.repository.RoleRepository;
-import de.telran.pizzaproject.repository.UserRepository;
 import de.telran.pizzaproject.service.RoleService;
 import de.telran.pizzaproject.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,15 +17,13 @@ import java.util.Optional;
 public class SetupDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {
     boolean alreadySetup = false;
+    private final UserService userService;
+    private final RoleService roleService;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public SetupDataLoader(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    }
 
     @Override
     @Transactional
@@ -56,7 +50,7 @@ public class SetupDataLoader implements
             user.setUsername(name.toLowerCase());
             user.setFirstName(name.toLowerCase());
             user.setLastName(name.toLowerCase());
-            user.setPassword(passwordEncoder.encode(name.toLowerCase()));
+            user.setPassword(name.toLowerCase());
             user.setRoles(Collections.singletonList(role));
             user.setEnabled(true);
             userService.addUser(user);

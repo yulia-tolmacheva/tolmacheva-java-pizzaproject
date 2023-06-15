@@ -97,10 +97,10 @@
           th:object="${userToUpdatePas}" th:method="patch">
         <div>
             <input type="hidden" name="_method" value="patch">
-            <input type="hidden" th:value="${userToUpdatePas.id}" th:field="*{id}" name="userToUpdatePas">
-            <input type="hidden" th:value="${userToUpdatePas.username}" th:field="*{username}" name="username">
-            <input type="hidden" th:value="${userToUpdatePas.firstName}" th:field="*{firstName}" name="firstName">
-            <input type="hidden" th:value="${userToUpdatePas.lastName}" th:field="*{lastName}" name="lastName">
+            <input type="hidden" th:value="${userToUpdatePas.id}" th:field="*{id}" name="userToUpdateId">
+<!--            <input type="hidden" th:value="${userToUpdatePas.username}" th:field="*{username}" name="username">-->
+<!--            <input type="hidden" th:value="${userToUpdatePas.firstName}" th:field="*{firstName}" name="firstName">-->
+<!--            <input type="hidden" th:value="${userToUpdatePas.lastName}" th:field="*{lastName}" name="lastName">-->
         </div>
         <div>
             <label>Password</label>

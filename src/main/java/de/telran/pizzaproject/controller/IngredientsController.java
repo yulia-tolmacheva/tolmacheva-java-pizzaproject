@@ -70,11 +70,12 @@ public class IngredientsController {
     @DeleteMapping("/delete")
     public String deleteIngredient(@RequestParam("ingredientId") Long ingredientId,
                                    RedirectAttributes attributes) {
-        if (service.getIngredientById(ingredientId).getPizzas().size() > 0) {
+        try {
+            service.deleteIngredient(ingredientId);
+        } catch (Exception e) {
             attributes.addFlashAttribute("ingredientBlocked", ingredientId);
             return "redirect:/ingredients";
         }
-        service.deleteIngredient(ingredientId);
         attributes.addFlashAttribute("deleted", ingredientId);
         return "redirect:/ingredients";
     }

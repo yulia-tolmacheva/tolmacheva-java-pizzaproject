@@ -9,11 +9,13 @@ public interface RestaurantService {
 
     List<Restaurant> getAllRestaurants();
 
-    Restaurant addOrUpdate(Restaurant restaurant);
-
-    void deletePizza(Long restaurantId);
-
     Restaurant getRestaurantById(Long restaurantId);
 
     List<Restaurant> getAllByAddress(String keyword);
+
+    List<Restaurant> getAllByCity(String city);
+
+    Restaurant addOrUpdate(Restaurant restaurant);
+
+    void deletePizza(Long restaurantId);
 }

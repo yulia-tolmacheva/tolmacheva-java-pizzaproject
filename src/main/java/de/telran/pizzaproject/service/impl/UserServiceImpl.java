@@ -15,15 +15,15 @@ import java.util.Optional;
 //@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository repository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-//    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
-//        this.repository = repository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
 
     @Override
     public List<User> getAllUsers() {
@@ -64,9 +64,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updatePassword(User user) {
-        User byId = repository.getReferenceById(user.getId());
-        byId.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User updatePassword(Long id, String password) {
+        User byId = repository.getReferenceById(id);
+        byId.setPassword(passwordEncoder.encode(password));
         return repository.save(byId);
     }
 

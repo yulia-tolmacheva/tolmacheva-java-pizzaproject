@@ -32,6 +32,11 @@ public class Restaurant {
     private String address;
 
     @NotBlank(message = "{field.required}")
+    @Size(min = 1, max = 30, message = "{restaurant.address.invalid}")
+    @Column(name = "city")
+    private String city;
+
+    @NotBlank(message = "{field.required}")
     @Pattern(regexp = "\\d{6,12}", message = "{restaurant.phone.invalid}")
     @Column(name = "phone")
     private String phone;

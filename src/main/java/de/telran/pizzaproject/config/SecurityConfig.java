@@ -23,19 +23,19 @@ import org.springframework.security.web.SecurityFilterChain;
 //@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private UserRepository userService;
+//    @Autowired
+//    private UserRepository userService;
 
 //    public SecurityConfig(UserService userService) {
 //        this.userService = userService;
 //    }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-//        return username -> userService.findUserByUsername(username)
-        return username -> userService.findByUsernameIgnoreCase(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+////        return username -> userService.findUserByUsername(username)
+//        return username -> userService.findByUsernameIgnoreCase(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//    }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -49,11 +49,12 @@ public class SecurityConfig {
                         .requestMatchers("/",
                                 "/css/**",
                                 "/error",
+                                "/search/**",
                                 "/restaurants/search",
                                 "/restaurants",
                                 "/pizzas/search",
                                 "/pizzas",
-                                "/auth/login")
+                                "/auth/login", "/auth/signup")
                         .permitAll()
                         .requestMatchers("/ingredients").hasAnyAuthority(RoleName.CREATOR.name(), RoleName.ADMIN.name())
                         .requestMatchers("/admin").hasAuthority(RoleName.ADMIN.name())

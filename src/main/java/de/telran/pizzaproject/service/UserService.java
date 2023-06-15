@@ -13,6 +13,6 @@ public interface UserService {
     User updateUser(User user);
     User addUser(User user);
     User updateUsernameOrName(User user);
-    User updatePassword(User user);
+     User updatePassword(Long id, String password);
     void deleteUser(Long id);
 }

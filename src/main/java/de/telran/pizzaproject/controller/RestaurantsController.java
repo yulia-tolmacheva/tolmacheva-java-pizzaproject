@@ -3,6 +3,7 @@ package de.telran.pizzaproject.controller;
 import de.telran.pizzaproject.model.entity.Restaurant;
 import de.telran.pizzaproject.service.RestaurantService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +15,23 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/restaurants")
+@RequiredArgsConstructor
 public class RestaurantsController {
 
     private final RestaurantService service;
 
-    public RestaurantsController(RestaurantService service) {
-        this.service = service;
-    }
-
     @GetMapping
     public String getAll() {
+        return "restaurant/restaurants";
+    }
+    @GetMapping("/{city}")
+    public String getAllByCity(@PathVariable String city, Model model) {
+        model.addAttribute("city", city);
+        List<Restaurant> filteredList;
+        if (city != null) {
+            filteredList = service.getAllByCity(city);
+            model.addAttribute("filteredList", filteredList);
+        }
         return "restaurant/restaurants";
     }
 
@@ -32,6 +40,16 @@ public class RestaurantsController {
         List<Restaurant> filteredList;
         if (address != null) {
             filteredList = service.getAllByAddress(address);
+            model.addAttribute("filteredList", filteredList);
+        }
+        return "restaurant/restaurants";
+    }
+
+    @GetMapping("/search/city")
+    public String getSearchByCity(Model model, @RequestParam String city) {
+        List<Restaurant> filteredList;
+        if (city != null) {
+            filteredList = service.getAllByCity(city);
             model.addAttribute("filteredList", filteredList);
         }
         return "restaurant/restaurants";

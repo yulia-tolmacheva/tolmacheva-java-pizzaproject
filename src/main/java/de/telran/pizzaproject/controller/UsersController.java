@@ -72,7 +72,7 @@ public class UsersController {
             log.info("User wasn't updated " + result.getAllErrors());
             return "/users/user";
         }
-        service.updatePassword(userToUpdate);
+//        service.updatePassword(userToUpdate);
         attributes.addFlashAttribute("updated", userToUpdate.getUsername());
         return "redirect:/users";
     }
@@ -108,7 +108,8 @@ public class UsersController {
     @PostMapping("/admin/edit/p")
     public String showUpdatePassword(@RequestParam("userToUpdateId") Long userToUpdateId,
                                    Model model) {
-        model.addAttribute("userToUpdatePas", service.getUserById(userToUpdateId));
+        model.addAttribute("password", "");
+//        model.addAttribute("password", service.getUserById(userToUpdateId));
         return "/users/admin";
     }
 
@@ -129,17 +130,18 @@ public class UsersController {
     }
 
     @PatchMapping("/admin/edit/p")
-    public String updateUserPassword(@ModelAttribute("userToUpdatePas") @Valid User userToUpdate,
-                                    BindingResult result,
+    public String updateUserPassword(@ModelAttribute("userToUpdateId") Long userToUpdateId,
+            @ModelAttribute("password") String password,
                                     Model model,
                                     RedirectAttributes attributes) {
-        validator.validate(userToUpdate, result);
-        if (result.hasErrors()) {
-            log.info("User password wasn't updated " + result.getAllErrors());
-            model.addAttribute("userToUpdatePas", userToUpdate);
-            return "/users/admin";
-        }
-        User user = service.updatePassword(userToUpdate);
+//        validator.validate(userToUpdate, result);
+//        if (result.hasErrors()) {
+//            log.info("User password wasn't updated " + result.getAllErrors());
+//            model.addAttribute("userToUpdatePas", userToUpdate);
+//            return "/users/admin";
+//        }
+
+        User user = service.updatePassword(userToUpdateId, password);
         attributes.addFlashAttribute("updated", user.getUsername());
         return "redirect:/users/admin";
     }
