@@ -22,7 +22,7 @@ public class Restaurant {
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 14, message = "{restaurant.name.invalid}")
+    @Size(min = 1, max = 30, message = "{restaurant.name.invalid}")
     @Column(name = "name")
     private String name;
 
@@ -37,7 +37,7 @@ public class Restaurant {
     private String city;
 
     @NotBlank(message = "{field.required}")
-    @Pattern(regexp = "\\d{6,12}", message = "{restaurant.phone.invalid}")
+    @Pattern(regexp = ".\\d{6,12}", message = "{restaurant.phone.invalid}")
     @Column(name = "phone")
     private String phone;
 

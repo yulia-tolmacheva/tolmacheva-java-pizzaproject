@@ -9,7 +9,8 @@ import java.util.List;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-    List<Restaurant> findAllByAddressContainingIgnoreCase(String keyword);
-    List<Restaurant> findAllByCityContainingIgnoreCase(String keyword);
+    List<Restaurant> findAllByAddressContainingIgnoreCase(String address);
+    List<Restaurant> findAllByAddressContainingIgnoreCaseAndCityContainingIgnoreCase(String address, String city);
+    List<Restaurant> findAllByCityContainingIgnoreCase(String city);
 
 }

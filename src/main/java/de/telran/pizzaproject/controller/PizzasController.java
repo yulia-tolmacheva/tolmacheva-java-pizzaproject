@@ -6,6 +6,7 @@ import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.PizzaService;
 import de.telran.pizzaproject.validator.PizzaValidator;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,19 +21,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/pizzas")
 @Log4j2
+@RequiredArgsConstructor
 public class PizzasController {
 
     private final PizzaService service;
     private final PizzaValidator pizzaValidator;
     private final PizzaDataProviderService pizzaDataProviderService;
-
-    public PizzasController(PizzaService service,
-                            PizzaValidator pizzaValidator,
-                            PizzaDataProviderService pizzaDataProviderService) {
-        this.service = service;
-        this.pizzaValidator = pizzaValidator;
-        this.pizzaDataProviderService = pizzaDataProviderService;
-    }
 
     @GetMapping
     public String getAll(Model model) {

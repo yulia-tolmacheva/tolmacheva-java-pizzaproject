@@ -1,11 +1,49 @@
-insert into restaurants (name, city, phone)
-values ('restaurant1', 'Berlin', 54683838);
-insert into restaurants (name, city, phone)
-values ('restaurant2', 'Frankfurt', 54683838);
-insert into restaurants (name, city, phone)
-values ('restaurant3', 'Dresden', 54683838);
-insert into restaurants (name, city, phone)
-values ('restaurant4', 'Berlin', 54683838);
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizzeria Bella', 'Berlin', 'Hauptstraße 1', '+49 30 12345678');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('La Pizzetta', 'Frankfurt', 'Kaiserstraße 10', '+49 69 98765432');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizza Express', 'Dresden', 'Altmarkt 5', '+49 351 24681357');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizzeria Napoli', 'Munich', 'Marienplatz 15', '+49 89 74185263');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Il Forno', 'Hamburg', 'Reeperbahn 20', '+49 40 369258147');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizza World', 'Berlin', 'Friedrichstraße 50', '+49 30 57293048');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizzeria Roma', 'Frankfurt', 'Leipziger Straße 35', '+49 69 94857632');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Da Mario', 'Dresden', 'Prager Straße 60', '+49 351 24680257');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizza Amore', 'Munich', 'Schwabing 25', '+49 89 68274059');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('La Piazza', 'Hamburg', 'Jungfernstieg 30', '+49 40 78593624');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizza Hut', 'Frankfurt', 'Zeil 12', '+49 69 1234567');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Papa Johns Pizza', 'Frankfurt', 'Schillerstraße 18', '+49 69 2345678');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Mamma Mia Pizzeria', 'Frankfurt', 'Taunusstraße 24', '+49 69 3456789');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizza Ristorante', 'Frankfurt', 'Sachsenhausen 40', '+49 69 4567890');
+
+INSERT INTO restaurants (name, city, address, phone)
+VALUES ('Pizzeria Venezia', 'Frankfurt', 'Hauptwache 8', '+49 69 5678901');
+
+
 
 insert into ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
 values ('Dough', true, false, false);

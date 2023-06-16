@@ -21,37 +21,21 @@ import java.util.List;
 public class RestaurantsController {
 
     private final RestaurantService service;
+
     @GetMapping
     public String getAll() {
         return "restaurant/restaurants";
     }
 
-    @GetMapping("/{city}")
-    public String getAllByCity(@PathVariable String city, Model model) {
-        model.addAttribute("city", city);
-        List<Restaurant> filteredList;
-        filteredList = service.getAllByCity(city);
-        model.addAttribute("filteredList", filteredList);
-        return "restaurant/restaurants";
-    }
-
     @GetMapping("/search")
-    public String getSearchByAddress(Model model, @RequestParam String address) {
+    public String getSearchByAddressAndCity(Model model,
+                                            @RequestParam(required = false) String address,
+                                            @RequestParam(required = false) String city) {
         List<Restaurant> filteredList;
-        if (address != null) {
-            filteredList = service.getAllByAddress(address);
-            model.addAttribute("filteredList", filteredList);
-        }
-        return "restaurant/restaurants";
-    }
-
-    @GetMapping("/search/city")
-    public String getSearchByCity(Model model, @RequestParam String city) {
-        List<Restaurant> filteredList;
-        if (city != null) {
-            filteredList = service.getAllByCity(city);
-            model.addAttribute("filteredList", filteredList);
-        }
+        filteredList = service.getAllByAddressAndCity(address, city);
+        model.addAttribute("filteredList", filteredList);
+        model.addAttribute("address", address);
+        model.addAttribute("city", city);
         return "restaurant/restaurants";
     }
 

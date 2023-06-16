@@ -50,10 +50,8 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/error",
                                 "/search/**",
-                                "/restaurants/search",
-                                "/restaurants",
-                                "/pizzas/search",
-                                "/pizzas",
+                                "/restaurants/**",
+                                "/pizzas/**",
                                 "/auth/login", "/auth/signup")
                         .permitAll()
                         .requestMatchers("/ingredients").hasAnyAuthority(RoleName.CREATOR.name(), RoleName.ADMIN.name())
