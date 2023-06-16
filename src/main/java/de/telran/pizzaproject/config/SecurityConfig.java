@@ -1,18 +1,12 @@
 package de.telran.pizzaproject.config;
 
 import de.telran.pizzaproject.model.RoleName;
-import de.telran.pizzaproject.repository.UserRepository;
-import de.telran.pizzaproject.service.UserService;
-import de.telran.pizzaproject.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,23 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
-
-//    @Autowired
-//    private UserRepository userService;
-
-//    public SecurityConfig(UserService userService) {
-//        this.userService = userService;
-//    }
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-////        return username -> userService.findUserByUsername(username)
-//        return username -> userService.findByUsernameIgnoreCase(username)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//    }
-
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();

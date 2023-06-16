@@ -22,7 +22,7 @@ public class Restaurant {
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 30, message = "{restaurant.name.invalid}")
+    @Size(min = 1, max = 20, message = "{restaurant.name.invalid}")
     @Column(name = "name")
     private String name;
 

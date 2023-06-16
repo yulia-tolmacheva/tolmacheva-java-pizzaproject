@@ -22,8 +22,8 @@ public class Pizza {
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 14, message = "{pizza.name.size}")
-    @Pattern(regexp = "[A-Za-z0-9]+", message = "{pizza.name.invalid}")
+    @Size(min = 1, max = 30, message = "{pizza.name.size}")
+    @Pattern(regexp = "[A-Za-z0-9 ]+", message = "{pizza.name.invalid}")
     @Column(name = "name")
     private String name;
 

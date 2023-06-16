@@ -28,6 +28,14 @@
                 </button>
             </form>
 
+            <div sec:authorize="hasAnyAuthority('ADMIN')">
+                <form th:action="@{/restaurants/new}" th:method="get">
+                    <div>
+                        <button class="new_rest_button" type="submit">Add new restaurant</button>
+                    </div>
+                </form>
+            </div>
+
             <div class="message" th:if="${deleted}">
                 Restaurant <span th:text="${deleted}"></span> successfully deleted
             </div>
@@ -37,13 +45,7 @@
             <div class="message" th:if="${updated}">
                 Restaurant <span th:text="${updated}"></span> successfully updated
             </div>
-            <div sec:authorize="hasAnyAuthority('ADMIN')">
-                <form th:action="@{/restaurants/new}" th:method="get">
-                    <div>
-                        <button class="new_rest_button" type="submit">Add new restaurant</button>
-                    </div>
-                </form>
-            </div>
+
         </div>
 
         <div class="right_container">
@@ -61,7 +63,7 @@
                             <form th:action="@{/pizzas/search}" th:method="get">
                                 <div>
                                     <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
-                                    <button class="rest_small_button" type="submit">See pizzas</button>
+                                    <button class="rest_small_button" type="submit">Open restaurant page</button>
                                 </div>
                             </form>
                         </div>

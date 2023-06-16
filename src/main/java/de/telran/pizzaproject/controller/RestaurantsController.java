@@ -62,7 +62,7 @@ public class RestaurantsController {
         }
 
         Restaurant restaurantAdded = service.addOrUpdate(restaurant);
-        attributes.addFlashAttribute("added", restaurantAdded.getId());
+        attributes.addFlashAttribute("added", restaurantAdded.getName());
         return "redirect:/restaurants";
     }
 
@@ -92,7 +92,7 @@ public class RestaurantsController {
             return "restaurant/edit";
         }
         service.addOrUpdate(restaurantToUpdate);
-        attributes.addFlashAttribute("updated", restaurantToUpdate.getId());
+        attributes.addFlashAttribute("updated", restaurantToUpdate.getName());
         return "redirect:/restaurants";
     }
 
