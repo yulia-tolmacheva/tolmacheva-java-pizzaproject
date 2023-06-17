@@ -43,8 +43,6 @@ VALUES ('Pizza Ristorante', 'Frankfurt', 'Sachsenhausen 40', '+49 69 4567890');
 INSERT INTO restaurants (name, city, address, phone)
 VALUES ('Pizzeria Venezia', 'Frankfurt', 'Hauptwache 8', '+49 69 5678901');
 
-
-
 INSERT INTO ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
 VALUES ('Dough', true, false, false);
 

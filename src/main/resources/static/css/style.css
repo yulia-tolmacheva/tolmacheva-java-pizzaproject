@@ -227,6 +227,15 @@ nav a {
     border-radius: 25px;
 }
 
+.back_long_button {
+    margin-top: 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    width: 190px;
+    height: 50px;
+}
+
 .left_search {
     display: flex;
     flex-direction: column;
@@ -246,6 +255,7 @@ nav a {
 
 .nothing-found {
     font-size: 20px;
+    text-align: center;
 }
 
 .rest_list {
@@ -256,6 +266,23 @@ nav a {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-content: flex-start
+}
+.rest_list_pizzas {
+    height: calc(100vh - 180px);
+    width: 100%;
+    margin-top: 20px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start
+}
+
+.pizzas_pizzas {
+    font-size: 30px;
+    margin-top: 10px;
+    margin-left: 20px;
 }
 
 .restaurant {
@@ -278,6 +305,19 @@ nav a {
     display: flex;
     flex-direction: column;
     justify-content: space-between
+}
+
+.pizza_name_img {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.checkboxes_search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .rest_right_cont {
@@ -309,6 +349,13 @@ nav a {
     transition: all .4s ease-in-out;
 }
 
+.rest_details {
+    border: 5px solid seagreen;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
 .message {
     color: seagreen;
     font-size: 14px;
@@ -327,8 +374,14 @@ nav a {
 }
 
 .new_rest_form {
-    margin: 100px;
+    height: 400px;
+    width: 347px;
+    margin: 68px;
     font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
 }
 
 .new_rest_input {

@@ -1,4 +1,4 @@
-package de.telran.pizzaproject.config;
+package de.telran.pizzaproject.security;
 
 import de.telran.pizzaproject.model.RoleName;
 import lombok.RequiredArgsConstructor;

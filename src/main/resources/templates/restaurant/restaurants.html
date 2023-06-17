@@ -60,9 +60,8 @@
                     </div>
                     <div class="rest_right_cont">
                         <div>
-                            <form th:action="@{/pizzas/search}" th:method="get">
+                            <form th:action="@{/restaurants/{restaurantId}/view(restaurantId=${restaurant.id})}" th:method="get">
                                 <div>
-                                    <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
                                     <button class="rest_small_button" type="submit">Open restaurant page</button>
                                 </div>
                             </form>

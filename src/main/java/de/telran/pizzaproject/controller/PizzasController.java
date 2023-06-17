@@ -1,9 +1,11 @@
 package de.telran.pizzaproject.controller;
 
-import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.model.PizzaSize;
+import de.telran.pizzaproject.model.entity.Pizza;
+import de.telran.pizzaproject.security.MyPermissionEvaluator;
 import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.PizzaService;
+import de.telran.pizzaproject.service.RestaurantService;
 import de.telran.pizzaproject.validator.PizzaValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,23 +27,27 @@ import java.util.List;
 public class PizzasController {
 
     private final PizzaService service;
+    private final RestaurantService restaurantService;
     private final PizzaValidator pizzaValidator;
     private final PizzaDataProviderService pizzaDataProviderService;
+    private final MyPermissionEvaluator permissionEvaluator;
 
     @GetMapping
     public String getAll(Model model) {
+//        model.addAttribute("filteredList", restaurantService.getRestaurantById(id).getPizzas());
+//        model.addAttribute("restaurantToView", restaurantService.getRestaurantById(id));
         model.addAttribute("pizzas", service.getAllPizzas());
         return "pizza/pizzas";
     }
 
     @GetMapping("/new")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public String addPizzaDetails(@ModelAttribute("pizzaToAdd") Pizza pizza) {
         return "pizza/new";
     }
 
     @PostMapping("/new")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public String addPizza(@ModelAttribute("pizzaToAdd") @Valid Pizza pizza,
                            BindingResult result,
                            RedirectAttributes attributes) {
@@ -57,7 +63,7 @@ public class PizzasController {
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public String deletePizza(@RequestParam Long id, RedirectAttributes attributes) {
         service.deletePizza(id);
         attributes.addFlashAttribute("deleted", id);
@@ -65,7 +71,7 @@ public class PizzasController {
     }
 
     @GetMapping("/edit")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public String openEditPage(@RequestParam Long id,
                                Model model) {
         model.addAttribute("pizzaToUpdate", service.getPizzaById(id));
@@ -73,7 +79,7 @@ public class PizzasController {
     }
 
     @PatchMapping("/edit")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CREATOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
                             BindingResult result, RedirectAttributes attributes,
                             Model model) {

@@ -1,6 +1,10 @@
 package de.telran.pizzaproject.controller;
 
+import de.telran.pizzaproject.model.PizzaSize;
+import de.telran.pizzaproject.model.entity.Pizza;
 import de.telran.pizzaproject.model.entity.Restaurant;
+import de.telran.pizzaproject.service.PizzaDataProviderService;
+import de.telran.pizzaproject.service.PizzaService;
 import de.telran.pizzaproject.service.RestaurantService;
 import de.telran.pizzaproject.service.UserService;
 import jakarta.validation.Valid;
@@ -22,10 +26,13 @@ import java.util.List;
 public class RestaurantsController {
 
     private final RestaurantService service;
+    private final PizzaService pizzaService;
     private final UserService userService;
+    private final PizzaDataProviderService pizzaDataProviderService;
 
     @GetMapping
-    public String getAll() {
+    public String getAll(Model model) {
+        model.addAttribute("filteredList", service.getAllRestaurants());
         return "restaurant/restaurants";
     }
 
@@ -41,17 +48,11 @@ public class RestaurantsController {
         return "restaurant/restaurants";
     }
 
-//    @GetMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-//    public String addRestaurantDetails(@PathVariable Long restaurantId, @PathVariable Long userId,
-//                                       Model model) {
-//        model.addAttribute("restaurantToView", service.getRestaurantById(restaurantId));
-//        return "restaurant/view";
-//    }
-
     @GetMapping("/new")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String addRestaurantDetails(@ModelAttribute("restaurantToAdd") Restaurant restaurant) {
+    public String addRestaurantDetails(@ModelAttribute("restaurantToAdd") Restaurant restaurant,
+                                       Model model) {
+        model.addAttribute("ownersList", userService.getAllUsersWithOwnerRole());
         return "restaurant/new";
     }
 
@@ -84,6 +85,7 @@ public class RestaurantsController {
     public String openEditPage(@RequestParam Long restaurantId,
                                Model model) {
         model.addAttribute("restaurantToUpdate", service.getRestaurantById(restaurantId));
+        model.addAttribute("ownersList", userService.getAllUsersWithOwnerRole());
         return "restaurant/edit";
     }
 
@@ -100,10 +102,48 @@ public class RestaurantsController {
         return "redirect:/restaurants";
     }
 
-    @ModelAttribute
-    public void getList(Model model) {
-        model.addAttribute("filteredList", service.getAllRestaurants());
-        model.addAttribute("ownersList", userService.getAllUsersWithOwnerRole());
-        System.out.println(userService.getAllUsersWithOwnerRole());
+    @GetMapping("/{restaurantId}/view")
+    public String getAll(@PathVariable("restaurantId") Long id,
+                         Model model) {
+        model.addAttribute("filteredPizzasList", service.getRestaurantById(id).getPizzas());
+        model.addAttribute("restaurantToView", service.getRestaurantById(id));
+        model.addAttribute("pizzaDataProviderService", pizzaDataProviderService);
+        return "restaurant/view";
+    }
+
+    @GetMapping("/{restaurantId}/pizzas/search")
+    public String filterPizzas(
+            @RequestParam(name = "size", required = false) PizzaSize size,
+            @RequestParam(name = "ingredient", required = false) String ingredient,
+            @RequestParam(name = "vegetarian", required = false) boolean vegetarian,
+            @RequestParam(name = "glutenfree", required = false) boolean glutenfree,
+            @RequestParam(name = "spicy", required = false) boolean spicy,
+            @PathVariable(name = "restaurantId") Long id,
+            Model model) {
+        List<Pizza> filteredPizzasList = pizzaService
+                .applyFilters(id, size, ingredient, vegetarian, glutenfree, spicy);
+
+        model.addAttribute("selectedSize", size);
+        model.addAttribute("selectedIngredient", ingredient);
+        model.addAttribute("selectedVegetarian", vegetarian);
+        model.addAttribute("selectedGlutenfree", glutenfree);
+        model.addAttribute("selectedSpicy", spicy);
+        model.addAttribute("restaurantToView", service.getRestaurantById(id));
+        model.addAttribute("filteredPizzasList", filteredPizzasList);
+        model.addAttribute("pizzaDataProviderService", pizzaDataProviderService);
+        return "restaurant/view";
     }
 }
+
+//    public boolean canEditRestaurant(Long restaurantId, Principal principal) {
+//        Authentication authentication = (Authentication) principal;
+//        boolean isAdmin = authentication.getAuthorities().stream()
+//                .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
+//        if (isAdmin) {
+//            return true;
+//        } else {
+//            User owner = userRepository.findByRestaurant_Id(restaurantId);
+//            String loggedInUsername = principal.getName();
+//            return owner.getUsername().equals(loggedInUsername);
+//        }
+//    }

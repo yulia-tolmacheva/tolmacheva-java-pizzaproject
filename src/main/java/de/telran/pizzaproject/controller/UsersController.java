@@ -163,4 +163,6 @@ public class UsersController {
         model.addAttribute("users", service.getAllUsers());
         model.addAttribute("allRoles", RoleName.values());
     }
+
+
 }
