@@ -34,10 +34,14 @@ public class SetupDataLoader implements
         Role admin = createRoleIfNotFound(RoleName.ADMIN);
         Role user = createRoleIfNotFound(RoleName.USER);
         Role creator = createRoleIfNotFound(RoleName.CREATOR);
+        Role owner = createRoleIfNotFound(RoleName.OWNER);
+        Role owner2 = createRoleIfNotFound(RoleName.OWNER);
 
         createUserIfNotFound(RoleName.ADMIN.name(), admin);
         createUserIfNotFound(RoleName.USER.name(), user);
         createUserIfNotFound(RoleName.CREATOR.name(), creator);
+        createUserIfNotFound(RoleName.OWNER.name(), owner);
+        createUserIfNotFound(RoleName.OWNER.name()+"2", owner);
 
         alreadySetup = true;
     }

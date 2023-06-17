@@ -2,6 +2,7 @@ package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.Restaurant;
 import de.telran.pizzaproject.service.RestaurantService;
+import de.telran.pizzaproject.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +22,7 @@ import java.util.List;
 public class RestaurantsController {
 
     private final RestaurantService service;
+    private final UserService userService;
 
     @GetMapping
     public String getAll() {
@@ -40,8 +42,10 @@ public class RestaurantsController {
     }
 
 //    @GetMapping("/{id}")
-//    public String addRestaurantDetails(@PathVariable Long id, Model model) {
-//        model.addAttribute("restaurantToView", service.getRestaurantById(id));
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+//    public String addRestaurantDetails(@PathVariable Long restaurantId, @PathVariable Long userId,
+//                                       Model model) {
+//        model.addAttribute("restaurantToView", service.getRestaurantById(restaurantId));
 //        return "restaurant/view";
 //    }
 
@@ -83,7 +87,7 @@ public class RestaurantsController {
         return "restaurant/edit";
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/edit")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String editRestaurant(@ModelAttribute("restaurantToUpdate") @Valid Restaurant restaurantToUpdate,
                                  BindingResult result, RedirectAttributes attributes) {
@@ -99,5 +103,7 @@ public class RestaurantsController {
     @ModelAttribute
     public void getList(Model model) {
         model.addAttribute("filteredList", service.getAllRestaurants());
+        model.addAttribute("ownersList", userService.getAllUsersWithOwnerRole());
+        System.out.println(userService.getAllUsersWithOwnerRole());
     }
 }

@@ -54,6 +54,9 @@ public class User implements UserDetails {
     )
     private List<Role> roles = new ArrayList<>();
 
+    @OneToOne(mappedBy = "owner")
+    private Restaurant restaurant;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,16 +68,6 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(username);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
     }
 
     @Override
@@ -106,4 +99,10 @@ public class User implements UserDetails {
         return this.isEnabled;
     }
 
+    @Override
+    public String toString() {
+        return "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName;
+    }
 }

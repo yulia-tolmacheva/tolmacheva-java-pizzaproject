@@ -37,10 +37,14 @@ public class Restaurant {
     private String city;
 
     @NotBlank(message = "{field.required}")
-    @Pattern(regexp = ".\\d{6,12}", message = "{restaurant.phone.invalid}")
+    @Pattern(regexp = "^\\+?[\\d- ]{7,15}$", message = "{restaurant.phone.invalid}")
     @Column(name = "phone")
     private String phone;
 
     @OneToMany(mappedBy="restaurant", cascade=CascadeType.ALL)
     private List<Pizza> pizzas = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_owner_id", referencedColumnName = "id")
+    private User owner;
 }

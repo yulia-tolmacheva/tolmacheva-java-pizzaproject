@@ -1,6 +1,9 @@
 package de.telran.pizzaproject.service.impl;
 
+import de.telran.pizzaproject.model.RoleName;
+import de.telran.pizzaproject.model.entity.Role;
 import de.telran.pizzaproject.model.entity.User;
+import de.telran.pizzaproject.repository.RoleRepository;
 import de.telran.pizzaproject.repository.UserRepository;
 import de.telran.pizzaproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +12,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -65,6 +70,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<User> getAllUsersWithOwnerRole() {
+        Role role = roleRepository.findRoleByRoleName(RoleName.OWNER);
+        return repository.findAll().stream().filter((user) -> user.getRoles()
+                .contains(role)).collect(Collectors.toList());
     }
 
 }

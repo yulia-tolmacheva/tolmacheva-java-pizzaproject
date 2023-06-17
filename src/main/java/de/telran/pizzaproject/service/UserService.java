@@ -15,4 +15,6 @@ public interface UserService {
     User updateUsernameOrName(User user);
      User updatePassword(Long id, String password);
     void deleteUser(Long id);
+
+    List<User> getAllUsersWithOwnerRole();
 }
