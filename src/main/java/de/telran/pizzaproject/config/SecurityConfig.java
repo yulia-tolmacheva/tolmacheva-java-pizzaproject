@@ -33,9 +33,9 @@ public class SecurityConfig {
                                 "/pizzas/**",
                                 "/auth/login", "/auth/signup")
                         .permitAll()
-                        .requestMatchers("/ingredients").hasAnyAuthority(RoleName.CREATOR.name(), RoleName.ADMIN.name())
+                        .requestMatchers("/ingredients").hasAnyAuthority(RoleName.OWNER.name(), RoleName.ADMIN.name())
                         .requestMatchers("/admin").hasAuthority(RoleName.ADMIN.name())
-                        .anyRequest().hasAnyAuthority(RoleName.ADMIN.name(), RoleName.USER.name(), RoleName.CREATOR.name()))
+                        .anyRequest().hasAnyAuthority(RoleName.ADMIN.name(), RoleName.USER.name(), RoleName.OWNER.name()))
                         .formLogin((formLogin) -> formLogin
                                 .loginPage("/auth/login")
                                 .loginProcessingUrl("/process_login")

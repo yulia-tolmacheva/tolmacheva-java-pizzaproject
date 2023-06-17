@@ -1,10 +1,9 @@
 package de.telran.pizzaproject.dataLoader;
 
-import de.telran.pizzaproject.model.entity.Role;
 import de.telran.pizzaproject.model.RoleName;
 import de.telran.pizzaproject.model.entity.User;
-import de.telran.pizzaproject.service.RoleService;
 import de.telran.pizzaproject.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -14,16 +13,11 @@ import java.util.Collections;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class SetupDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {
     boolean alreadySetup = false;
     private final UserService userService;
-    private final RoleService roleService;
-
-    public SetupDataLoader(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    }
 
     @Override
     @Transactional
@@ -31,22 +25,15 @@ public class SetupDataLoader implements
 
         if (alreadySetup)
             return;
-        Role admin = createRoleIfNotFound(RoleName.ADMIN);
-        Role user = createRoleIfNotFound(RoleName.USER);
-        Role creator = createRoleIfNotFound(RoleName.CREATOR);
-        Role owner = createRoleIfNotFound(RoleName.OWNER);
-        Role owner2 = createRoleIfNotFound(RoleName.OWNER);
-
-        createUserIfNotFound(RoleName.ADMIN.name(), admin);
-        createUserIfNotFound(RoleName.USER.name(), user);
-        createUserIfNotFound(RoleName.CREATOR.name(), creator);
-        createUserIfNotFound(RoleName.OWNER.name(), owner);
-        createUserIfNotFound(RoleName.OWNER.name()+"2", owner);
+        createUserIfNotFound(RoleName.ADMIN.name(), RoleName.ADMIN);
+        createUserIfNotFound(RoleName.USER.name(), RoleName.USER);
+        createUserIfNotFound(RoleName.OWNER.name(), RoleName.OWNER);
+        createUserIfNotFound(RoleName.OWNER.name()+"2", RoleName.OWNER);
 
         alreadySetup = true;
     }
 
-    private void createUserIfNotFound(String name, Role role) {
+    private void createUserIfNotFound(String name, RoleName roleName) {
         Optional<User> userInDB = userService.findUserByUsername(name);
 
         if (userInDB.isEmpty()) {
@@ -55,21 +42,10 @@ public class SetupDataLoader implements
             user.setFirstName(name.toLowerCase());
             user.setLastName(name.toLowerCase());
             user.setPassword(name.toLowerCase());
-            user.setRoles(Collections.singletonList(role));
+            user.setRoles(Collections.singletonList(roleName));
             user.setEnabled(true);
             userService.addUser(user);
         }
 
-    }
-
-    @Transactional
-    public Role createRoleIfNotFound(RoleName roleName) {
-
-        Role role = roleService.findRoleByRoleName(roleName);
-        if (role == null) {
-            role = new Role(roleName);
-            roleService.add(role);
-        }
-        return role;
     }
 }

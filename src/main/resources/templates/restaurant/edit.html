@@ -39,7 +39,7 @@
                     </div>
 
                     <div>
-                        <label for="address">City: </label>
+                        <label for="city">City: </label>
                         <input class="new_rest_input" type="text" th:field="*{city}" id="city">
                         <div class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> Error</div>
                     </div>
@@ -59,6 +59,7 @@
                     <div>
                         <label for="owner">Restaurant owner: </label>
                         <select class="new_rest_input" th:field="*{owner}">
+                            <option th:selected th:disabled value="">Select</option>
                             <option th:each="user : ${ownersList}"
                                     th:text="${user}"
                                     th:field="*{owner}"

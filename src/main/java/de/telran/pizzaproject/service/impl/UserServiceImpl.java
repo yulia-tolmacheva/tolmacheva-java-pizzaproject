@@ -1,9 +1,7 @@
 package de.telran.pizzaproject.service.impl;
 
 import de.telran.pizzaproject.model.RoleName;
-import de.telran.pizzaproject.model.entity.Role;
 import de.telran.pizzaproject.model.entity.User;
-import de.telran.pizzaproject.repository.RoleRepository;
 import de.telran.pizzaproject.repository.UserRepository;
 import de.telran.pizzaproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -41,6 +38,9 @@ public class UserServiceImpl implements UserService {
     public User addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
+        if (user.getRoles().isEmpty()) {
+            user.setRoles(List.of(RoleName.USER));
+        }
         return repository.save(user);
     }
 
@@ -74,9 +74,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsersWithOwnerRole() {
-        Role role = roleRepository.findRoleByRoleName(RoleName.OWNER);
         return repository.findAll().stream().filter((user) -> user.getRoles()
-                .contains(role)).collect(Collectors.toList());
+                .contains(RoleName.OWNER)).collect(Collectors.toList());
     }
 
 }

@@ -1,15 +1,13 @@
 package de.telran.pizzaproject.controller;
 
+import de.telran.pizzaproject.model.RoleName;
 import de.telran.pizzaproject.model.entity.User;
-import de.telran.pizzaproject.service.RoleService;
 import de.telran.pizzaproject.service.UserService;
 import de.telran.pizzaproject.validator.UserValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UsersController {
 
     private final UserService service;
-    private final RoleService roleService;
     private final UserValidator validator;
 
     @GetMapping
@@ -164,6 +161,6 @@ public class UsersController {
         User user = (User) authentication.getPrincipal();
         model.addAttribute("userToShow", service.getUserById(user.getId()));
         model.addAttribute("users", service.getAllUsers());
-        model.addAttribute("allRoles", roleService.getAllRoles());
+        model.addAttribute("allRoles", RoleName.values());
     }
 }

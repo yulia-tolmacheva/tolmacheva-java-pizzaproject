@@ -107,8 +107,8 @@
             <label>Roles</label>
             <input type="checkbox" name="roles"
                    th:each="role : ${allRoles}"
-                   th:text="${role.roleName}"
-                   th:value="${role.id}"
+                   th:text="${role.name()}"
+                   th:value="${role.name()}"
                    th:field="*{roles}"/>
         </div>
         <div>
@@ -158,8 +158,8 @@
             <label>Roles</label>
             <input type="checkbox" name="roles"
                    th:each="role : ${allRoles}"
-                   th:text="${role.roleName}"
-                   th:value="${role.id}"
+                   th:text="${role.name()}"
+                   th:value="${role.name()}"
                    th:field="*{roles}"
             />
         </div>
