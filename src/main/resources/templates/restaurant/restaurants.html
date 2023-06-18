@@ -60,13 +60,14 @@
                     </div>
                     <div class="rest_right_cont">
                         <div>
-                            <form th:action="@{/restaurants/{restaurantId}/view(restaurantId=${restaurant.id})}" th:method="get">
+                            <form th:action="@{/restaurants/{restaurantId}(restaurantId=${restaurant.id})}"
+                                  th:method="get">
                                 <div>
-                                    <button class="rest_small_button" type="submit">Open restaurant page</button>
+                                    <button class="rest_small_button" type="submit">Open</button>
                                 </div>
                             </form>
                         </div>
-                        <div sec:authorize="hasAuthority('ADMIN')">
+                        <div sec:authorize="isAuthenticated() and hasPermission(#vars.restaurant.id, 'edit')">
                             <form th:action="@{/restaurants/edit}" th:method="get">
                                 <div>
                                     <input type="hidden" th:value="${restaurant.id}" name="restaurantId">

@@ -12,9 +12,13 @@ public interface UserService {
     User getUserById(Long id);
     User updateUser(User user);
     User addUser(User user);
+    User addUserAsAdmin(User user);
     User updateUsernameOrName(User user);
+    User updateUserAsAdmin(User user);
      User updatePassword(Long id, String password);
     void deleteUser(Long id);
 
     List<User> getAllUsersWithOwnerRole();
+
+    List<User> getAllUsersByUsername(String username);
 }

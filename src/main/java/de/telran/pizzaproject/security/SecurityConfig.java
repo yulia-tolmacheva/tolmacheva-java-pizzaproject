@@ -4,6 +4,9 @@ import de.telran.pizzaproject.model.RoleName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.PermissionEvaluator;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,12 +16,20 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    static MethodSecurityExpressionHandler methodSecurityExpressionHandler(PermissionEvaluator permissionEvaluator) {
+        DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
+//        PermissionEvaluator permissionEvaluator = new MyPermissionEvaluator()
+        handler.setPermissionEvaluator(permissionEvaluator);
+        return handler;
     }
 
     @Bean
@@ -36,14 +47,14 @@ public class SecurityConfig {
                         .requestMatchers("/ingredients").hasAnyAuthority(RoleName.OWNER.name(), RoleName.ADMIN.name())
                         .requestMatchers("/admin").hasAuthority(RoleName.ADMIN.name())
                         .anyRequest().hasAnyAuthority(RoleName.ADMIN.name(), RoleName.USER.name(), RoleName.OWNER.name()))
-                        .formLogin((formLogin) -> formLogin
-                                .loginPage("/auth/login")
-                                .loginProcessingUrl("/process_login")
-                                .failureUrl("/auth/login?error")
-                                .defaultSuccessUrl("/"))
-                        .logout((logout) -> logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/"));
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/process_login")
+                        .failureUrl("/auth/login?error")
+                        .defaultSuccessUrl("/"))
+                .logout((logout) -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/"));
         return http.build();
     }
 }

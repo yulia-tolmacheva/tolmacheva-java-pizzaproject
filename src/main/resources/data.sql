@@ -276,8 +276,9 @@ VALUES (20, 2), (20, 3), (20, 5), (20, 7), (20, 9);
 -- insert into pizzas_ingredients
 -- values (2, 4);
 
--- insert into users (username, password, is_enabled)
--- values ('admin', '$2a$10$mh8GJtH3bYmM9Ai4WzoE0eHSEa9Xai37cYOhGvmOM6Ay/HzPF/aam', true);
+-- insert into users (username, password)
+-- values ('a', '$2a$10$mh8GJtH3bYmM9Ai4WzoE0eHSEa9Xai37cYOhGvmOM6Ay/HzPF/aam');
+
 -- insert into users (username, password, is_enabled)
 -- values ('user1', '$2a$10$Azdm73hzgOrKK0Oq9lRF8eeWDXiGklzVZFfTsbgnWzzCqDsVgXHvy', true);
 -- insert into users (username, password, is_enabled)

@@ -45,6 +45,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User addUserAsAdmin(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return repository.save(user);
+    }
+
+    @Override
+    public User updateUserAsAdmin(User user) {
+        if (user.getPassword().isEmpty()) {
+            return repository.save(user);
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return repository.save(user);
+    }
+
+    @Override
     public User updateUser(User user) {
         User byId = repository.getReferenceById(user.getId());
         user.setPassword(byId.getPassword());
@@ -76,6 +91,11 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsersWithOwnerRole() {
         return repository.findAll().stream().filter((user) -> user.getRoles()
                 .contains(RoleName.OWNER)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> getAllUsersByUsername(String username) {
+        return repository.findAllByUsernameContainingIgnoreCase(username);
     }
 
 }

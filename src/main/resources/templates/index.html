@@ -18,14 +18,20 @@
                 <a href="/restaurants">Restaurants</a>
             </div>
             <div class="header__container__link" sec:authorize="hasAuthority('OWNER')">
-                <a href="/restaurants/{re}">My restaurant</a>
+                <a href="/restaurants">My restaurant</a>
+            </div>
+            <div class="header__container__link" sec:authorize="hasAuthority('ADMIN')">
+                <a href="/admin/ingredients">Ingredients</a>
+            </div>
+            <div class="header__container__link" sec:authorize="hasAuthority('ADMIN')">
+                <a href="/admin">Admin</a>
             </div>
         </div>
         <div class="header__div">
-            <div class="header__container__link" sec:authorize="hasAuthority('ADMIN')">
-                <form th:action="@{/admin}" th:method="get">
+            <div class="header__container__link" sec:authorize="isAuthenticated()">
+                <form th:action="@{/account}" th:method="get">
                     <div>
-                        <button type="submit">Admin</button>
+                        <button type="submit">Account</button>
                     </div>
                 </form>
             </div>

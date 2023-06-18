@@ -2,7 +2,6 @@ package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.PizzaSize;
 import de.telran.pizzaproject.model.entity.Pizza;
-import de.telran.pizzaproject.security.MyPermissionEvaluator;
 import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.PizzaService;
 import de.telran.pizzaproject.service.RestaurantService;
@@ -21,8 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/pizzas")
 @Log4j2
+@RequestMapping("/restaurants/{restaurantId}/pizzas")
 @RequiredArgsConstructor
 public class PizzasController {
 
@@ -30,25 +29,46 @@ public class PizzasController {
     private final RestaurantService restaurantService;
     private final PizzaValidator pizzaValidator;
     private final PizzaDataProviderService pizzaDataProviderService;
-    private final MyPermissionEvaluator permissionEvaluator;
 
-    @GetMapping
-    public String getAll(Model model) {
-//        model.addAttribute("filteredList", restaurantService.getRestaurantById(id).getPizzas());
-//        model.addAttribute("restaurantToView", restaurantService.getRestaurantById(id));
-        model.addAttribute("pizzas", service.getAllPizzas());
-        return "pizza/pizzas";
+    //    @GetMapping
+//    public String getAll(Model model) {
+//        model.addAttribute("pizzas", service.getAllPizzas());
+//        return "pizza/pizzas";
+//    }
+    @GetMapping("/search")
+    public String filterPizzas(
+            @RequestParam(name = "size", required = false) PizzaSize size,
+            @RequestParam(name = "ingredient", required = false) String ingredient,
+            @RequestParam(name = "vegetarian", required = false) boolean vegetarian,
+            @RequestParam(name = "glutenfree", required = false) boolean glutenfree,
+            @RequestParam(name = "spicy", required = false) boolean spicy,
+            @PathVariable(name = "restaurantId") Long id,
+            Model model) {
+        List<Pizza> filteredPizzasList = service
+                .applyFilters(id, size, ingredient, vegetarian, glutenfree, spicy);
+
+        model.addAttribute("selectedSize", size);
+        model.addAttribute("selectedIngredient", ingredient);
+        model.addAttribute("selectedVegetarian", vegetarian);
+        model.addAttribute("selectedGlutenfree", glutenfree);
+        model.addAttribute("selectedSpicy", spicy);
+        model.addAttribute("restaurantToView", restaurantService.getRestaurantById(id));
+        model.addAttribute("filteredPizzasList", filteredPizzasList);
+        model.addAttribute("pizzaDataProviderService", pizzaDataProviderService);
+        return "restaurant/view";
     }
 
     @GetMapping("/new")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
-    public String addPizzaDetails(@ModelAttribute("pizzaToAdd") Pizza pizza) {
+    @PreAuthorize("hasPermission(#restaurantId, 'edit')")
+    public String addPizzaDetails(@PathVariable("restaurantId") Long restaurantId,
+                                  @ModelAttribute("pizzaToAdd") Pizza pizza) {
         return "pizza/new";
     }
 
     @PostMapping("/new")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
-    public String addPizza(@ModelAttribute("pizzaToAdd") @Valid Pizza pizza,
+    @PreAuthorize("hasPermission(#restaurantId, 'edit')")
+    public String addPizza(@PathVariable("restaurantId") Long restaurantId,
+                           @ModelAttribute("pizzaToAdd") @Valid Pizza pizza,
                            BindingResult result,
                            RedirectAttributes attributes) {
         pizzaValidator.validate(pizza, result);
@@ -56,31 +76,36 @@ public class PizzasController {
             log.info("Pizza wasn't created " + result.getAllErrors());
             return "pizza/new";
         }
-
         Pizza pizzaAdded = service.add(pizza);
-        attributes.addFlashAttribute("added", pizzaAdded.getId());
-        return "redirect:/pizzas";
+        attributes.addFlashAttribute("added", pizzaAdded.getName());
+        return "redirect:/restaurants/" + restaurantId;
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
-    public String deletePizza(@RequestParam Long id, RedirectAttributes attributes) {
+    @PreAuthorize("hasPermission(#restaurantId, 'edit')")
+    public String deletePizza(@RequestParam("pizzaId") Long id,
+                              @PathVariable("restaurantId") Long restaurantId,
+                              RedirectAttributes attributes) {
         service.deletePizza(id);
         attributes.addFlashAttribute("deleted", id);
-        return "redirect:/pizzas";
+        return "redirect:/restaurants/" + restaurantId;
     }
 
     @GetMapping("/edit")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
-    public String openEditPage(@RequestParam Long id,
+    @PreAuthorize("hasPermission(#restaurantId, 'edit')")
+    public String openEditPage(@RequestParam("pizzaId") Long id,
+                               @PathVariable("restaurantId") Long restaurantId,
                                Model model) {
+        System.out.println("restaurantId = " + restaurantId);
+        System.out.println("id = " + id);
         model.addAttribute("pizzaToUpdate", service.getPizzaById(id));
         return "pizza/edit";
     }
 
     @PatchMapping("/edit")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
+    @PreAuthorize("hasPermission(#restaurantId, 'edit')")
     public String editPizza(@ModelAttribute("pizzaToUpdate") @Valid Pizza pizzaToUpdate,
+                            @PathVariable("restaurantId") Long restaurantId,
                             BindingResult result, RedirectAttributes attributes,
                             Model model) {
         pizzaValidator.validate(pizzaToUpdate, result);
@@ -96,30 +121,8 @@ public class PizzasController {
             return "pizza/edit";
         }
         attributes.addFlashAttribute("updated", pizzaToUpdate.getId());
-        return "redirect:/pizzas";
+        return "redirect:/restaurants/" + restaurantId;
     }
-
-    @GetMapping("/search")
-    public String findAllPizzasByRestaurantOrBySizeOrIngredient(
-            @RequestParam(name = "size", required = false) PizzaSize size,
-            @RequestParam(name = "ingredient", required = false) String ingredient,
-            @RequestParam(name = "restaurantId", required = false) Long restaurantId,
-            Model model) {
-        List<Pizza> pizzas;
-
-        if (restaurantId != null) {
-            pizzas = service.applyRestaurantAndSizeAndIngredientFilters(restaurantId, size, ingredient);
-            model.addAttribute("restaurantId", restaurantId);
-        } else {
-            pizzas = service.applySizeOrIngredientFilters(size, ingredient);
-        }
-
-        model.addAttribute("selectedSize", size);
-        model.addAttribute("ingredient", ingredient);
-        model.addAttribute("pizzas", pizzas);
-        return "pizza/pizzas";
-    }
-
 
     @ModelAttribute
     public void addAttributes(Model model) {
