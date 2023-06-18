@@ -60,13 +60,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        User byId = repository.getReferenceById(user.getId());
-        user.setPassword(byId.getPassword());
-        return repository.save(user);
-    }
-
-    @Override
     public User updateUsernameOrName(User user) {
         User byId = repository.getReferenceById(user.getId());
         byId.setUsername(user.getUsername());

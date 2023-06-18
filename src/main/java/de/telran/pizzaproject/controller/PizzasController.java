@@ -30,11 +30,6 @@ public class PizzasController {
     private final PizzaValidator pizzaValidator;
     private final PizzaDataProviderService pizzaDataProviderService;
 
-    //    @GetMapping
-//    public String getAll(Model model) {
-//        model.addAttribute("pizzas", service.getAllPizzas());
-//        return "pizza/pizzas";
-//    }
     @GetMapping("/search")
     public String filterPizzas(
             @RequestParam(name = "size", required = false) PizzaSize size,
@@ -96,8 +91,6 @@ public class PizzasController {
     public String openEditPage(@RequestParam("pizzaId") Long id,
                                @PathVariable("restaurantId") Long restaurantId,
                                Model model) {
-        System.out.println("restaurantId = " + restaurantId);
-        System.out.println("id = " + id);
         model.addAttribute("pizzaToUpdate", service.getPizzaById(id));
         return "pizza/edit";
     }

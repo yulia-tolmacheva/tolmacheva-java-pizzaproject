@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/auth")
@@ -34,13 +35,15 @@ public class AuthController {
     @PostMapping("/signup")
     public String saveNewUser(@ModelAttribute("newUser") @Valid User user,
                               BindingResult result,
+                              RedirectAttributes attributes,
                               Model model) {
         validator.validate(user, result);
         if (result.hasErrors()) {
             model.addAttribute("newUser", user);
             return "auth/signup";
         }
-        userService.addUser(user);
+        User user1 = userService.addUser(user);
+        attributes.addFlashAttribute("registered", user1.getUsername());
         return "redirect:/";
     }
 }

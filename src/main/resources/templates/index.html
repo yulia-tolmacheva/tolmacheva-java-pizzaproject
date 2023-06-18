@@ -21,7 +21,7 @@
                 <a href="/restaurants">My restaurant</a>
             </div>
             <div class="header__container__link" sec:authorize="hasAuthority('ADMIN')">
-                <a href="/admin/ingredients">Ingredients</a>
+                <a href="/ingredients">Ingredients</a>
             </div>
             <div class="header__container__link" sec:authorize="hasAuthority('ADMIN')">
                 <a href="/admin">Admin</a>
@@ -58,6 +58,9 @@
     <h1 class="main_text">
         Restaurant-Pizza Web App
     </h1>
+    <h2 class="main_text" th:if="${registered}">
+        <span th:text="${registered}"></span>, thank you for your registration! You can log in now.
+    </h2>
     <div>
         <div>
             <form class="login__search" th:action="@{/restaurants/search}" method="get">

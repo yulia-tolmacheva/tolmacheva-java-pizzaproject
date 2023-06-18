@@ -35,4 +35,5 @@ public interface PizzaService {
     Optional<Pizza> getPizzaByNameAndBySizeAndRestaurant(String name, PizzaSize size, Long id);
 
     List<Pizza> applyFilters(Long id, PizzaSize size, String ingredient, boolean vegetarian, boolean glutenfree, boolean spicy);
+    List<Pizza> applyFilters(Long id, PizzaSize size, String ingredient);
 }

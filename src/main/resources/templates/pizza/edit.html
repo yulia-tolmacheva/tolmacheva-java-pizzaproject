@@ -15,9 +15,9 @@
     <div class="main_container">
         <div class="left_container">
             <div class="center_button">
-                <form th:action="@{/restaurants/{restaurantId}(restaurantId=${restaurantId})}" th:method="get">
+                <form th:action="@{/restaurants/{restaurantId}(restaurantId=${pizzaToUpdate.restaurant.id})}" th:method="get">
                     <div>
-                        <button style="margin-top: 30px" class="new_rest_button" type="submit">Back</button>
+                        <button style="margin-top: 30px" class="new_rest_button" type="submit">Back to the restaurant</button>
                     </div>
                 </form>
             </div>
@@ -25,12 +25,12 @@
 
         <div class="right_container">
             <form th:method="PATCH"
-                  th:action="@{/restaurants/{restaurantId}/pizzas/edit(restaurantId=${restaurantId})}"
+                  th:action="@{/restaurants/{restaurantId}/pizzas/edit(restaurantId=${pizzaToUpdate.restaurant.id})}"
                   th:object="${pizzaToUpdate}">
                 <div class="new_pizza_form">
                     <div class="font_25px">Edit Pizza:</div>
                     <input type="hidden" name="_method" value="patch">
-                    <input type="hidden" th:value="${restaurantId}" name="restaurant">
+                    <input type="hidden" th:value="${pizzaToUpdate.restaurant.id}" name="restaurant">
                     <input type="hidden" th:value="${pizzaToUpdate.id}" name="id">
                     <div>
                         <label for="name">Enter name: </label>
@@ -75,7 +75,6 @@
                         </label>
                         <div class="error" th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}"> Error
                         </div>
-
                     </div>
                     <div>
                         <button class="new_rest_button" type="submit">Confirm</button>

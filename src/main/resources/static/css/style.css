@@ -176,7 +176,7 @@ nav a {
 
 .wrapper {
     margin: 0 30px 30px 30px;
-    min-width: 600px;
+    min-width: 1000px;
     min-height: calc(100vh - 100px);
     background-color: #9ea4a95c;
     box-shadow: 1px 7px 11px 3px #303b448a;
@@ -461,6 +461,13 @@ th {
 .new_user_table {
     display: flex;
     flex-direction: column;
+}
+
+.admin_small_button {
+    width: 80px;
+    height: 20px;
+    border-radius: 5px;
+    border: none;
 }
 
 .error {

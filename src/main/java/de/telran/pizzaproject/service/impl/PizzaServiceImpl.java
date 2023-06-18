@@ -133,4 +133,14 @@ public class PizzaServiceImpl implements PizzaService {
         }
         return pizzas;
     }
+
+    @Override
+    public List<Pizza> applyFilters(Long id, PizzaSize size, String ingredient) {
+        List<Pizza> pizzas;
+        if (id != null)
+            pizzas = applyRestaurantAndSizeAndIngredientFilters(id, size, ingredient);
+        else
+            pizzas = applySizeOrIngredientFilters(size, ingredient);
+        return pizzas;
+    }
 }

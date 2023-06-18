@@ -97,17 +97,6 @@ VALUES ('Salami', false, false, true);
 INSERT INTO ingredients (name, is_vegetarian, is_spicy, is_glutenfree)
 VALUES ('Chicken', false, false, true);
 
--- insert into pizzas (name, size, price, restaurant_id)
--- values ('Pizza1', 'SMALL', 10.99, 1);
--- insert into pizzas (name, size, price, restaurant_id)
--- values ('Pizza2', 'SMALL', 10.99, 1);
--- insert into pizzas (name, size, price, restaurant_id)
--- values ('Pizza3', 'MEDIUM', 12.99, 2);
--- insert into pizzas (name, size, price, restaurant_id)
--- values ('Pizza4', 'MEDIUM', 10.99, 3);
--- insert into pizzas (name, size, price, restaurant_id)
--- values ('Pizza5', 'LARGE', 12.99, 1);
-
 INSERT INTO pizzas (name, size, price, restaurant_id)
 VALUES
 -- Restaurant 1
@@ -250,6 +239,16 @@ VALUES (19, 1), (19, 3), (19, 4), (19, 6), (19, 8), (19, 10), (19, 11), (19, 13)
 INSERT INTO pizzas_ingredients (pizza_id, ingredient_id)
 VALUES (20, 2), (20, 3), (20, 5), (20, 7), (20, 9);
 
+-- insert into pizzas (name, size, price, restaurant_id)
+-- values ('Pizza1', 'SMALL', 10.99, 1);
+-- insert into pizzas (name, size, price, restaurant_id)
+-- values ('Pizza2', 'SMALL', 10.99, 1);
+-- insert into pizzas (name, size, price, restaurant_id)
+-- values ('Pizza3', 'MEDIUM', 12.99, 2);
+-- insert into pizzas (name, size, price, restaurant_id)
+-- values ('Pizza4', 'MEDIUM', 10.99, 3);
+-- insert into pizzas (name, size, price, restaurant_id)
+-- values ('Pizza5', 'LARGE', 12.99, 1);
 
 -- insert into pizzas_ingredients
 -- values (1, 1);
