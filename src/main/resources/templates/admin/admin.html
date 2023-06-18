@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav th:replace="~{index.html :: header}"></nav>
+
+<div class="wrapper">
+    <h1 class="main_text">
+        Restaurant-Pizza Web App
+    </h1>
+    <div>
+        <div class="header__div">
+            <div class="admin__link">
+                <a href="/restaurants">Restaurants</a>
+            </div>
+            <div class="admin__link">
+                <a href="/admin/pizzas">Pizzas</a>
+            </div>
+            <div class="admin__link">
+                <a href="/ingredients">Ingredients</a>
+            </div>
+            <div class="admin__link">
+                <a href="/admin/users">Users</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

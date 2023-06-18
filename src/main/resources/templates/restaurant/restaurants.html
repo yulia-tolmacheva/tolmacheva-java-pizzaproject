@@ -2,106 +2,97 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-<head>
-    <meta charset="UTF-8">
-    <title>All restaurants</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>All restaurants</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    </head>
 <body>
 
 <nav th:replace="~{index.html :: header}"></nav>
 
+<div class="wrapper">
 
+    <div class="main_container">
+        <div class="left_container">
+            <div class="font_25px">Search</div>
 
-<h1>All restaurants</h1>
-
-
-<form class="search" th:action="@{/search}" method="get">
-    <input type="text" name="address" th:value="${address}" placeholder="Find by Address" size="50" >
-    <input type="text" name="city" th:value="${city}" placeholder="Find by City" size="50" >
-    <button type="submit" class="btn btn-info" >Search</button>
-    <button type="submit" class="btn btn-info" >Reset</button>
-</form>
-
-<!--<form class="search" th:action="@{/search}" method="get">-->
-<!--    <button type="submit" class="btn btn-info" >Search</button>-->
-<!--    <button type="submit" class="btn btn-info" >Reset</button>-->
-<!--</form>-->
-
-<!--<form class="login__search" th:action="@{/search}" method="get">-->
-<!--    <input class="login__search__input" type="text" name="city" th:value="${city}"-->
-<!--           placeholder="Find Restaurants by City" size="50">-->
-<!--</form>-->
-
-<h2 class="nothing-found" th:if="${filteredList.isEmpty()}">No restaurants found</h2>
-<table class="table" th:if="${filteredList.isEmpty() == false}">
-    <thead>
-    <tr>
-        <th>№</th>
-        <th>Name</th>
-        <th>City</th>
-        <th>Address</th>
-        <th>Phone</th>
-        <th>Pizzas</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="restaurant, iter : ${filteredList}">
-        <td th:text="${iter.index}+1"></td>
-        <td th:text="${restaurant.name}"></td>
-        <td th:text="${restaurant.city}"></td>
-        <td th:text="${restaurant.address}"></td>
-        <td th:text="${restaurant.phone}"></td>
-        <td th:text="${restaurant.getPizzas().size()}"></td>
-        <td>
-            <form th:action="@{/pizzas/search}" th:method="get">
-                <div>
-                    <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
-                    <button class="small" type="submit">Pizzas</button>
-                </div>
+            <form class="left_search" th:action="@{/restaurants/search}" method="get">
+                <input class="search_input" type="text" name="address" th:value="${address}"
+                       placeholder="Find by Address" size="50">
+                <input class="search_input" type="text" name="city" th:value="${city}" placeholder="Find by City"
+                       size="50">
+                <button type="submit" class="search_button">Search</button>
+                <button class="search_button">
+                    <a th:href="@{/restaurants}">Reset</a>
+                </button>
             </form>
-        </td>
-        <td sec:authorize="hasAuthority('ADMIN')">
-            <form th:action="@{/restaurants/edit}" th:method="get">
-                <div>
-                    <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
-                </div>
-                <div>
-                    <button class="small" type="submit">Edit</button>
-                </div>
-            </form>
-        </td>
-        <td sec:authorize="hasAuthority('ADMIN')">
-            <form th:action="@{/restaurants/delete}" th:method="delete">
-                <div>
-                    <input type="hidden" name="_method" value="delete">
-                    <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
-                </div>
-                <div>
-                    <button class="small" type="submit">Delete</button>
-                </div>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
 
-<div class ="center_button" sec:authorize="hasAnyAuthority('ADMIN')">
-    <form th:action="@{/restaurants/new}" th:method="get">
-        <div>
-            <button type="submit">Add new restaurant</button>
+            <div sec:authorize="hasAnyAuthority('ADMIN')">
+                <form th:action="@{/restaurants/new}" th:method="get">
+                    <div>
+                        <button class="new_rest_button" type="submit">Add new restaurant</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="message" th:if="${deleted}">
+                Restaurant <span th:text="${deleted}"></span> successfully deleted
+            </div>
+            <div class="message" th:if="${added}">
+                Restaurant <span th:text="${added}"></span> successfully added
+            </div>
+            <div class="message" th:if="${updated}">
+                Restaurant <span th:text="${updated}"></span> successfully updated
+            </div>
+
         </div>
-    </form>
-</div>
 
-<div style="color: olivedrab" th:if="${deleted}">
-    Restaurant with id <span th:text="${deleted}"></span> successfully deleted
-</div>
-<div style="color: olivedrab" th:if="${added}">
-    Restaurant with id <span th:text="${added}"></span> successfully added
-</div>
-<div style="color: olivedrab" th:if="${updated}">
-    Restaurant with id <span th:text="${updated}"></span> successfully updated
+        <div class="right_container">
+            <div class="nothing-found" th:if="${filteredList.isEmpty()}">No restaurants found</div>
+            <div class="rest_list" th:if="${filteredList.isEmpty() == false}">
+                <div class="restaurant" th:each="restaurant : ${filteredList}">
+                    <div class="rest_left_cont">
+                        <div class="rest_list_name" th:text="${restaurant.name}"></div>
+                        <div th:text="${restaurant.city}"></div>
+                        <div>Address: <span th:text="${restaurant.address}"></span></div>
+                        <div>Phone: <span th:text="${restaurant.phone}"></span></div>
+                    </div>
+                    <div class="rest_right_cont">
+                        <div>
+                            <form th:action="@{/restaurants/{restaurantId}(restaurantId=${restaurant.id})}"
+                                  th:method="get">
+                                <div>
+                                    <button class="rest_small_button" type="submit">Open</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div sec:authorize="isAuthenticated() and hasPermission(#vars.restaurant.id, 'edit')">
+                            <form th:action="@{/restaurants/edit}" th:method="get">
+                                <div>
+                                    <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
+                                </div>
+                                <div>
+                                    <button class="rest_small_button" type="submit">Edit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div sec:authorize="hasAuthority('ADMIN')">
+                            <form th:action="@{/restaurants/delete}" th:method="delete">
+                                <div>
+                                    <input type="hidden" name="_method" value="delete">
+                                    <input type="hidden" th:value="${restaurant.id}" name="restaurantId">
+                                </div>
+                                <div>
+                                    <button class="rest_small_button" type="submit">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

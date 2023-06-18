@@ -11,9 +11,7 @@ public interface RestaurantService {
 
     Restaurant getRestaurantById(Long restaurantId);
 
-    List<Restaurant> getAllByAddress(String keyword);
-
-    List<Restaurant> getAllByCity(String city);
+    List<Restaurant> getAllByAddressAndCity(String address, String city);
 
     Restaurant addOrUpdate(Restaurant restaurant);
 

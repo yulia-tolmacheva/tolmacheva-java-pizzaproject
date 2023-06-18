@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav th:replace="~{index.html :: header}"></nav>
+
+<div class="wrapper">
+
+    <div class="main_container">
+        <div class="left_container">
+            <div class="font_25px">Search</div>
+
+            <form class="left_search" th:action="@{/admin/users/search}" method="get">
+                <input class="search_input" type="text" name="username" th:value="${username}"
+                       placeholder="Find by Username" size="50">
+                <button type="submit" class="search_button">Search</button>
+                <button class="search_button">
+                    <a th:href="@{/admin/users}">Reset</a>
+                </button>
+            </form>
+
+            <div style="color: olivedrab" th:if="${deleted}">
+                User <span th:text="${deleted}"></span> successfully deleted
+            </div>
+            <div style="color: olivedrab" th:if="${added}">
+                User <span th:text="${added}"></span> successfully added
+            </div>
+            <div style="color: olivedrab" th:if="${updated}">
+                User <span th:text="${updated}"></span> successfully updated
+            </div>
+            <div style="color: olivedrab" th:if="${notauthorized}">
+                User can't be deleted
+            </div>
+
+            <div class="new_user_table" th:if="${userToUpdate == null}">
+                <h2>Add new user</h2>
+                <form th:action="@{/admin/users/new}" th:object="${userToAdd}" th:method="post">
+                    <div>
+                        <label>Username</label>
+                        <label>
+                            <input type="text" th:field="*{username}">
+                            <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"> Error
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>First name</label>
+                        <label>
+                            <input type="text" th:field="*{firstName}">
+                            <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">
+                                Error
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>Last name</label>
+                        <label>
+                            <input type="text" th:field="*{lastName}">
+                            <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"> Error
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>Password</label>
+                        <label>
+                            <input type="password" th:field="*{password}">
+                            <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Error
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>Enable</label>
+                        <label>
+                            <input type="checkbox" th:field="*{enabled}">
+                        </label>
+                    </div>
+                    <div>
+                        <label>Roles</label>
+                        <input type="checkbox" name="roles"
+                               th:each="role : ${allRoles}"
+                               th:text="${role.name()}"
+                               th:value="${role.name()}"
+                               th:field="*{roles}"/>
+                    </div>
+                    <div>
+                        <button class="admin_small_button" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+            <div class="new" th:if="${userToUpdate != null}">
+                <h2>Update user</h2>
+                <form th:action="@{/admin/users/edit}"
+                      th:object="${userToUpdate}" th:method="patch">
+                    <div>
+                        <input type="hidden" name="_method" value="patch">
+                        <input type="hidden" th:value="${userToUpdate.id}" th:field="*{id}" name="userToUpdateId">
+                    </div>
+                    <div>
+                        <label>Username</label>
+                        <label>
+                            <input type="text" th:field="*{username}">
+                            <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"> Error
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>First name</label>
+                        <label>
+                            <input type="text" th:field="*{firstName}">
+                            <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">
+                                Error
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>Last name</label>
+                        <label>
+                            <input type="text" th:field="*{lastName}">
+                            <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"> Error
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>Password</label>
+                        <label>
+                            <input type="password" th:value="${userToUpdate.getPassword()}" th:field="*{password}">
+                            <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Error
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>Enabled</label>
+                        <label>
+                            <input type="checkbox" th:field="*{enabled}">
+                        </label>
+                    </div>
+                    <div>
+                        <label>Roles</label>
+                        <input type="checkbox" name="roles"
+                               th:each="role : ${allRoles}"
+                               th:text="${role.name()}"
+                               th:value="${role.name()}"
+                               th:field="*{roles}"
+                        />
+                    </div>
+                    <div>
+                        <button type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="right_container">
+            <div class="nothing-found" th:if="${filteredList.isEmpty()}">No users found</div>
+            <table class="users_table">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Username</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Enabled</th>
+                    <th>Roles</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody class="users_list">
+                <tr th:each="user, iter : ${filteredList}">
+                    <td th:text="${iter.index}+1"></td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.firstName}"></td>
+                    <td th:text="${user.lastName}"></td>
+                    <td th:text="${user.isEnabled()}"></td>
+                    <td th:text="${user.getRoles()}"></td>
+                    <td>
+                        <form th:action="@{/admin/users/edit}" th:method="get">
+                            <div>
+                                <input type="hidden" th:value="${user.id}" name="userToUpdateId">
+                            </div>
+                            <div>
+                                <button class="admin_small_button" type="submit">Edit</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/admin/users/delete}" th:method="delete">
+                            <div>
+                                <input type="hidden" name="_method" value="delete">
+                                <input type="hidden" th:value="${user.id}" name="userId">
+                            </div>
+                            <div>
+                                <button class="admin_small_button" type="submit">Delete</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

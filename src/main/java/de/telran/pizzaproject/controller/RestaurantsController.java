@@ -1,7 +1,9 @@
 package de.telran.pizzaproject.controller;
 
 import de.telran.pizzaproject.model.entity.Restaurant;
+import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.RestaurantService;
+import de.telran.pizzaproject.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,49 +23,32 @@ import java.util.List;
 public class RestaurantsController {
 
     private final RestaurantService service;
-    @GetMapping
-    public String getAll() {
-        return "restaurant/restaurants";
-    }
+    private final UserService userService;
+    private final PizzaDataProviderService pizzaDataProviderService;
 
-    @GetMapping("/{city}")
-    public String getAllByCity(@PathVariable String city, Model model) {
-        model.addAttribute("city", city);
-        List<Restaurant> filteredList;
-        filteredList = service.getAllByCity(city);
-        model.addAttribute("filteredList", filteredList);
+    @GetMapping
+    public String getAll(Model model) {
+        model.addAttribute("filteredList", service.getAllRestaurants());
         return "restaurant/restaurants";
     }
 
     @GetMapping("/search")
-    public String getSearchByAddress(Model model, @RequestParam String address) {
+    public String getSearchByAddressAndCity(Model model,
+                                            @RequestParam(required = false) String address,
+                                            @RequestParam(required = false) String city) {
         List<Restaurant> filteredList;
-        if (address != null) {
-            filteredList = service.getAllByAddress(address);
-            model.addAttribute("filteredList", filteredList);
-        }
+        filteredList = service.getAllByAddressAndCity(address, city);
+        model.addAttribute("filteredList", filteredList);
+        model.addAttribute("address", address);
+        model.addAttribute("city", city);
         return "restaurant/restaurants";
     }
-
-    @GetMapping("/search/city")
-    public String getSearchByCity(Model model, @RequestParam String city) {
-        List<Restaurant> filteredList;
-        if (city != null) {
-            filteredList = service.getAllByCity(city);
-            model.addAttribute("filteredList", filteredList);
-        }
-        return "restaurant/restaurants";
-    }
-
-//    @GetMapping("/{id}")
-//    public String addRestaurantDetails(@PathVariable Long id, Model model) {
-//        model.addAttribute("restaurantToView", service.getRestaurantById(id));
-//        return "restaurant/view";
-//    }
 
     @GetMapping("/new")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String addRestaurantDetails(@ModelAttribute("restaurantToAdd") Restaurant restaurant) {
+    public String addRestaurantDetails(@ModelAttribute("restaurantToAdd") Restaurant restaurant,
+                                       Model model) {
+        model.addAttribute("ownersList", userService.getAllUsersWithOwnerRole());
         return "restaurant/new";
     }
 
@@ -78,7 +63,7 @@ public class RestaurantsController {
         }
 
         Restaurant restaurantAdded = service.addOrUpdate(restaurant);
-        attributes.addFlashAttribute("added", restaurantAdded.getId());
+        attributes.addFlashAttribute("added", restaurantAdded.getName());
         return "redirect:/restaurants";
     }
 
@@ -92,15 +77,16 @@ public class RestaurantsController {
     }
 
     @GetMapping("/edit")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasPermission(#restaurantId, 'edit')")
     public String openEditPage(@RequestParam Long restaurantId,
                                Model model) {
         model.addAttribute("restaurantToUpdate", service.getRestaurantById(restaurantId));
+        model.addAttribute("ownersList", userService.getAllUsersWithOwnerRole());
         return "restaurant/edit";
     }
 
-    @PatchMapping("/edit/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PatchMapping("/edit")
+    @PreAuthorize("hasPermission(#restaurantToUpdate.id, 'edit')")
     public String editRestaurant(@ModelAttribute("restaurantToUpdate") @Valid Restaurant restaurantToUpdate,
                                  BindingResult result, RedirectAttributes attributes) {
         if (result.hasErrors()) {
@@ -108,12 +94,16 @@ public class RestaurantsController {
             return "restaurant/edit";
         }
         service.addOrUpdate(restaurantToUpdate);
-        attributes.addFlashAttribute("updated", restaurantToUpdate.getId());
+        attributes.addFlashAttribute("updated", restaurantToUpdate.getName());
         return "redirect:/restaurants";
     }
 
-    @ModelAttribute
-    public void getList(Model model) {
-        model.addAttribute("filteredList", service.getAllRestaurants());
+    @GetMapping("/{restaurantId}")
+    public String getAll(@PathVariable("restaurantId") Long id,
+                         Model model) {
+        model.addAttribute("filteredPizzasList", service.getRestaurantById(id).getPizzas());
+        model.addAttribute("restaurantToView", service.getRestaurantById(id));
+        model.addAttribute("pizzaDataProviderService", pizzaDataProviderService);
+        return "restaurant/view";
     }
 }

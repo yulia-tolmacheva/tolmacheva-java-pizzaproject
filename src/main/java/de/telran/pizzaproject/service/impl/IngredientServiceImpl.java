@@ -2,12 +2,9 @@ package de.telran.pizzaproject.service.impl;
 
 import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.repository.IngredientRepository;
-import de.telran.pizzaproject.repository.PizzaRepository;
 import de.telran.pizzaproject.service.IngredientService;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,5 +40,10 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Optional<Ingredient> getIngredientByName(String name) {
         return repository.findFirstByNameIgnoreCase(name);
+    }
+
+    @Override
+    public List<Ingredient> getAllIngredientsByName(String name) {
+        return repository.findAllByNameContainingIgnoreCase(name);
     }
 }

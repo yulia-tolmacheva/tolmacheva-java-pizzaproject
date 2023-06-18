@@ -7,24 +7,18 @@ import de.telran.pizzaproject.service.IngredientService;
 import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.PizzaService;
 import de.telran.pizzaproject.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class PizzaDataProviderServiceImpl implements PizzaDataProviderService {
     private final PizzaService pizzaService;
     private final IngredientService ingredientService;
     private final RestaurantService restaurantService;
-
-    public PizzaDataProviderServiceImpl(PizzaService pizzaService,
-                                        IngredientService ingredientService,
-                                        RestaurantService restaurantService) {
-        this.pizzaService = pizzaService;
-        this.ingredientService = ingredientService;
-        this.restaurantService = restaurantService;
-    }
 
     @Override
     public List<Ingredient> getAllIngredients() {

@@ -27,12 +27,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<Restaurant> getAllByAddress(String keyword) {
-        return repository.findAllByAddressContainingIgnoreCase(keyword);
-    }
-
-    @Override
-    public List<Restaurant> getAllByCity(String city) {
+    public List<Restaurant> getAllByAddressAndCity(String address, String city) {
+        if (address != null) {
+            if (city != null) {
+                return repository.findAllByAddressContainingIgnoreCaseAndCityContainingIgnoreCase(address, city);
+            }
+            return repository.findAllByAddressContainingIgnoreCase(address);
+        }
         return repository.findAllByCityContainingIgnoreCase(city);
     }
 

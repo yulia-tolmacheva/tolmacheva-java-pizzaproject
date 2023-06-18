@@ -9,46 +9,71 @@
 
 <nav th:replace="~{index.html :: header}"></nav>
 
-<h1>Edit Restaurant:</h1>
 
-<form class="container" th:method="PATCH" th:action="@{/restaurants/edit/{id}(id=${restaurantToUpdate.getId()})}"
-      th:object="${restaurantToUpdate}">
-    <div>
-        <input type="hidden" name="_method" value="patch">
-        <input type="hidden" th:value="${restaurantToUpdate.id}" name="restaurantToUpdate">
-    </div>
-    <div>
-        <div>
-            <label for="name">Enter name: </label>
-            <input type="text" th:field="*{name}" id="name">
-            <div class="error"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
+<div class="wrapper">
+
+    <div class="main_container">
+        <div class="left_container">
+
+            <div class="center_button">
+                <form th:action="@{/restaurants}" th:method="get">
+                    <div>
+                        <button style="margin-top: 30px" class="new_rest_button" type="submit">Back</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
-        <div>
-            <label for="address">Enter address: </label>
-            <input type="text" th:field="*{address}" id="address">
-            <div class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"> Error</div>
+
+        <div class="right_container">
+            <form class="new_rest_form" th:method="PATCH" th:action="@{/restaurants/edit}"
+                  th:object="${restaurantToUpdate}">
+                <div class="font_25px">Edit Restaurant:</div>
+                <div>
+                    <input type="hidden" name="_method" value="patch">
+                    <input type="hidden" th:value="${restaurantToUpdate.id}" name="restaurantToUpdate">
+                    <div>
+                        <label for="name">Name: </label>
+                        <input class="new_rest_input" type="text" th:field="*{name}" id="name">
+                        <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
+                    </div>
+
+                    <div>
+                        <label for="city">City: </label>
+                        <input class="new_rest_input" type="text" th:field="*{city}" id="city">
+                        <div class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> Error</div>
+                    </div>
+
+                    <div>
+                        <label for="address">Address: </label>
+                        <input class="new_rest_input" type="text" th:field="*{address}" id="address">
+                        <div class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"> Error</div>
+                    </div>
+
+                    <div>
+                        <label for="phone">Phone: </label>
+                        <input class="new_rest_input" type="text" th:field="*{phone}" id="phone">
+                        <div class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"> Error</div>
+                    </div>
+
+                    <div>
+                        <label for="owner">Restaurant owner: </label>
+                        <select class="new_rest_input" th:field="*{owner}">
+                            <option th:selected th:disabled value="">Select</option>
+                            <option th:each="user : ${ownersList}"
+                                    th:text="${user}"
+                                    th:field="*{owner}"
+                                    th:value="${user.id}" id="owner">
+                            </option>
+                        </select>
+                        <div class="error" th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"> Error</div>
+                    </div>
+
+                </div>
+                <div>
+                    <button class="new_rest_button" type="submit">Update</button>
+                </div>
+            </form>
         </div>
-
-        <div>
-            <label for="phone">Enter phone: </label>
-            <input type="text" th:field="*{phone}" id="phone">
-            <div class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"> Error</div>
-        </div>
-
-    </div>
-    <div class="center_button create">
-        <button type="submit">Update</button>
-    </div>
-</form>
-
-<div class="center_button">
-    <form th:action="@{/restaurants}" th:method="get">
-        <div>
-            <button type="submit">Back</button>
-        </div>
-    </form>
-</div>
-
 </body>
 </html>

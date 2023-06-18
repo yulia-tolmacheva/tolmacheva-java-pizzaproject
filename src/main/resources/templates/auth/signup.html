@@ -15,27 +15,27 @@
         Restaurant-Pizza Web App
     </h1>
     <div class="login_form_wrapper">
-        <form class="login_form" th:method="post" th:action="@{/users/new}" th:object="${newUser}">
+        <form class="login_form" th:method="post" th:action="@{/auth/signup}" th:object="${newUser}">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
             <div class="login_form_div">
                 <label>Username</label>
-                <input type="text" th:field="*{username}" placeholder="Username">
+                <input class="login_input" type="text" th:field="*{username}" placeholder="Username">
                 <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"> Error</div>
             </div>
             <div class="login_form_div">
                 <label>First name</label>
-                <input type="text" th:field="*{firstName}" placeholder="First name">
+                <input class="login_input" type="text" th:field="*{firstName}" placeholder="First name">
                 <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"> Error</div>
             </div>
             <div class="login_form_div">
                 <label>Last name</label>
-                <input type="text" placeholder="Last name" th:field="*{lastName}">
+                <input class="login_input" type="text" placeholder="Last name" th:field="*{lastName}">
                 <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"> Error</div>
             </div>
             <div class="login_form_div">
                 <label>Password</label>
-                <input type="password" placeholder="Password" th:field="*{password}">
+                <input class="login_input" type="password" placeholder="Password" th:field="*{password}">
                 <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Error</div>
             </div>
             <div>

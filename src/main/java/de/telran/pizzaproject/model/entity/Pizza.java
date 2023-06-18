@@ -22,8 +22,8 @@ public class Pizza {
     private Long id;
 
     @NotBlank(message = "{field.required}")
-    @Size(min = 1, max = 14, message = "{pizza.name.size}")
-    @Pattern(regexp = "[A-Za-z0-9]+", message = "{pizza.name.invalid}")
+    @Size(min = 1, max = 30, message = "{pizza.name.size}")
+    @Pattern(regexp = "[A-Za-z0-9 ]+", message = "{pizza.name.invalid}")
     @Column(name = "name")
     private String name;
 
@@ -44,17 +44,15 @@ public class Pizza {
             joinColumns = @JoinColumn(name = "pizza_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
     private Restaurant restaurant;
 
-    public Pizza() {
-    }
-
     @Override
     public String toString() {
         return name;
     }
+
 }

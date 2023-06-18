@@ -1,5 +1,6 @@
 package de.telran.pizzaproject.model.entity;
 
+import de.telran.pizzaproject.model.RoleName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +12,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -46,13 +50,11 @@ public class User implements UserDetails {
     @Column(name = "is_enabled")
     private boolean isEnabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private List<Role> roles = new ArrayList<>();
+    @Column(name = "roles")
+    private List<RoleName> roles = new ArrayList<>();
+
+    @OneToOne(mappedBy = "owner")
+    private Restaurant restaurant;
 
     @Override
     public boolean equals(Object o) {
@@ -68,20 +70,10 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
-    }
-
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName().name()));
+        for (RoleName role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.name()));
         }
         return authorities;
     }
@@ -106,4 +98,10 @@ public class User implements UserDetails {
         return this.isEnabled;
     }
 
+    @Override
+    public String toString() {
+        return "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName;
+    }
 }

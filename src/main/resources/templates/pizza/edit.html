@@ -9,90 +9,80 @@
 
 <nav th:replace="~{index.html :: header}"></nav>
 
-<h1>Edit Pizza:</h1>
 
-<form class="container" th:method="PATCH" th:action="@{/pizzas/edit}" th:object="${pizzaToUpdate}">
-    <div>
-        <input type="hidden" name="_method" value="patch">
-        <input type="hidden" th:value="${pizzaToUpdate.id}" name="id">
-    </div>
-    <div>
-        <div>
-            <label for="name">Enter name: </label>
-            <input type="text" th:field="*{name}" id="name">
-            <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
-        </div>
+<div class="wrapper">
 
-        <div>
-            <label for="size">Select size: </label>
-            <select th:field="*{size}">
-                <option th:each="size : ${pizzaDataProviderService.getAllPizzaSizes()}"
-                        th:field="*{size}"
-                        id="size"
-                        th:text="${size}"
-                        th:value="${size}">
-                </option>
-            </select>
-            <div class="error" th:if="${#fields.hasErrors('size')}" th:errors="*{size}"> Error</div>
-        </div>
-
-        <div>
-            <label for="price">Enter price: </label>
-            <input type="text" th:field="*{price}" id="price">
-            <div class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"> Error</div>
-        </div>
-
-        <div>
-            <label class="ingredients" for="ingredients">
-                Select Ingredients:
-                <table>
-                    <tbody>
-                    <tr th:each="ingredient : ${pizzaDataProviderService.getAllIngredients()}">
-                        <td th:text="${ingredient.name}">
-                        </td>
-                        <td>
-                            <input type="checkbox" name="ingredients" id="ingredients" th:value="${ingredient.id}"
-                                   th:field="*{ingredients}"/>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </label>
-            <div class="error" th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}"> Error
+    <div class="main_container">
+        <div class="left_container">
+            <div class="center_button">
+                <form th:action="@{/restaurants/{restaurantId}(restaurantId=${pizzaToUpdate.restaurant.id})}" th:method="get">
+                    <div>
+                        <button style="margin-top: 30px" class="new_rest_button" type="submit">Back to the restaurant</button>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div>
-            <label for="restaurantId">Select restaurant: </label>
-            <select th:field="*{restaurant}">
-                <option th:each="restaurant : ${pizzaDataProviderService.getAllRestaurants()}"
-                        th:value="${restaurant.id}"
-                        th:text="${restaurant.name}"
-                        id="restaurantId">
-                </option>
-            </select>
-            <div class="error" th:if="${#fields.hasErrors('restaurant')}" th:errors="*{restaurant}"> Error</div>
+        <div class="right_container">
+            <form th:method="PATCH"
+                  th:action="@{/restaurants/{restaurantId}/pizzas/edit(restaurantId=${pizzaToUpdate.restaurant.id})}"
+                  th:object="${pizzaToUpdate}">
+                <div class="new_pizza_form">
+                    <div class="font_25px">Edit Pizza:</div>
+                    <input type="hidden" name="_method" value="patch">
+                    <input type="hidden" th:value="${pizzaToUpdate.restaurant.id}" name="restaurant">
+                    <input type="hidden" th:value="${pizzaToUpdate.id}" name="id">
+                    <div>
+                        <label for="name">Enter name: </label>
+                        <input class="new_rest_input" type="text" th:field="*{name}" id="name">
+                        <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Error</div>
+                    </div>
+
+                    <div>
+                        <label> Select size: </label>
+                        <select class="new_rest_input" th:field="*{size}">
+                            <option th:selected th:disabled value="">Select</option>
+                            <option th:each="size : ${pizzaDataProviderService.getAllPizzaSizes()}"
+                                    th:text="${size}"
+                                    th:value="${size}">
+                            </option>
+                        </select>
+                        <div class="error" th:if="${#fields.hasErrors('size')}" th:errors="*{size}"> Error</div>
+                    </div>
+
+                    <div>
+                        <label for="price">Enter price:</label>
+                        <input class="new_rest_input" type="text" th:field="*{price}" id="price">
+                        <div class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"> Error</div>
+                    </div>
+
+                    <div>
+                        <label class="ingredients" for="ingredients">
+                            Select Ingredients:
+                            <table>
+                                <tbody>
+                                <tr th:each="ingredient : ${pizzaDataProviderService.getAllIngredients()}">
+                                    <td>
+                                        <input type="checkbox"
+                                               name="ingredients" id="ingredients" th:value="${ingredient.id}"
+                                               th:field="*{ingredients}"/>
+                                    </td>
+                                    <td th:text="${ingredient.name}">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </label>
+                        <div class="error" th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}"> Error
+                        </div>
+                    </div>
+                    <div>
+                        <button class="new_rest_button" type="submit">Confirm</button>
+                    </div>
+                </div>
+            </form>
         </div>
-
     </div>
-
-    <div class="center_button">
-        <button type="submit">Update</button>
-    </div>
-</form>
-
-
-<div style="color: olivedrab" th:if="${notfound}">
-    Pizza with id <span th:text="${notfound}"></span> is not found. Maybe it was deleted.
 </div>
-
-<div class="center_button">
-    <form th:action="@{/pizzas}" th:method="get">
-        <div>
-            <button type="submit">Back</button>
-        </div>
-    </form>
-</div>
-
 </body>
 </html>

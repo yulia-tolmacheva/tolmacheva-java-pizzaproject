@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/ingredients")
 @Log4j2
@@ -28,6 +30,14 @@ public class IngredientsController {
     @GetMapping
     public String getAll(Model model) {
         model.addAttribute("ingredientToAdd", new Ingredient());
+        return "ingredient/ingredients";
+    }
+
+    @GetMapping("/search")
+    public String getAll(@RequestParam(value = "name", required = false) String name,
+                         Model model) {
+        List<Ingredient> filteredIngredients = service.getAllIngredientsByName(name);
+        model.addAttribute("filteredIngredients", filteredIngredients);
         return "ingredient/ingredients";
     }
 
@@ -54,7 +64,7 @@ public class IngredientsController {
         return "/ingredient/ingredients";
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/update")
     public String updateIngredientsDetails(
             @ModelAttribute("ingredientToUpdate") @Valid Ingredient ingredientToUpdate,
             BindingResult result,
@@ -87,6 +97,7 @@ public class IngredientsController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        model.addAttribute("ingredients", service.getAllIngredients());
+        model.addAttribute("filteredIngredients", service.getAllIngredients());
+        model.addAttribute("ingredientToAdd", new Ingredient());
     }
 }

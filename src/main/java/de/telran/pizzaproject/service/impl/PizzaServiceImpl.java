@@ -1,8 +1,8 @@
 package de.telran.pizzaproject.service.impl;
 
+import de.telran.pizzaproject.model.PizzaSize;
 import de.telran.pizzaproject.model.entity.Ingredient;
 import de.telran.pizzaproject.model.entity.Pizza;
-import de.telran.pizzaproject.model.PizzaSize;
 import de.telran.pizzaproject.repository.PizzaRepository;
 import de.telran.pizzaproject.service.PizzaService;
 import org.hibernate.ObjectNotFoundException;
@@ -87,7 +87,7 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public List<Pizza> applyRestaurantAndSizeAndIngredientFilters(Long restaurantId, PizzaSize size, String ingredient) {
         if (size != null && ingredient != null && !ingredient.isEmpty()) {
-            return repository.findAllByRestaurant_IdAndSizeAndAndIngredients_NameContainingIgnoreCase(restaurantId, size, ingredient);
+            return repository.findAllByRestaurant_IdAndSizeAndIngredients_NameContainingIgnoreCase(restaurantId, size, ingredient);
         } else if (size != null) {
             return repository.findAllByRestaurant_IdAndSize(restaurantId, size);
         } else if (ingredient != null && !ingredient.isEmpty()) {
@@ -113,5 +113,34 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public Optional<Pizza> getPizzaByNameAndBySizeAndRestaurant(String name, PizzaSize size, Long id) {
         return repository.getFirstByNameIgnoreCaseAndSizeAndRestaurant_Id(name, size, id);
+    }
+
+    @Override
+    public List<Pizza> applyFilters(Long id, PizzaSize size, String ingredient, boolean vegetarian, boolean glutenfree, boolean spicy) {
+        List<Pizza> pizzas = applyRestaurantAndSizeAndIngredientFilters(id, size, ingredient);
+
+        if (vegetarian) {
+            pizzas = pizzas.stream().filter(pizza -> pizza.getIngredients()
+                    .stream().allMatch(Ingredient::isVegetarian)).collect(Collectors.toList());
+        }
+        if (spicy) {
+            pizzas = pizzas.stream().filter(pizza -> pizza.getIngredients()
+                    .stream().anyMatch(Ingredient::isSpicy)).collect(Collectors.toList());
+        }
+        if (glutenfree) {
+            pizzas = pizzas.stream().filter(pizza -> pizza.getIngredients()
+                    .stream().allMatch(Ingredient::isGlutenfree)).collect(Collectors.toList());
+        }
+        return pizzas;
+    }
+
+    @Override
+    public List<Pizza> applyFilters(Long id, PizzaSize size, String ingredient) {
+        List<Pizza> pizzas;
+        if (id != null)
+            pizzas = applyRestaurantAndSizeAndIngredientFilters(id, size, ingredient);
+        else
+            pizzas = applySizeOrIngredientFilters(size, ingredient);
+        return pizzas;
     }
 }

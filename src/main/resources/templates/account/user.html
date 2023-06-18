@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav th:replace="~{index.html :: header}"></nav>
+
+
+<div class="wrapper">
+
+    <div class="main_container">
+        <div class="left_container">
+            <form th:action="@{/account/edit}" th:method="get">
+                <div>
+                    <input type="hidden" th:value="${userToShow.id}" name="userToUpdateId">
+                </div>
+                <div style="margin-bottom: 20px">
+                    <button class="new_rest_button" type="submit">Edit user details</button>
+                </div>
+            </form>
+            <form th:action="@{/account/edit/p}" th:method="get">
+                <div>
+                    <input type="hidden" th:value="${userToShow.id}" name="userToUpdateId">
+                </div>
+                <div>
+                    <button class="new_rest_button" type="submit">Edit user password</button>
+                </div>
+            </form>
+            <div class="message" th:if="${updated}">
+                User <span th:text="${updated}"></span> successfully updated
+            </div>
+        </div>
+
+        <div class="right_container">
+            <h1>
+                Hello
+                <span th:text="${', ' + userToShow.firstName + ' ' + userToShow.lastName}"></span>
+                <span th:if="${userToShow.firstName.isEmpty() and userToShow.lastName.isEmpty()}"
+                      th:text="${userToShow.username}"></span>
+            </h1>
+            <table class="user_table">
+                <tbody>
+                <tr>
+                    <th>Username:</th>
+                    <td th:text="${userToShow.username}"></td>
+                </tr>
+                <tr>
+                    <th>First name:</th>
+                    <td th:text="${userToShow.firstName}"></td>
+                </tr>
+                <tr>
+                    <th>Last name:</th>
+                    <td th:text="${userToShow.lastName}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <form th:if="${userToUpdate != null}"
+                  th:action="@{/account/edit}"
+                  th:object="${userToUpdate}" th:method="patch">
+                <h2>Update user details:</h2>
+                <input type="hidden" name="_method" value="patch">
+                <input type="hidden" th:value="0000" th:field="*{password}" name="password">
+                <table class="user_table">
+                    <tbody>
+                    <input type="hidden" th:value="${userToUpdate.id}" th:field="*{id}" name="userToUpdateId">
+                    <tr>
+                        <th>Username:</th>
+                        <td>
+                            <input class="table_input" type="text" th:field="*{username}">
+                        </td>
+                    </tr>
+                    <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</div>
+                    <tr>
+                    </tr>
+                    <tr>
+                        <th>First name:</th>
+                        <td>
+                            <input class="table_input" type="text" th:field="*{firstName}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Last name:</th>
+                        <td><input class="table_input" type="text" th:field="*{lastName}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <button class="search_button" type="submit">Confirm</button>
+                </div>
+            </form>
+
+            <form th:if="${passwordToUpdate != null}"
+                  th:action="@{/account/edit/p}"
+                  th:method="patch">
+                <h2>Update user password:</h2>
+                <input type="hidden" name="_method" value="patch">
+                <table class="user_table">
+                    <tbody>
+                    <input type="hidden" th:value="${userToShow.id}" name="userToUpdateId">
+                    <tr>
+                        <th>Password:</th>
+                        <td>
+                            <input class="table_input" type="text" name="password">
+                        </td>
+                    </tr>
+                    <div class="error" th:if="${error}" th:text="${error}">Error</div>
+                    <tr>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <button class="search_button" type="submit">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
