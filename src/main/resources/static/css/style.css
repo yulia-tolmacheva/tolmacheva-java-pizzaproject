@@ -458,6 +458,13 @@ th {
     text-align: start;
 }
 
+.new_pizza_ingr td {
+    width: inherit;
+    text-align: start;
+}
+
+
+
 .new_user_table {
     display: flex;
     flex-direction: column;

@@ -48,7 +48,7 @@ public class RestaurantsController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String addRestaurantDetails(@ModelAttribute("restaurantToAdd") Restaurant restaurant,
                                        Model model) {
-        model.addAttribute("ownersList", userService.getAllUsersWithOwnerRole());
+        model.addAttribute("ownersList", userService.getAllAvailableUsersWithOwnerRole());
         return "restaurant/new";
     }
 
@@ -81,7 +81,7 @@ public class RestaurantsController {
     public String openEditPage(@RequestParam Long restaurantId,
                                Model model) {
         model.addAttribute("restaurantToUpdate", service.getRestaurantById(restaurantId));
-        model.addAttribute("ownersList", userService.getAllUsersWithOwnerRole());
+        model.addAttribute("ownersList", userService.getAllAvailableUsersWithOwnerRole());
         return "restaurant/edit";
     }
 

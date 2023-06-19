@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/account")
 @RequiredArgsConstructor
@@ -28,6 +30,17 @@ public class AccountController {
     @GetMapping
     public String getUser() {
         return "account/user";
+    }
+
+    @GetMapping("/restaurant")
+    public String showEditFields(@RequestParam("username") String username,
+                                 Model model) {
+        Optional<User> userByUsername = service.findUserByUsername(username);
+        if (userByUsername.isPresent()) {
+            Long id = userByUsername.get().getRestaurant().getId();
+            return  "redirect:/restaurants/" + id;
+        }
+        return "index";
     }
 
     @GetMapping("/edit")

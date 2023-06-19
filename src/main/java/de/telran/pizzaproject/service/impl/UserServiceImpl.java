@@ -81,9 +81,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsersWithOwnerRole() {
+    public List<User> getAllAvailableUsersWithOwnerRole() {
         return repository.findAll().stream().filter((user) -> user.getRoles()
-                .contains(RoleName.OWNER)).collect(Collectors.toList());
+                .contains(RoleName.OWNER)).filter(user -> user.getRestaurant() == null)
+                .collect(Collectors.toList());
     }
 
     @Override

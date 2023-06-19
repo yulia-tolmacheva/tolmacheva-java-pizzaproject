@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Add New Restaurant</title>
@@ -56,7 +57,7 @@
                         <div class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"> Error</div>
                     </div>
 
-                    <div>
+                    <div sec:authorize="hasAuthority('ADMIN')">
                         <label for="owner">Restaurant owner: </label>
                         <select class="new_rest_input" th:field="*{owner}">
                             <option th:selected th:disabled value="">Select</option>
