@@ -16,6 +16,6 @@ public interface UserService {
     User updateUserAsAdmin(User user);
     User updatePassword(Long id, String password);
     void deleteUser(Long id);
-    List<User> getAllUsersWithOwnerRole();
+    List<User> getAllAvailableUsersWithOwnerRole();
     List<User> getAllUsersByUsername(String username);
 }

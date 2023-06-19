@@ -18,7 +18,12 @@
                 <a href="/restaurants">Restaurants</a>
             </div>
             <div class="header__container__link" sec:authorize="hasAuthority('OWNER')">
-                <a href="/restaurants">My restaurant</a>
+                <form th:action="@{/account/restaurant}" th:method="get">
+                    <div>
+                        <input type="hidden" th:value="${#authentication.name}" name="username">
+                        <button type="submit">My restaurant</button>
+                    </div>
+                </form>
             </div>
             <div class="header__container__link" sec:authorize="hasAuthority('ADMIN')">
                 <a href="/ingredients">Ingredients</a>

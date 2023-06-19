@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import com.github.javafaker.Faker;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -19,7 +18,6 @@ public class SetupDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {
     boolean alreadySetup = false;
     private final UserService userService;
-    private final Faker faker = new Faker();
 
     @Override
     @Transactional
@@ -30,12 +28,6 @@ public class SetupDataLoader implements
         createUserIfNotFound(RoleName.ADMIN.name(), RoleName.ADMIN);
         createUserIfNotFound(RoleName.USER.name(), RoleName.USER);
         createUserIfNotFound(RoleName.OWNER.name(), RoleName.OWNER);
-        createUserIfNotFound(RoleName.OWNER.name()+"2", RoleName.OWNER);
-
-        for (int i = 1; i <= 30; i++) {
-            String username = faker.name().firstName();
-            createUserIfNotFound(username, RoleName.USER);
-        }
 
         alreadySetup = true;
     }
@@ -47,7 +39,7 @@ public class SetupDataLoader implements
             User user = new User();
             user.setUsername(name.toLowerCase());
             user.setFirstName(name);
-            user.setLastName(faker.name().lastName());
+            user.setLastName(name);
             user.setPassword(name.toLowerCase());
             user.setRoles(Collections.singletonList(roleName));
             user.setEnabled(true);
