@@ -33,8 +33,7 @@
             <div style="color: olivedrab" th:if="${updated}">
                 User <span th:text="${updated}"></span> successfully updated
             </div>
-            <div style="color: olivedrab" th:if="${notauthorized}">
-                User can't be deleted
+            <div style="color: olivedrab" th:if="${notAuthorized}" th:text="${notAuthorized}">
             </div>
 
             <div class="new_user_table" th:if="${userToUpdate == null}">
@@ -166,6 +165,7 @@
                     <th>Last name</th>
                     <th>Enabled</th>
                     <th>Roles</th>
+                    <th>Restaurant</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -179,6 +179,8 @@
                     <td th:text="${user.lastName}"></td>
                     <td th:text="${user.isEnabled()}"></td>
                     <td th:text="${user.getRoles()}"></td>
+                    <td th:if="${user.getRestaurant() != null}" th:text="${user.getRestaurant().name}"></td>
+                    <td th:if="${user.getRestaurant() == null}" th:text="null"></td>
                     <td>
                         <form th:action="@{/admin/users/edit}" th:method="get">
                             <div>

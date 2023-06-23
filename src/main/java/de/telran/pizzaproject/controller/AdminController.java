@@ -7,8 +7,8 @@ import de.telran.pizzaproject.model.entity.User;
 import de.telran.pizzaproject.service.PizzaDataProviderService;
 import de.telran.pizzaproject.service.PizzaService;
 import de.telran.pizzaproject.service.UserService;
-import de.telran.pizzaproject.validator.PasswordValidator;
 import de.telran.pizzaproject.validator.UserValidator;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,7 +30,6 @@ public class AdminController {
     private final PizzaService pizzaService;
     private final UserValidator validator;
     private final PizzaDataProviderService pizzaDataProviderService;
-    private final PasswordValidator passwordValidator;
 
     @GetMapping()
     public String getAdmin() {
@@ -93,11 +92,6 @@ public class AdminController {
         return "admin/all-pizzas";
     }
 
-    @GetMapping("/restaurants")
-    public String getAllRestaurants() {
-        return "admin/restaurants";
-    }
-
     @GetMapping("/users/edit")
     public String showEditFields(@RequestParam("userToUpdateId") Long userToUpdateId,
                                  Model model) {
@@ -124,12 +118,13 @@ public class AdminController {
     @DeleteMapping("/users/delete")
     public String deleteUser(@RequestParam("userId") Long userId,
                              RedirectAttributes attributes) {
-        if (userService.getUserById(userId).getUsername().equals("admin")) {
+        try {
+            userService.deleteUser(userId);
+        } catch (ConstraintViolationException e) {
             log.info("Attempt to delete admin user");
-            attributes.addFlashAttribute("notauthorized", "not authorized");
+            attributes.addFlashAttribute("notAuthorized", "User with ADMIN role can't be deleted");
             return "redirect:/admin/users";
         }
-        userService.deleteUser(userId);
         attributes.addFlashAttribute("deleted", userId);
         return "redirect:/admin/users";
     }

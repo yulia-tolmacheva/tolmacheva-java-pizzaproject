@@ -1,7 +1,6 @@
 package de.telran.pizzaproject.security;
 
 import de.telran.pizzaproject.model.RoleName;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;
@@ -17,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -27,7 +25,6 @@ public class SecurityConfig {
     @Bean
     static MethodSecurityExpressionHandler methodSecurityExpressionHandler(PermissionEvaluator permissionEvaluator) {
         DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
-//        PermissionEvaluator permissionEvaluator = new MyPermissionEvaluator()
         handler.setPermissionEvaluator(permissionEvaluator);
         return handler;
     }
@@ -39,14 +36,12 @@ public class SecurityConfig {
                         .requestMatchers("/",
                                 "/css/**",
                                 "/error",
-                                "/search/**",
                                 "/restaurants/**",
                                 "/pizzas/**",
                                 "/auth/login", "/auth/signup")
                         .permitAll()
-                        .requestMatchers("/ingredients").hasAnyAuthority(RoleName.OWNER.name(), RoleName.ADMIN.name())
-                        .requestMatchers("/admin").hasAuthority(RoleName.ADMIN.name())
-                        .anyRequest().hasAnyAuthority(RoleName.ADMIN.name(), RoleName.USER.name(), RoleName.OWNER.name()))
+                        .requestMatchers("/admin/**", "/ingredients").hasAuthority(RoleName.ADMIN.name())
+                        .anyRequest().authenticated())
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
