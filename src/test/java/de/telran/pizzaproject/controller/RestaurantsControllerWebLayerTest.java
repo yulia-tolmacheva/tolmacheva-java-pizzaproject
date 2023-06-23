@@ -187,7 +187,7 @@ public class RestaurantsControllerWebLayerTest {
                 .andExpect(MockMvcResultMatchers.flash().attributeExists("deleted"))
                 .andExpect(MockMvcResultMatchers.flash().attribute("deleted", restaurants.get(1).getId()));
 
-        verify(restaurantService).deletePizza(restaurants.get(1).getId());
+        verify(restaurantService).deleteRestaurant(restaurants.get(1).getId());
     }
 
     @Test

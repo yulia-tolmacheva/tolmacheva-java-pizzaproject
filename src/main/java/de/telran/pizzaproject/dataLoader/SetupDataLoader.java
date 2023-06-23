@@ -26,9 +26,6 @@ public class SetupDataLoader implements
         if (alreadySetup)
             return;
         createUserIfNotFound("admin", RoleName.ADMIN);
-        createUserIfNotFound("user", RoleName.USER);
-        createUserIfNotFound("owner", RoleName.OWNER);
-
         alreadySetup = true;
     }
 
@@ -41,7 +38,6 @@ public class SetupDataLoader implements
             user.setFirstName(name);
             user.setLastName(name);
             user.setPassword(name.toLowerCase());
-//            user.setRoleName(roleName);
             user.setRoles(Collections.singletonList(roleName));
             user.setEnabled(true);
             userService.addUser(user);

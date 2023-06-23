@@ -73,7 +73,7 @@ public class RestaurantsController {
     public String deleteRestaurant(@RequestParam Long restaurantId,
                                    RedirectAttributes attributes,
                                    Authentication authentication) {
-        service.deletePizza(restaurantId);
+        service.deleteRestaurant(restaurantId);
         log.info("Restaurant was deleted : " + restaurantId);
         attributes.addFlashAttribute("deleted", restaurantId);
         return "redirect:/restaurants";
