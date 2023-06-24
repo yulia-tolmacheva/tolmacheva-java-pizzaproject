@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -69,8 +70,10 @@ public class RestaurantsController {
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String deleteRestaurant(@RequestParam Long restaurantId, RedirectAttributes attributes) {
-        service.deletePizza(restaurantId);
+    public String deleteRestaurant(@RequestParam Long restaurantId,
+                                   RedirectAttributes attributes,
+                                   Authentication authentication) {
+        service.deleteRestaurant(restaurantId);
         log.info("Restaurant was deleted : " + restaurantId);
         attributes.addFlashAttribute("deleted", restaurantId);
         return "redirect:/restaurants";
@@ -99,7 +102,7 @@ public class RestaurantsController {
     }
 
     @GetMapping("/{restaurantId}")
-    public String getAll(@PathVariable("restaurantId") Long id,
+    public String getRestaurantViewWithPizzas(@PathVariable("restaurantId") Long id,
                          Model model) {
         model.addAttribute("filteredPizzasList", service.getRestaurantById(id).getPizzas());
         model.addAttribute("restaurantToView", service.getRestaurantById(id));

@@ -12,10 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -34,8 +31,8 @@ public class User implements UserDetails {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @NotBlank(message = "{field.required}")
-    @Size(min = 3, max = 100, message = "{user.password.size}")
+//    @NotBlank(message = "{field.required}")
+//    @Size(min = 3, max = 100, message = "{user.password.size}")
     @Column(name = "password")
     private String password;
 

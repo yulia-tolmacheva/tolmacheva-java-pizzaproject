@@ -25,10 +25,7 @@ public class SetupDataLoader implements
 
         if (alreadySetup)
             return;
-        createUserIfNotFound(RoleName.ADMIN.name(), RoleName.ADMIN);
-        createUserIfNotFound(RoleName.USER.name(), RoleName.USER);
-        createUserIfNotFound(RoleName.OWNER.name(), RoleName.OWNER);
-
+        createUserIfNotFound("admin", RoleName.ADMIN);
         alreadySetup = true;
     }
 

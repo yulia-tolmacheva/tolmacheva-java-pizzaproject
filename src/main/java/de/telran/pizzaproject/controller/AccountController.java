@@ -33,8 +33,7 @@ public class AccountController {
     }
 
     @GetMapping("/restaurant")
-    public String showEditFields(@RequestParam("username") String username,
-                                 Model model) {
+    public String showEditFields(@RequestParam("username") String username) {
         Optional<User> userByUsername = service.findUserByUsername(username);
         if (userByUsername.isPresent()) {
             Long id = userByUsername.get().getRestaurant().getId();

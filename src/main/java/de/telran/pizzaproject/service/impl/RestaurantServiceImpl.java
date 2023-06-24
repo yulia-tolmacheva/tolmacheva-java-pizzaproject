@@ -43,7 +43,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public void deletePizza(Long restaurantId) {
+    public void deleteRestaurant(Long restaurantId) {
         repository.deleteById(restaurantId);
     }
 

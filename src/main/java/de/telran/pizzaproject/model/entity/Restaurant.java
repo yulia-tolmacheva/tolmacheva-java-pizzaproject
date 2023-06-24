@@ -44,7 +44,7 @@ public class Restaurant {
     @OneToMany(mappedBy="restaurant", cascade=CascadeType.ALL)
     private List<Pizza> pizzas = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "user_owner_id", referencedColumnName = "id")
     private User owner;
 }
