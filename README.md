@@ -12,5 +12,5 @@ The functionality would be secured by requiring a username of "admin" to access 
 
 #### Java 17
 #### Spring Boot 3
-#### H2 database
 #### PostgreSQL
+#### H2 database (test)
