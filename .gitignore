@@ -37,9 +37,8 @@ build/
 
 *.xml
 !pom.xml
-*.iml
-HELP.md
 .mvn/
 
 mvnw
 mvnw.cmd
+/src/main/resources/application.properties
