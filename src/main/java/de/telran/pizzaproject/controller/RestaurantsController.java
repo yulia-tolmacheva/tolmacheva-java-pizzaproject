@@ -102,7 +102,7 @@ public class RestaurantsController {
     }
 
     @GetMapping("/{restaurantId}")
-    public String getAll(@PathVariable("restaurantId") Long id,
+    public String getRestaurantViewWithPizzas(@PathVariable("restaurantId") Long id,
                          Model model) {
         model.addAttribute("filteredPizzasList", service.getRestaurantById(id).getPizzas());
         model.addAttribute("restaurantToView", service.getRestaurantById(id));

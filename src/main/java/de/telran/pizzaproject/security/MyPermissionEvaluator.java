@@ -33,11 +33,11 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
         User user;
-        try {
+//        try {
             user = (User) authentication.getPrincipal();
-        } catch (ClassCastException e) {
-            return false;
-        }
+//        } catch (ClassCastException e) {
+//            return false;
+//        }
 
         for (RoleName role : user.getRoles()) {
             if (role == RoleName.ADMIN) {
