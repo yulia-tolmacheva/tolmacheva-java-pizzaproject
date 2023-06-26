@@ -9,13 +9,14 @@ The pizza project functionality includes the ability to create, read, update, an
 - for users: by username (just for admin role);
 
 ### Security (url-secuirty, role-based and permission-based)
-The functionality is secured with Spring Security 6 by requiring a username of "admin" to access all features and restricted for others.
-- Everyone can see restaurants list and their pizzas, use filters
-- All users with admin-role are able to add and delete restaurants;
-- All users with admin-role or restaurant owner (owner role assigned to the particular restaurant) are able to edit restaurants details or their pizzas;
-- All users with admin-role are able to add, edit, delete users;
-- Sign up as lowest User role is possible;
-- All users with admin-role are able to add, edit, delete ingredients;
+
+- Everyone can see all restaurants and the pizzas, use filters;
+- All users with admin-role are able to add new and delete restaurants;
+- All users with admin-role and restaurant owner (owner role assigned to the particular restaurant) are able to update restaurants details or their pizzas (create, delete, update);
+- All users with admin-role are able to add, update, delete users;
+- Sign up with lowest User role is possible; Other roles are only assignable by admins;
+- All users with admin-role are able to add, update, delete ingredients;
+- All users can change their details and passwords;
 
 ## Technologies
 
